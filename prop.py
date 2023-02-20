@@ -19,10 +19,12 @@ from bpy.props import BoolProperty
 # won't always be assigned to the Scene object but it's a good place to start.
 def register():
     Scene.my_property = BoolProperty(default=True)
+    Scene.another_property = BoolProperty(default=True)
 
 def unregister():
     del Scene.my_property
-
+    del Scene.another_property
+    
 """
 import os
 import sys
