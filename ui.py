@@ -5,7 +5,7 @@ from bpy.types import Panel
 # Add additional functions here
 #
 
-class MyPanel(Panel):
+class BlenderBIMSpreadSheetPanel(Panel):
     bl_label = "BlenderBIM spreadsheet"
     bl_idname = "OBJECT_PT_blenderbimxlsxpanel"
     bl_space_type = "VIEW_3D"
@@ -15,12 +15,13 @@ class MyPanel(Panel):
     def draw(self, context):
         row = self.layout.row()
         row.prop(context.scene, 'my_property')
+        row.prop(context.scene, 'another_property')
 
 def register():
-    bpy.utils.register_class(MyPanel)
+    bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
 
 def unregister():
-    bpy.utils.unregister_class(MyPanel)
+    bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
 
 """ 
 import os
