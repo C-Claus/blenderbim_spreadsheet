@@ -17,6 +17,8 @@ import os
 import bpy
 import site
 
+from . import operators, ui, prop
+
 bl_info = {
         "name": "BlenderBIM Spreadsheet",
         "description": "Filter IFC elements from a spreadsheet",
@@ -34,17 +36,39 @@ bl_info = {
 
 site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
 
+""" 
+classes = (
+    ui.BlenderBIMSpreadSheetPanel,
+    #prop.BlenderBIMSpreadSheetProperties
+)
+
+def register():
+
+    bpy.types.Scene.blenderbim_spreadsheet_properties = bpy.props.PointerProperty(type=prop.BlenderBIMSpreadSheetProperties)    
+   
+
+def unregister():
+    
+    bpy.types.Scene.blenderbim_spreadsheet_properties
+
+""" 
 def register():
     from . import prop
     from . import ui
+    from . import operators
     prop.register()
+    operators.register()
     ui.register()
 
 def unregister():
     from . import prop
     from . import ui
+    from . import operators
     prop.unregister()
+    operators.register()
     ui.unregister()
 
 if __name__ == '__main__':
     register()
+
+

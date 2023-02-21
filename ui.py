@@ -1,9 +1,45 @@
 import bpy
 from bpy.types import Panel
 
-#
-# Add additional functions here
-#
+import bpy
+from bpy.types import Panel
+
+class MyPanel(Panel):
+    bl_idname = "OBJECT_PT_my_panel"
+    bl_label = "My Panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "My Add-on"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("my.operator")
+
+def register():
+    bpy.utils.register_class(MyPanel)
+
+def unregister():
+    bpy.utils.unregister_class(MyPanel)
+
+"""    
+class BlenderBIMSpreadSheetPanel(Panel):
+    bl_label = "BlenderBIM Spreadsheet"
+    bl_idname = "OBJECT_PT_blenderbimxlsxpanel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Tools"
+
+    def draw(self, context):
+        row = self.layout.row()
+        row.prop(context.scene, 'property_ifcproduct')
+
+
+def register():
+    bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
+
+def unregister():
+    bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
+
 
 class BlenderBIMSpreadSheetPanel(Panel):
     bl_label = "BlenderBIM spreadsheet"
@@ -25,7 +61,7 @@ def register():
 def unregister():
     bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
 
-""" 
+ 
 import os
 import sys
 import time

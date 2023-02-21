@@ -17,19 +17,45 @@ from bpy.props import BoolProperty
 
 # This is where you assign any variables you need in your script. Note that they
 # won't always be assigned to the Scene object but it's a good place to start.
+import bpy
+from bpy.props import StringProperty
+
+class MyProperties(bpy.types.PropertyGroup):
+    my_string_prop: StringProperty(name="My String Property")
+
 def register():
-    Scene.my_property = BoolProperty(default=True)
-    Scene.another_property = BoolProperty(default=True)
-    Scene.yet_another_property = BoolProperty(default=False)
-    Scene.and_yet_another_property = BoolProperty(default=False)
+    bpy.utils.register_class(MyProperties)
+    bpy.types.Scene.my_properties = bpy.props.PointerProperty(type=MyProperties)
 
 def unregister():
-    del Scene.my_property
-    del Scene.another_property
-    del Scene.yet_another_property
-    del Scene.and_yet_another_property
+    bpy.utils.unregister_class(MyProperties)
+    del bpy.types.Scene.my_properties
+
+
+""" 
+def register():
+
+    #my_ifcproduct: bpy.props.BoolProperty(name="IfcProduct",description="Export IfcProduct",default=True)
+
+    Scene.property_ifcproduct = BoolProperty(name="IfcProduct",description="Export IfcProduct",default=True)
+
+    #Scene.my_property = BoolProperty(default=True)
+    #Scene.another_property = BoolProperty(default=True)
+    #Scene.yet_another_property = BoolProperty(default=False)
+    #Scene.and_yet_another_property = BoolProperty(default=False)
+
+def unregister():
+
+    del Scene.property_ifcproduct
+
+   
+
+    #del Scene.my_property
+    #del Scene.another_property
+    #del Scene.yet_another_property
+    #del Scene.and_yet_another_property
     
-"""
+
 import os
 import sys
 import time

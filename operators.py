@@ -1,11 +1,39 @@
+import bpy
 
+class MyOperator(bpy.types.Operator):
+    bl_idname = "my.operator"
+    bl_label = "My Operator"
 
+    def execute(self, context):
+        print("Hello, world!")
+        return {'FINISHED'}
 
+def register():
+    bpy.utils.register_class(MyOperator)
 
+def unregister():
+    bpy.utils.unregister_class(MyOperator)
 
 
 
 """ 
+class MyOperator(bpy.types.Operator):
+    bl_idname = "my.operator"
+    bl_label = "My Operator"
+
+    def execute(self, context):
+        # Access property_ifcproduct from the active scene
+        ifc_product_enabled = context.scene.property_ifcproduct
+        # Display a message box with the value of ifc_product_enabled
+        message = "IfcProduct is {}.".format("enabled" if ifc_product_enabled else "disabled")
+        self.report({'INFO'}, message)
+
+        print (message)
+        return {'FINISHED'}
+
+
+
+
 
 import bpy
 import pandas
