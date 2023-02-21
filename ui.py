@@ -16,6 +16,8 @@ class BlenderBIMSpreadSheetPanel(Panel):
         row = self.layout.row()
         row.prop(context.scene, 'my_property')
         row.prop(context.scene, 'another_property')
+        row.prop(context.scene, 'yet_another_property')
+        row.prop(context.scene, 'and_yet_another_property')
 
 def register():
     bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
