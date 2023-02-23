@@ -173,20 +173,29 @@ class ExportToSpreadSheet(bpy.types.Operator):
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
-        construct_data_frame = ConstructDataFrame(context)
-        spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
 
-        writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
-        construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
-        
-        workbook  = writer.book
-        #cell_format = workbook.add_format({'bold': True,'border': 1,'bg_color': '#4F81BD','font_color': 'white','font_size':14})
-        
-        worksheet = writer.sheets['workbook']
+        print (ifc_properties.ods_or_xlsx)
 
-        writer.save()
-        #open_file(ifc_properties.my_xlsx_file)
-        
+        if ifc_properties.ods_or_xlsx == 'XLSX':
+            print ('hoi UIT XLSX')
+            construct_data_frame = ConstructDataFrame(context)
+            spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
+            #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
+
+            writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
+            construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
+            
+            workbook  = writer.book
+            #cell_format = workbook.add_format({'bold': True,'border': 1,'bg_color': '#4F81BD','font_color': 'white','font_size':14})
+            
+            worksheet = writer.sheets['workbook']
+
+            writer.save()
+            #open_file(ifc_properties.my_xlsx_file)
+
+        if ifc_properties.ods_or_xlsx == 'ODS':
+            print ('hallo uit ods')
+            
         
      
    
@@ -194,7 +203,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
 
 
-        return {'FINISHED'}
+       
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
