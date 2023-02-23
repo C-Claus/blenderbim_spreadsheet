@@ -1,18 +1,54 @@
 import bpy
 from . import prop
+
+import collections
+from collections import defaultdict
+
+import ifcopenshell
+import pandas as pd
+
+class ConstructDataFrame:
+    def __init__(self, context):
+        print ('hallo uit Construct dataframa class')
+
+        ifc_dictionary = defaultdict(list)
+        ifc_properties = context.scene.ifc_properties
+
+        #ifc_file = ifcopenshell.open(IfcStore.path)
+        ifc_file = ifcopenshell.open("C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc")
+        products = ifc_file.by_type('IfcProduct')
+
+        for product in products:
+            ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
+
+            if ifc_properties.my_ifcproduct:
+                ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
+
+        df = pd.DataFrame(ifc_dictionary)
+        self.df = df
+
+        print (self.df)
+
+
+
 class ExportToSpreadSheet(bpy.types.Operator):
     bl_idname = "export.tospreadsheet"
     bl_label = "Export to Spreadsheet"
 
-    
-
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
+        construct_data_frame = ConstructDataFrame(context)
 
-        if ifc_properties.my_ifcproduct:
-            print ('prop.prop_ifcproduct', prop.prop_ifcproduct)
-            print ('ifc_properties.my_ifcproduct', ifc_properties.my_ifcproduct)
+        #this adds nothing, selection is allreadye happing dataframes
+
+        #if ifc_properties.my_ifcproduct:
+        #    print ('prop.prop_ifcproduct', prop.prop_ifcproduct)
+        #    print ('ifc_properties.my_ifcproduct', ifc_properties.my_ifcproduct)
+
+        #if ifc_properties.my_ifcbuildingstorey:
+        #    print ('prop.ifc_buildingstorey', prop.prop_ifcbuildingstorey)
+        #    print ('ifc_properties.ifc_buildingstorey', ifc_properties.my_ifcbuildingstorey)
 
         return {'FINISHED'}
 
@@ -24,25 +60,12 @@ def unregister():
 
 
 
-""" 
-class MyOperator(bpy.types.Operator):
-    bl_idname = "my.operator"
-    bl_label = "My Operator"
-
-    def execute(self, context):
-        # Access property_ifcproduct from the active scene
-        ifc_product_enabled = context.scene.property_ifcproduct
-        # Display a message box with the value of ifc_product_enabled
-        message = "IfcProduct is {}.".format("enabled" if ifc_product_enabled else "disabled")
-        self.report({'INFO'}, message)
-
-        print (message)
-        return {'FINISHED'}
 
 
+        
 
 
-
+"""
 import bpy
 import pandas
 import collections
@@ -161,24 +184,7 @@ def get_ifc_properties_and_quantities(ifc_product, ifc_propertyset_name, ifc_pro
     return ifc_property_list
 
 
-#these variables should all come from ui, prop, don't harcode them in operator
-global_id = 'GlobalId'
-ifc_product_is = 'IfcElement'
-ifc_name = 'Name'
-ifc_type = 'Type'
-ifc_buildingstorey = 'IfcBuildingStorey'
-ifc_classification = 'Classification'
-ifc_material = 'Material(s)'
-is_external = 'IsExternal'
-load_bearing = 'LoadBearing'
-fire_rating = 'FireRating'
-base_quantities = 'BaseQuantities'
-area = 'Area'
-netside_area = 'NetSideArea'
-net_area = 'NetArea'
-length = 'Length'
-width = 'Width'
-height = 'height'
+
 
 
 

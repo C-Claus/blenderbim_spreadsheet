@@ -2,7 +2,7 @@ import bpy
 from bpy.types import Scene
 from bpy.props import BoolProperty, StringProperty
 
-
+prop_globalid           = 'GlobalId'
 prop_ifcproduct         = 'IfcProduct'
 prop_ifcbuildingstorey  = 'IfcBuildingStorey'
 prop_ifcproductname     = 'Name'
