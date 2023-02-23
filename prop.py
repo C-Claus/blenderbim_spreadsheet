@@ -1,35 +1,33 @@
 import bpy
 from bpy.types import Scene
+from bpy.props import BoolProperty, StringProperty
 
-# For more information about Blender Properties, visit:
-from bpy.props import BoolProperty
-# from bpy.props import CollectionProperty
-# from bpy.props import EnumProperty
-# from bpy.props import FloatProperty
-# from bpy.props import IntProperty
-# from bpy.props import PointerProperty
-# from bpy.props import StringProperty
-# from bpy.props import PropertyGroup
 
-#
-# Add additional functions or classes here
-#
+prop_ifcproduct         = 'IfcProduct'
+prop_ifcbuildingstorey  = 'IfcBuildingStorey'
+prop_ifcproductname     = 'Name'
+prop_ifcproducttypename = 'Type'
+prop_isexternal         = 'IsExternal'
+prop_loadbearing        = 'LoadBearing'
+prop_firerating         = 'FireRating'
+prop_length             = 'Length'
+prop_width              = 'Width'
+prop_area               = 'Area'
+prop_netarea            = 'NetArea'
+prop_netsidearea        = 'NetSideArea'
 
-# This is where you assign any variables you need in your script. Note that they
-# won't always be assigned to the Scene object but it's a good place to start.
-import bpy
-from bpy.props import StringProperty
-
-class MyProperties(bpy.types.PropertyGroup):
-    my_string_prop: StringProperty(name="My String Property")
+class IFCProperties(bpy.types.PropertyGroup):
+    my_ifcproduct: bpy.props.BoolProperty(name=prop_ifcproduct,description="Export IfcProduct",default=True)
+    my_ifcbuildingstorey: bpy.props.BoolProperty(name=prop_ifcbuildingstorey,description="Export IfcBuildingStorey",default = True)
+  
 
 def register():
-    bpy.utils.register_class(MyProperties)
-    bpy.types.Scene.my_properties = bpy.props.PointerProperty(type=MyProperties)
+    bpy.utils.register_class(IFCProperties)
+    bpy.types.Scene.ifc_properties = bpy.props.PointerProperty(type=IFCProperties)
 
 def unregister():
-    bpy.utils.unregister_class(MyProperties)
-    del bpy.types.Scene.my_properties
+    bpy.utils.unregister_class(IFCProperties)
+    del bpy.types.Scene.ifc_properties
 
 
 """ 

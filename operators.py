@@ -1,18 +1,21 @@
 import bpy
-
-class MyOperator(bpy.types.Operator):
-    bl_idname = "my.operator"
-    bl_label = "My Operator"
+from . import prop
+class ExportToSpreadSheet(bpy.types.Operator):
+    bl_idname = "export.tospreadsheet"
+    bl_label = "Export to Spreadsheet"
 
     def execute(self, context):
-        print("Hello, world!")
+
+        if prop.prop_ifcproduct:
+            print ('run method', prop.prop_ifcproduct)
+
         return {'FINISHED'}
 
 def register():
-    bpy.utils.register_class(MyOperator)
+    bpy.utils.register_class(ExportToSpreadSheet)
 
 def unregister():
-    bpy.utils.unregister_class(MyOperator)
+    bpy.utils.unregister_class(ExportToSpreadSheet)
 
 
 

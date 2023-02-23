@@ -1,25 +1,36 @@
 import bpy
 from bpy.types import Panel
 
-import bpy
-from bpy.types import Panel
+from . import  prop, operators
 
-class MyPanel(Panel):
-    bl_idname = "OBJECT_PT_my_panel"
-    bl_label = "My Panel"
+#initial hardcoded global variables
+my_ifcproduct = 'IfcProduct'
+
+class BlenderBIMSpreadSheetPanel(Panel):
+    bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
+    bl_label = "BlenderBIM Spreadsheet"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "My Add-on"
+    bl_category = "BlenderBIM | Spreadsheet"
 
     def draw(self, context):
+
+        ifc_properties = context.scene.ifc_properties
         layout = self.layout
-        layout.operator("my.operator")
+        
+        layout.label(text="General")
+        box = layout.box()
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcproduct")
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcbuildingstorey")
+        layout.operator("export.tospreadsheet")
 
 def register():
-    bpy.utils.register_class(MyPanel)
+    bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
 
 def unregister():
-    bpy.utils.unregister_class(MyPanel)
+    bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
 
 """    
 class BlenderBIMSpreadSheetPanel(Panel):
