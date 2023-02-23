@@ -60,6 +60,9 @@ class BlenderBIMSpreadSheetPanel(Panel):
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "my_spreadsheetfile")
 
+        row = box_spreadsheet.row()
+        row.prop(ifc_properties, "ods_or_xlsx")
+
         
         
         layout.operator("export.tospreadsheet")

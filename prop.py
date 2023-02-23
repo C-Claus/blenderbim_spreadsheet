@@ -39,18 +39,18 @@ class IFCProperties(bpy.types.PropertyGroup):
                                                             maxlen=1024,
                                                             subtype="FILE_PATH")
 
-    """ 
+   
 
-    my_ifcclassification_dd:    bpy.props.EnumProperty(
-                                name="Classification",
+    ods_or_xlsx:    bpy.props.EnumProperty(
+                                name="File format",
                                 items=[
-                                    ("OPTION1", "Option 1", "Description for Option 1"),
-                                    ("OPTION2", "Option 2", "Description for Option 2"),
-                                    ("OPTION3", "Option 3", "Description for Option 3"),
+                                    ("ODS", ".ods", "ods"),
+                                    ("XLSX", ".xlsx", "xlsx"),
                                 ],
-                                default="OPTION1",
+                                default="ODS",
+                               
                                 )
-    """
+ 
   
 
 def register():
