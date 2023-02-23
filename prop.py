@@ -8,6 +8,7 @@ prop_ifcproduct         = 'IfcProduct'
 prop_ifcbuildingstorey  = 'IfcBuildingStorey'
 prop_ifcproductname     = 'Name'
 prop_ifcproducttypename = 'Type'
+prop_psetcommon         = 'Pset_Common'
 prop_isexternal         = 'IsExternal'
 prop_loadbearing        = 'LoadBearing'
 prop_firerating         = 'FireRating'
@@ -21,12 +22,16 @@ prop_netsidearea        = 'NetSideArea'
 
 
 class IFCProperties(bpy.types.PropertyGroup):
-    my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,default=True)
-    my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,default=True)
+    my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,        default=True)
+    my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,    default=True)
     my_ifcproducttypename:      bpy.props.BoolProperty(name=prop_ifcproducttypename,default=True)
-    my_ifcbuildingstorey:       bpy.props.BoolProperty(name=prop_ifcbuildingstorey,default=True)
-    my_ifcclassification:       bpy.props.BoolProperty(name=prop_classification,default=True)
-    my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,default=True)
+    my_ifcbuildingstorey:       bpy.props.BoolProperty(name=prop_ifcbuildingstorey, default=True)
+    my_ifcclassification:       bpy.props.BoolProperty(name=prop_classification,    default=True)
+    my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,         default=True)
+    my_ifcpsetcommon:           bpy.props.BoolProperty(name=prop_psetcommon,        default=True)
+    my_isexternal:              bpy.props.BoolProperty(name=prop_isexternal,        default=True)
+    my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=True)
+    my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=True)
 
     """ 
 

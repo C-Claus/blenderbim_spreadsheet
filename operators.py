@@ -44,6 +44,18 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product)[0])
 
+            if ifc_properties.my_ifcpsetcommon:
+                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+                ifc_dictionary[prop.prop_psetcommon].append(str(ifc_pset_common))
+
+            if ifc_properties.my_isexternal:
+                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+                ifc_dictionary[prop.prop_isexternal].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                    ifc_product=product,
+                                                                                                    ifc_propertyset_name=ifc_pset_common,
+                                                                                                    ifc_property_name=prop.prop_isexternal,
+                                                                                                    )[0])
+
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
@@ -127,6 +139,18 @@ class ConstructDataFrame:
             material_list.append(None)
             
         return material_list
+
+    def get_ifc_properties_and_quantities(self, context, ifc_product, ifc_propertyset_name, ifc_property_name):
+    
+        ifc_property_list = []
+        
+        if ifc_product:
+            ifc_property_list.append(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name))
+            
+        if not ifc_property_list:
+            ifc_property_list.append(None)
+            
+        return ifc_property_list
 
 
 

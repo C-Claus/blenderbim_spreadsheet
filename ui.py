@@ -38,6 +38,22 @@ class BlenderBIMSpreadSheetPanel(Panel):
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
 
+
+        layout.label(text="Common Properties")
+        box = layout.box()
+
+        #row = box.row()
+        #row.prop(ifc_properties, "my_ifcpsetcommon")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_isexternal")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_loadbearing")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_firerating")
+
         #row = box.row()
         #row.prop(ifc_properties, "my_ifcclassification_dd")
 
