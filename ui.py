@@ -4,7 +4,7 @@ from bpy.types import Panel
 from . import  prop, operators
 
 #initial hardcoded global variables
-my_ifcproduct = 'IfcProduct'
+#my_ifcproduct = 'IfcProduct'
 
 class BlenderBIMSpreadSheetPanel(Panel):
     bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
@@ -25,9 +25,15 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
         row = box.row()
         row.prop(ifc_properties, "my_ifcproductname")
-        
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcproducttypename")
+
         row = box.row()
         row.prop(ifc_properties, "my_ifcbuildingstorey")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcclassifcation")
         
         layout.operator("export.tospreadsheet")
 

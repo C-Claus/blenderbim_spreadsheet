@@ -9,7 +9,7 @@ import pandas as pd
 
 class ConstructDataFrame:
     def __init__(self, context):
-        print ('hallo uit Construct dataframa class')
+        print ('hallo uit Construct dataframe class')
 
         ifc_dictionary = defaultdict(list)
         ifc_properties = context.scene.ifc_properties
@@ -27,13 +27,35 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcproductname:
                 ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
 
+            if ifc_properties.my_ifcproducttypename:
+                ifc_dictionary[prop.prop_ifcproducttypename].append(self.get_ifc_type(context, ifc_product=product)[0])
+
             if ifc_properties.my_ifcbuildingstorey:
-                ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(context, ifc_product=product))
+                ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(context, ifc_product=product)[0])
+
+            if ifc_properties.my_ifcclassification:
+                ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification_item_and_reference(context, ifc_product=product)[0])
+
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
 
         print (self.df)
+
+    def get_ifc_type(self, context, ifc_product):
+    
+        ifc_type_list = []
+        
+        if ifc_product: 
+            ifcproduct_type = ifcopenshell.util.element.get_type(ifc_product)
+    
+            if ifcproduct_type:
+                ifc_type_list.append(ifcproduct_type.Name)
+        
+        if not ifc_type_list:
+            ifc_type_list.append(None)
+
+        return ifc_type_list
 
     def get_ifc_building_storey(self, context,ifc_product):
 
@@ -48,6 +70,23 @@ class ConstructDataFrame:
             building_storey_list.append(None)
             
         return building_storey_list
+
+    def get_ifc_classification_item_and_reference(self, context, ifc_product):
+    
+        classification_list = []
+
+        # Elements may have multiple classification references assigned
+        references = ifcopenshell.util.classification.get_references(ifc_product)
+        
+        if ifc_product:
+            for reference in references:
+                system = ifcopenshell.util.classification.get_classification(reference)
+                classification_list.append(str(system.Name) + ' | ' + str(reference[1]) +  ' | ' + str(reference[2]))
+            
+        if not classification_list:
+            classification_list.append(None)  
+            
+        return classification_list
 
 
 
