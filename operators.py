@@ -7,10 +7,9 @@ from collections import defaultdict
 import ifcopenshell
 import pandas as pd
 
-import sys
-import subprocess
+import xlsxwriter
 
-
+replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
 
 class ConstructDataFrame:
     def __init__(self, context):
@@ -20,7 +19,7 @@ class ConstructDataFrame:
         ifc_properties = context.scene.ifc_properties
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
-        ifc_file = ifcopenshell.open("C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc")
+        ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
 
         for product in products:
@@ -175,16 +174,25 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
         ifc_properties = context.scene.ifc_properties
         construct_data_frame = ConstructDataFrame(context)
+        spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
 
-        #this adds nothing, selection is allreadye happing dataframes
+        writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
+        construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
+        
+        workbook  = writer.book
+        #cell_format = workbook.add_format({'bold': True,'border': 1,'bg_color': '#4F81BD','font_color': 'white','font_size':14})
+        
+        worksheet = writer.sheets['workbook']
 
-        #if ifc_properties.my_ifcproduct:
-        #    print ('prop.prop_ifcproduct', prop.prop_ifcproduct)
-        #    print ('ifc_properties.my_ifcproduct', ifc_properties.my_ifcproduct)
+        writer.save()
+        #open_file(ifc_properties.my_xlsx_file)
+        
+        
+     
+   
+        return {'FINISHED'}
 
-        #if ifc_properties.my_ifcbuildingstorey:
-        #    print ('prop.ifc_buildingstorey', prop.prop_ifcbuildingstorey)
-        #    print ('ifc_properties.ifc_buildingstorey', ifc_properties.my_ifcbuildingstorey)
+
 
         return {'FINISHED'}
 

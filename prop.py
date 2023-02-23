@@ -19,6 +19,7 @@ prop_width              = 'Width'
 prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
+prop_spreadsheetfile    = 'Spreadsheet'
 
 
 class IFCProperties(bpy.types.PropertyGroup):
@@ -32,6 +33,11 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_isexternal:              bpy.props.BoolProperty(name=prop_isexternal,        default=True)
     my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=True)
     my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=True)
+    my_spreadsheetfile:         bpy.props.StringProperty(   name="Spreadsheet",
+                                                            description="your .ods or .xlsx file",
+                                                            default="",
+                                                            maxlen=1024,
+                                                            subtype="FILE_PATH")
 
     """ 
 

@@ -42,9 +42,6 @@ class BlenderBIMSpreadSheetPanel(Panel):
         layout.label(text="Common Properties")
         box = layout.box()
 
-        #row = box.row()
-        #row.prop(ifc_properties, "my_ifcpsetcommon")
-
         row = box.row()
         row.prop(ifc_properties, "my_isexternal")
 
@@ -56,6 +53,12 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
         #row = box.row()
         #row.prop(ifc_properties, "my_ifcclassification_dd")
+
+        layout.label(text="Write to Spreadsheet")
+        box_spreadsheet = layout.box()
+
+        row = box_spreadsheet.row()
+        row.prop(ifc_properties, "my_spreadsheetfile")
 
         
         
