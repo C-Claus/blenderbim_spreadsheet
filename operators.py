@@ -23,11 +23,31 @@ class ConstructDataFrame:
 
             if ifc_properties.my_ifcproduct:
                 ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
+            
+            if ifc_properties.my_ifcproductname:
+                ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
+
+            if ifc_properties.my_ifcbuildingstorey:
+                ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(context, ifc_product=product))
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
 
         print (self.df)
+
+    def get_ifc_building_storey(self, context,ifc_product):
+
+        building_storey_list = []
+            
+        spatial_container = ifcopenshell.util.element.get_container(ifc_product)
+        
+        if spatial_container:    
+            building_storey_list.append(spatial_container.Name)
+            
+        if not building_storey_list:
+            building_storey_list.append(None)
+            
+        return building_storey_list
 
 
 
