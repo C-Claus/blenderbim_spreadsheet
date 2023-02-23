@@ -44,9 +44,6 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product)[0])
 
-            if ifc_properties.my_ifcpsetcommon:
-                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
-                ifc_dictionary[prop.prop_psetcommon].append(str(ifc_pset_common))
 
             if ifc_properties.my_isexternal:
                 ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -54,6 +51,22 @@ class ConstructDataFrame:
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=ifc_pset_common,
                                                                                                     ifc_property_name=prop.prop_isexternal,
+                                                                                                    )[0])
+
+            if ifc_properties.my_loadbearing:
+                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+                ifc_dictionary[prop.prop_loadbearing].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                    ifc_product=product,
+                                                                                                    ifc_propertyset_name=ifc_pset_common,
+                                                                                                    ifc_property_name=prop.prop_loadbearing,
+                                                                                                    )[0])
+
+            if ifc_properties.my_firerating:
+                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+                ifc_dictionary[prop.prop_firerating].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                    ifc_product=product,
+                                                                                                    ifc_propertyset_name=ifc_pset_common,
+                                                                                                    ifc_property_name=prop.prop_firerating,
                                                                                                     )[0])
 
 
