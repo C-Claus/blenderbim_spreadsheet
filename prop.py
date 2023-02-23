@@ -2,6 +2,7 @@ import bpy
 from bpy.types import Scene
 from bpy.props import BoolProperty, StringProperty
 
+
 prop_globalid           = 'GlobalId'
 prop_ifcproduct         = 'IfcProduct'
 prop_ifcbuildingstorey  = 'IfcBuildingStorey'
@@ -18,13 +19,27 @@ prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
 
+
 class IFCProperties(bpy.types.PropertyGroup):
     my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,default=True)
     my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,default=True)
     my_ifcproducttypename:      bpy.props.BoolProperty(name=prop_ifcproducttypename,default=True)
     my_ifcbuildingstorey:       bpy.props.BoolProperty(name=prop_ifcbuildingstorey,default=True)
     my_ifcclassification:       bpy.props.BoolProperty(name=prop_classification,default=True)
-    
+    my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,default=True)
+
+    """ 
+
+    my_ifcclassification_dd:    bpy.props.EnumProperty(
+                                name="Classification",
+                                items=[
+                                    ("OPTION1", "Option 1", "Description for Option 1"),
+                                    ("OPTION2", "Option 2", "Description for Option 2"),
+                                    ("OPTION3", "Option 3", "Description for Option 3"),
+                                ],
+                                default="OPTION1",
+                                )
+    """
   
 
 def register():

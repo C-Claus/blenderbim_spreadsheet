@@ -41,6 +41,9 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcclassification:
                 ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification_item_and_reference(context, ifc_product=product)[0])
 
+            if ifc_properties.my_ifcmaterial:
+                ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product)[0])
+
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
@@ -87,11 +90,43 @@ class ConstructDataFrame:
             for reference in references:
                 system = ifcopenshell.util.classification.get_classification(reference)
                 classification_list.append(str(system.Name) + ' | ' + str(reference[1]) +  ' | ' + str(reference[2]))
-            
+                     
         if not classification_list:
             classification_list.append(None)  
             
         return classification_list
+
+    def get_ifc_materials(self, context, ifc_product):
+    
+        material_list = []
+        
+        if ifc_product:
+            ifc_material = ifcopenshell.util.element.get_material(ifc_product)
+            if ifc_material:
+                
+                if ifc_material.is_a('IfcMaterial'):
+                    material_list.append(ifc_material.Name)
+                
+                if ifc_material.is_a('IfcMaterialList'):
+                    for materials in ifc_material.Materials:
+                        material_list.append(materials.Name)
+                
+                if ifc_material.is_a('IfcMaterialConstituentSet'):
+                    for material_constituents in ifc_material.MaterialConstituents:
+                        material_list.append(material_constituents.Material.Name)
+                
+                if ifc_material.is_a('IfcMaterialLayerSetUsage'):
+                    for material_layer in ifc_material.ForLayerSet.MaterialLayers:
+                        material_list.append(material_layer.Material.Name)
+                    
+                if ifc_material.is_a('IfcMaterialProfileSetUsage'):
+                    for material_profile in (ifc_material.ForProfileSet.MaterialProfiles):
+                        material_list.append(material_profile.Material.Name)
+        
+        if not material_list:
+            material_list.append(None)
+            
+        return material_list
 
 
 
