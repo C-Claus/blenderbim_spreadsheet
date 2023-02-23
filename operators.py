@@ -4,10 +4,15 @@ class ExportToSpreadSheet(bpy.types.Operator):
     bl_idname = "export.tospreadsheet"
     bl_label = "Export to Spreadsheet"
 
+    
+
     def execute(self, context):
 
-        if prop.prop_ifcproduct:
-            print ('run method', prop.prop_ifcproduct)
+        ifc_properties = context.scene.ifc_properties
+
+        if ifc_properties.my_ifcproduct:
+            print ('prop.prop_ifcproduct', prop.prop_ifcproduct)
+            print ('ifc_properties.my_ifcproduct', ifc_properties.my_ifcproduct)
 
         return {'FINISHED'}
 
