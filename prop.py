@@ -19,8 +19,10 @@ prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
 
 class IFCProperties(bpy.types.PropertyGroup):
-    my_ifcproduct: bpy.props.BoolProperty(name=prop_ifcproduct,description="Export IfcProduct",default=True)
-    my_ifcbuildingstorey: bpy.props.BoolProperty(name=prop_ifcbuildingstorey,description="Export IfcBuildingStorey",default = True)
+    my_ifcproduct:          bpy.props.BoolProperty(name=prop_ifcproduct,description="Export IfcProduct",default=True)
+    my_ifcproductname:      bpy.props.BoolProperty(name=prop_ifcproductname,description="Export IfcBuildingStorey",default=True)
+    my_ifcbuildingstorey:   bpy.props.BoolProperty(name=prop_ifcbuildingstorey,description="Export IfcBuildingStorey",default=True)
+    
   
 
 def register():

@@ -22,8 +22,13 @@ class BlenderBIMSpreadSheetPanel(Panel):
         box = layout.box()
         row = box.row()
         row.prop(ifc_properties, "my_ifcproduct")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcproductname")
+        
         row = box.row()
         row.prop(ifc_properties, "my_ifcbuildingstorey")
+        
         layout.operator("export.tospreadsheet")
 
 def register():
