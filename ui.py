@@ -33,7 +33,7 @@ class BlenderBIMSpreadSheetPanel(Panel):
         row.prop(ifc_properties, "my_ifcbuildingstorey")
 
         row = box.row()
-        row.prop(ifc_properties, "my_ifcclassifcation")
+        row.prop(ifc_properties, "my_ifcclassification")
         
         layout.operator("export.tospreadsheet")
 

@@ -7,6 +7,11 @@ from collections import defaultdict
 import ifcopenshell
 import pandas as pd
 
+import sys
+import subprocess
+
+
+
 class ConstructDataFrame:
     def __init__(self, context):
         print ('hallo uit Construct dataframe class')

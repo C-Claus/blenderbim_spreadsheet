@@ -36,22 +36,6 @@ bl_info = {
 
 site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
 
-""" 
-classes = (
-    ui.BlenderBIMSpreadSheetPanel,
-    #prop.BlenderBIMSpreadSheetProperties
-)
-
-def register():
-
-    bpy.types.Scene.blenderbim_spreadsheet_properties = bpy.props.PointerProperty(type=prop.BlenderBIMSpreadSheetProperties)    
-   
-
-def unregister():
-    
-    bpy.types.Scene.blenderbim_spreadsheet_properties
-
-""" 
 def register():
     from . import prop
     from . import ui
