@@ -73,7 +73,7 @@ class CustomItem(bpy.types.PropertyGroup):
 class CustomCollection(bpy.types.PropertyGroup):
     items: bpy.props.CollectionProperty(type=CustomItem) 
     
-    #print (my_spreadsheetfile)
+
  
   
 

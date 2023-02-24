@@ -5,7 +5,7 @@ import collections
 from collections import defaultdict
 
 
-#import pandas as pd
+import pandas as pd
 import xlsxwriter
 import pyexcel_ods
 import openpyxl
@@ -34,17 +34,13 @@ class ConstructDataFrame:
 
         ifc_dictionary = defaultdict(list)
         ifc_properties = context.scene.ifc_properties
-        saved_selection_list = []
 
+        #print ('HWOEIRHOEWR', ifc_properties)
+       
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
 
-        #for prop_name in bpy.context.scene.ifc_properties.keys():
-        #    prop_value = bpy.context.scene.ifc_properties[prop_name]
-        #    saved_selection_list.append([prop_name, prop_value])
- 
-      
         for product in products:
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -385,17 +381,24 @@ class SaveAndLoadSelection(bpy.types.Operator):
     bl_idname = "save.save_and_load_selection"
     bl_label = "Save selection"
 
-
     def execute(self, context):
 
         print ('hoi vanuit save and load selection')
-
-        ifc_properties = context.scene.ifc_properties
         saved_selection_list = []
 
-        for prop_name in bpy.context.scene.ifc_properties.keys():
-            prop_value = bpy.context.scene.ifc_properties[prop_name]
+        #ifc_properties = context.scene.ifc_properties
+        
+        
+
+
+        for prop_name in context.scene.ifc_properties.keys():
+            prop_value = context.scene.ifc_properties[prop_name]
+
+            print (prop_name, prop_value)
             saved_selection_list.append([prop_name, prop_value])
+
+        for i in saved_selection_list:
+            print ('test',i)
 
 
         return {"FINISHED"} 
