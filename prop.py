@@ -22,17 +22,6 @@ prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
 prop_spreadsheetfile    = 'Spreadsheet'
 
-prop_list = [prop_ifcproduct,
-             prop_ifcbuildingstorey,
-             prop_ifcproductname,
-             prop_ifcproducttypename,
-             prop_isexternal,
-             prop_loadbearing,
-             prop_firerating,
-             prop_acousticrating,
-             prop_classification,
-             prop_materials,
-             ]
 class IFCProperties(bpy.types.PropertyGroup):
     my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,        default=True)
     my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,    default=True)
