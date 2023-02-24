@@ -5,7 +5,7 @@ import collections
 from collections import defaultdict
 
 
-import pandas as pd
+#import pandas as pd
 import xlsxwriter
 import pyexcel_ods
 import openpyxl
@@ -22,6 +22,9 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #try to apply autofilter ods
 #add basequantities to ui
 #add custom properties to ui
+#option to save selection and load into UI make list and write to text file
+#grey out filter if no speadsheet is loaded
+#grey out create spreadsheet if no ifc is loaded
 
 class ConstructDataFrame:
     def __init__(self, context):
@@ -76,6 +79,13 @@ class ConstructDataFrame:
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=ifc_pset_common,
                                                                                                     ifc_property_name=prop.prop_firerating,
+                                                                                                    )[0])
+                
+            if ifc_properties.my_acousticrating:
+                ifc_dictionary[prop.prop_acousticrating].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                    ifc_product=product,
+                                                                                                    ifc_propertyset_name=ifc_pset_common,
+                                                                                                    ifc_property_name=prop.prop_acousticrating,
                                                                                                     )[0])
 
 
