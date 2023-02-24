@@ -12,7 +12,8 @@ prop_psetcommon         = 'Pset_Common'
 prop_isexternal         = 'IsExternal'
 prop_loadbearing        = 'LoadBearing'
 prop_firerating         = 'FireRating'
-prop_classification     = 'Classification'
+prop_acousticrating     = 'AcousticRating'
+prop_classification     = 'Classification(s)'
 prop_materials          = 'Material(s)'
 prop_length             = 'Length'
 prop_width              = 'Width'
@@ -33,6 +34,7 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_isexternal:              bpy.props.BoolProperty(name=prop_isexternal,        default=True)
     my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=True)
     my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=True)
+    my_acousticrating:          bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
     my_spreadsheetfile:         bpy.props.StringProperty(   name="Spreadsheet",
                                                             description="your .ods or .xlsx file",
                                                             default="",

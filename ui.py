@@ -3,8 +3,6 @@ from bpy.types import Panel
 
 from . import  prop, operators
 
-#initial hardcoded global variables
-#my_ifcproduct = 'IfcProduct'
 
 class BlenderBIMSpreadSheetPanel(Panel):
     bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
@@ -17,6 +15,10 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
         ifc_properties = context.scene.ifc_properties
         layout = self.layout
+
+      
+
+
         
         layout.label(text="General")
         box = layout.box()
@@ -51,6 +53,9 @@ class BlenderBIMSpreadSheetPanel(Panel):
         row = box.row()
         row.prop(ifc_properties, "my_firerating")
 
+        row = box.row()
+        row.prop(ifc_properties, "my_acousticrating")
+
         #row = box.row()
         #row.prop(ifc_properties, "my_ifcclassification_dd")
 
@@ -73,7 +78,7 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
 
 
-        layout.label(text="Write to Spreadsheet")
+        layout.label(text="Spreadsheet")
         box_spreadsheet = layout.box()
 
         row = box_spreadsheet.row()
@@ -96,11 +101,21 @@ class BlenderBIMSpreadSheetPanel(Panel):
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 
+class BlenderBIMSpreadSheetPanelGeneral(BlenderBIMSpreadSheetPanel, Panel):
+    bl_parent_id = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
+    bl_label = "General"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="First Sub Panel of Panel 1.")
+
 def register():
     bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
 
+
 def unregister():
     bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
+
 
 """    
 class BlenderBIMSpreadSheetPanel(Panel):
