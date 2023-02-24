@@ -5,7 +5,7 @@ import collections
 from collections import defaultdict
 
 
-#import pandas as pd
+import pandas as pd
 import xlsxwriter
 import pyexcel_ods
 import openpyxl
@@ -26,17 +26,25 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #grey out filter if no speadsheet is loaded
 #grey out create spreadsheet if no ifc is loaded
 
+
+
 class ConstructDataFrame:
     def __init__(self, context):
         print ('hallo uit Construct dataframe class')
 
         ifc_dictionary = defaultdict(list)
         ifc_properties = context.scene.ifc_properties
+        saved_selection_list = []
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
 
+        for prop_name in bpy.context.scene.ifc_properties.keys():
+            prop_value = bpy.context.scene.ifc_properties[prop_name]
+            saved_selection_list.append([prop_name, prop_value])
+ 
+      
         for product in products:
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -92,7 +100,9 @@ class ConstructDataFrame:
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
 
-        print (self.df)
+        #print (self.df)
+
+
 
     def get_ifc_type(self, context, ifc_product):
     
@@ -371,6 +381,7 @@ class CustomCollectionActions(bpy.types.Operator):
             custom_collection.items.remove(len(custom_collection.items) - 1)
         return {"FINISHED"}             
        
+
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
