@@ -5,7 +5,7 @@ import collections
 from collections import defaultdict
 
 
-import pandas as pd
+#import pandas as pd
 import xlsxwriter
 import pyexcel_ods
 import openpyxl
@@ -40,9 +40,9 @@ class ConstructDataFrame:
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
 
-        for prop_name in bpy.context.scene.ifc_properties.keys():
-            prop_value = bpy.context.scene.ifc_properties[prop_name]
-            saved_selection_list.append([prop_name, prop_value])
+        #for prop_name in bpy.context.scene.ifc_properties.keys():
+        #    prop_value = bpy.context.scene.ifc_properties[prop_name]
+        #    saved_selection_list.append([prop_name, prop_value])
  
       
         for product in products:
@@ -381,6 +381,24 @@ class CustomCollectionActions(bpy.types.Operator):
             custom_collection.items.remove(len(custom_collection.items) - 1)
         return {"FINISHED"}             
        
+class SaveAndLoadSelection(bpy.types.Operator):
+    bl_idname = "save.save_and_load_selection"
+    bl_label = "Save selection"
+
+
+    def execute(self, context):
+
+        print ('hoi vanuit save and load selection')
+
+        ifc_properties = context.scene.ifc_properties
+        saved_selection_list = []
+
+        for prop_name in bpy.context.scene.ifc_properties.keys():
+            prop_value = bpy.context.scene.ifc_properties[prop_name]
+            saved_selection_list.append([prop_name, prop_value])
+
+
+        return {"FINISHED"} 
 
 
 def register():
@@ -388,6 +406,7 @@ def register():
     bpy.utils.register_class(FilterIFCElements)
     bpy.utils.register_class(UnhideIFCElements)
     bpy.utils.register_class(CustomCollectionActions)
+    bpy.utils.register_class(SaveAndLoadSelection)
     
 
 def unregister():
@@ -395,6 +414,7 @@ def unregister():
     bpy.utils.unregister_class(FilterIFCElements)
     bpy.utils.unregister_class(UnhideIFCElements)
     bpy.utils.unregister_class(CustomCollectionActions)
+    bpy.utils.unregister_class(SaveAndLoadSelection)
 
 
 

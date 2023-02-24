@@ -16,6 +16,26 @@ class BlenderBIMSpreadSheetPanel(Panel):
         ifc_properties = context.scene.ifc_properties
         layout = self.layout
 
+        layout.label(text="Load and save selection")
+        box = layout.box()
+        row = box.row()
+        row.prop(ifc_properties, "my_selectionload")
+        box.operator("save.save_and_load_selection")
+
+        #box_spreadsheet.operator("export.tospreadsheet")
+
+        #box.operator.save.save_and_load_selections
+
+
+
+
+
+
+
+
+        #row = box_spreadsheet.row()
+        #row.prop(ifc_properties, "my_spreadsheetfile")
+
       
 
 

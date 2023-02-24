@@ -23,6 +23,21 @@ prop_netsidearea        = 'NetSideArea'
 prop_spreadsheetfile    = 'Spreadsheet'
 
 class IFCProperties(bpy.types.PropertyGroup):
+
+
+    my_selectionload:           bpy.props.StringProperty(   name="Load Selection",
+                                                            description="Load your previous saved selections",
+                                                            default="",
+                                                            maxlen=1024,
+                                                            subtype="FILE_PATH")
+    
+    my_selectionsave:           bpy.props.StringProperty(   name="Save Selection",
+                                                            description="Save selection",
+                                                            default="",
+                                                            maxlen=1024,
+                                                            subtype="FILE_PATH")
+    
+
     my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,        default=True)
     my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,    default=True)
     my_ifcproducttypename:      bpy.props.BoolProperty(name=prop_ifcproducttypename,default=True)
