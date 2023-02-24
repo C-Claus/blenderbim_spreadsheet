@@ -67,6 +67,17 @@ class BlenderBIMSpreadSheetPanel(Panel):
         
         layout.operator("export.tospreadsheet")
 
+
+
+
+
+
+        box = layout.box()
+        row = box.row()
+        #row.prop(ifc_properties, "my_file_path")
+        self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
+        #self.layout.operator(operators.UnhideIFCElements.bl_idname, text="Unhide IFC elements", icon="LIGHT")
+
 def register():
     bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
 

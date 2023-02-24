@@ -4,12 +4,18 @@ from . import prop
 import collections
 from collections import defaultdict
 
-import ifcopenshell
+
 import pandas as pd
-
 import xlsxwriter
+import pyexcel_ods
+import openpyxl
+from openpyxl import load_workbook
 
-replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
+import ifcopenshell
+import blenderbim
+import blenderbim.tool as tool
+#replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
+replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 class ConstructDataFrame:
     def __init__(self, context):
@@ -24,6 +30,7 @@ class ConstructDataFrame:
 
         for product in products:
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
+            ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
 
             if ifc_properties.my_ifcproduct:
                 ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
@@ -41,11 +48,10 @@ class ConstructDataFrame:
                 ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification_item_and_reference(context, ifc_product=product)[0])
 
             if ifc_properties.my_ifcmaterial:
-                ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product)[0])
+                ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product))
 
 
             if ifc_properties.my_isexternal:
-                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
                 ifc_dictionary[prop.prop_isexternal].append(self.get_ifc_properties_and_quantities( context,
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=ifc_pset_common,
@@ -53,7 +59,6 @@ class ConstructDataFrame:
                                                                                                     )[0])
 
             if ifc_properties.my_loadbearing:
-                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
                 ifc_dictionary[prop.prop_loadbearing].append(self.get_ifc_properties_and_quantities( context,
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=ifc_pset_common,
@@ -61,7 +66,6 @@ class ConstructDataFrame:
                                                                                                     )[0])
 
             if ifc_properties.my_firerating:
-                ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
                 ifc_dictionary[prop.prop_firerating].append(self.get_ifc_properties_and_quantities( context,
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=ifc_pset_common,
@@ -173,12 +177,13 @@ class ExportToSpreadSheet(bpy.types.Operator):
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
+        construct_data_frame = ConstructDataFrame(context)
 
-        print (ifc_properties.ods_or_xlsx)
+        #print (ifc_properties.ods_or_xlsx)
 
         if ifc_properties.ods_or_xlsx == 'XLSX':
             print ('hoi UIT XLSX')
-            construct_data_frame = ConstructDataFrame(context)
+            
             spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
             #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
 
@@ -190,11 +195,35 @@ class ExportToSpreadSheet(bpy.types.Operator):
             
             worksheet = writer.sheets['workbook']
 
+            ifc_properties.my_spreadsheetfile = spreadsheet_filepath
+
+     
+
             writer.save()
-            #open_file(ifc_properties.my_xlsx_file)
+          
 
         if ifc_properties.ods_or_xlsx == 'ODS':
             print ('hallo uit ods')
+
+            spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
+            writer_ods = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
+            construct_data_frame.df.to_excel(writer_ods, sheet_name='workbook', startrow=0, header=True, index=False)
+
+            worksheet_ods = writer_ods.sheets['workbook']
+            writer_ods.save()
+
+
+
+
+          
+
+
+
+
+
+            ifc_properties.my_spreadsheetfile = spreadsheet_filepath
+
+        
             
         
      
@@ -202,14 +231,96 @@ class ExportToSpreadSheet(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class FilterIFCElements(bpy.types.Operator):
+    """Show the IFC elements you filtered in the spreadsheet"""
+    bl_idname = "object.filter_ifc_elements"
+    bl_label = "select the IFC elements"
+    
 
+    def execute(self, context):
+   
+        ifc_properties = context.scene.ifc_properties 
+         
+        if ifc_properties.my_spreadsheetfile:
+            if ifc_properties.my_spreadsheetfile.endswith(".xlsx"):
+
+                print ('hallo vanuit filtering xlsx')
+                
+                workbook_openpyxl = load_workbook(ifc_properties.my_spreadsheetfile)
+                worksheet_openpyxl = workbook_openpyxl['workbook'] 
+                
+                global_id_filtered_list = []
+                       
+                for row_idx in range(3, worksheet_openpyxl.max_row + 1):
+                    if not worksheet_openpyxl.row_dimensions[row_idx].hidden:
+                        cell = worksheet_openpyxl[f"A{row_idx}"]
+                        global_id_filtered_list.append(str(cell.value))
+
+                self.filter_IFC_elements(context, guid_list=global_id_filtered_list)
+                
+                return {'FINISHED'}
+
+            """     
+            if blenderbim_spreadsheet_properties.my_file_path.endswith(".ods"):
+                print ("Retrieving data from: " , blenderbim_spreadsheet_properties.my_file_path)
+            
+                # Get content xml data from OpenDocument file
+                ziparchive = zipfile.ZipFile(blenderbim_spreadsheet_properties.my_file_path, "r")
+                xmldata = ziparchive.read("content.xml")
+                ziparchive.close()
+                
+                # Create parser and parsehandler
+                parser = xml.parsers.expat.ParserCreate()
+                treebuilder = TreeBuilder()
+                # Assign the handler functions
+                parser.StartElementHandler  = treebuilder.start_element
+                parser.EndElementHandler    = treebuilder.end_element
+                parser.CharacterDataHandler = treebuilder.char_data
+
+                # Parse the data
+                parser.Parse(xmldata, True)
+
+                hidden_rows = get_hidden_rows(treebuilder.root)  # This returns a generator object
+        
+                dataframe = pd.read_excel(blenderbim_spreadsheet_properties.my_file_path, sheet_name=blenderbim_spreadsheet_properties.my_workbook, skiprows=hidden_rows, engine="odf")
+                self.filter_IFC_elements(context, guid_list=dataframe['GlobalId'].values.tolist())
+                
+                return {'FINISHED'}
+            """
+                
+                
+    def filter_IFC_elements(self, context, guid_list):
+        
+        print ("Filtering IFC elements")
+        
+        outliner = next(a for a in bpy.context.screen.areas if a.type == "OUTLINER") 
+        outliner.spaces[0].show_restrict_column_viewport = not outliner.spaces[0].show_restrict_column_viewport
+        
+        bpy.ops.object.select_all(action='DESELECT')
+      
+        for obj in bpy.context.view_layer.objects:
+            element = tool.Ifc.get_entity(obj)
+            if element is None:        
+                obj.hide_viewport = True
+                continue
+            data = element.get_info()
+       
+            
+            obj.hide_viewport = data.get("GlobalId", False) not in guid_list
+
+        bpy.ops.object.select_all(action='SELECT') 
+        
+       
+            
        
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
+    bpy.utils.register_class(FilterIFCElements)
 
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
+    bpy.utils.unregister_class(FilterIFCElements)
 
 
 
