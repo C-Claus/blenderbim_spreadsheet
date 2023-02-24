@@ -171,6 +171,7 @@ class ConstructDataFrame:
 
 
 class ExportToSpreadSheet(bpy.types.Operator):
+    """Export to a .xlsx or .ods file"""
     bl_idname = "export.tospreadsheet"
     bl_label = "Export to Spreadsheet"
 
@@ -311,16 +312,29 @@ class FilterIFCElements(bpy.types.Operator):
         bpy.ops.object.select_all(action='SELECT') 
         
        
-            
+class UnhideIFCElements(bpy.types.Operator):
+    """Unhide all IFC elements"""
+    bl_idname = "object.unhide_all"
+    bl_label = "Unhide All"
+
+    def execute(self, context):
+        print("Unhide all")
+        
+        for obj in bpy.data.objects:
+            obj.hide_viewport = False 
+        
+        return {'FINISHED'}            
        
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
     bpy.utils.register_class(FilterIFCElements)
+    bpy.utils.register_class(UnhideIFCElements)
 
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
     bpy.utils.unregister_class(FilterIFCElements)
+    bpy.utils.unregister_class(nhideIFCElements)
 
 
 

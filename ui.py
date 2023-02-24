@@ -71,12 +71,11 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
 
 
+        layout.label(text="Filter IFC elements")
 
-        box = layout.box()
-        row = box.row()
-        #row.prop(ifc_properties, "my_file_path")
+      
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
-        #self.layout.operator(operators.UnhideIFCElements.bl_idname, text="Unhide IFC elements", icon="LIGHT")
+        self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 
 def register():
     bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
