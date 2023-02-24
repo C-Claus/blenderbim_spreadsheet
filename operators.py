@@ -196,6 +196,18 @@ class ExportToSpreadSheet(bpy.types.Operator):
             
             worksheet = writer.sheets['workbook']
 
+
+
+            (max_row, max_col) = construct_data_frame.df.shape
+         
+            # Create a list of column headers, to use in add_table().
+            column_settings = []
+            for header in construct_data_frame.df.columns:
+                column_settings.append({'header': header})
+
+            # Add the table.
+            worksheet.add_table(1, 0, max_row, max_col - 1, {'columns': column_settings})
+
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
 
      
