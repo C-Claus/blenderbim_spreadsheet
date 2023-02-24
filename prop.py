@@ -50,6 +50,10 @@ class IFCProperties(bpy.types.PropertyGroup):
                                 default="ODS",
                                
                                 )
+    
+ 
+    
+    #print (my_spreadsheetfile)
  
   
 
