@@ -54,6 +54,25 @@ class BlenderBIMSpreadSheetPanel(Panel):
         #row = box.row()
         #row.prop(ifc_properties, "my_ifcclassification_dd")
 
+        
+        layout.label(text="Custom Properties")
+        box = layout.box()
+
+        custom_collection = context.scene.custom_collection
+
+        row = layout.row(align=True)
+        row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
+        row.operator("custom.collection_actions", text="Remove Last", icon="REMOVE").action = "remove"
+
+        for item in custom_collection.items:
+            box.prop(item, "name")
+
+
+
+
+
+
+
         layout.label(text="Write to Spreadsheet")
         box_spreadsheet = layout.box()
 
@@ -65,7 +84,7 @@ class BlenderBIMSpreadSheetPanel(Panel):
 
         
         
-        layout.operator("export.tospreadsheet")
+        box_spreadsheet.operator("export.tospreadsheet")
 
 
 

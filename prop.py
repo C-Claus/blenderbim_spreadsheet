@@ -51,7 +51,11 @@ class IFCProperties(bpy.types.PropertyGroup):
                                
                                 )
     
- 
+class CustomItem(bpy.types.PropertyGroup):
+    name: bpy.props.StringProperty(name="Property",description="Use the PropertySet name and Property name divided by a .",default = "[PropertySet.Property]") 
+
+class CustomCollection(bpy.types.PropertyGroup):
+    items: bpy.props.CollectionProperty(type=CustomItem) 
     
     #print (my_spreadsheetfile)
  
@@ -59,10 +63,15 @@ class IFCProperties(bpy.types.PropertyGroup):
 
 def register():
     bpy.utils.register_class(IFCProperties)
+    bpy.utils.register_class(CustomItem)
+    bpy.utils.register_class(CustomCollection)
     bpy.types.Scene.ifc_properties = bpy.props.PointerProperty(type=IFCProperties)
+    bpy.types.Scene.custom_collection = bpy.props.PointerProperty(type=CustomCollection)
 
 def unregister():
     bpy.utils.unregister_class(IFCProperties)
+    bpy.utils.unregister_class(CustomItem)
+    bpy.utils.unregister_class(CustomCollection)
     del bpy.types.Scene.ifc_properties
 
 

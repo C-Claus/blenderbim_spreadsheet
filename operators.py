@@ -17,6 +17,12 @@ import blenderbim.tool as tool
 #replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
 replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
+#todo
+#get filtering to work from ods
+#try to apply autofilter ods
+#add basequantities to ui
+#add custom properties to ui
+
 class ConstructDataFrame:
     def __init__(self, context):
         print ('hallo uit Construct dataframe class')
@@ -173,7 +179,7 @@ class ConstructDataFrame:
 class ExportToSpreadSheet(bpy.types.Operator):
     """Export to a .xlsx or .ods file"""
     bl_idname = "export.tospreadsheet"
-    bl_label = "Export to Spreadsheet"
+    bl_label = "Create spreadsheet"
 
     def execute(self, context):
 
@@ -335,18 +341,39 @@ class UnhideIFCElements(bpy.types.Operator):
         for obj in bpy.data.objects:
             obj.hide_viewport = False 
         
-        return {'FINISHED'}            
+        return {'FINISHED'}  
+
+
+class CustomCollectionActions(bpy.types.Operator):
+    bl_idname = "custom.collection_actions"
+    bl_label = "Execute"
+    action: bpy.props.EnumProperty(
+        items=(
+            ("add",) * 3,
+            ("remove",) * 3,
+        ),
+    )
+    def execute(self, context):
+        custom_collection = context.scene.custom_collection
+        if self.action == "add":           
+            item = custom_collection.items.add()  
+        if self.action == "remove":
+            custom_collection.items.remove(len(custom_collection.items) - 1)
+        return {"FINISHED"}             
        
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
     bpy.utils.register_class(FilterIFCElements)
     bpy.utils.register_class(UnhideIFCElements)
+    bpy.utils.register_class(CustomCollectionActions)
+    
 
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
     bpy.utils.unregister_class(FilterIFCElements)
-    bpy.utils.unregister_class(nhideIFCElements)
+    bpy.utils.unregister_class(UnhideIFCElements)
+    bpy.utils.unregister_class(CustomCollectionActions)
 
 
 
