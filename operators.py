@@ -35,8 +35,6 @@ class ConstructDataFrame:
         ifc_dictionary = defaultdict(list)
         ifc_properties = context.scene.ifc_properties
 
-        #print ('HWOEIRHOEWR', ifc_properties)
-       
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
@@ -386,19 +384,34 @@ class SaveAndLoadSelection(bpy.types.Operator):
         print ('hoi vanuit save and load selection')
         saved_selection_list = []
 
-        #ifc_properties = context.scene.ifc_properties
+        ifc_properties = context.scene.ifc_properties
+        custom_collection = context.scene.custom_collection
+
+        for prop_name_custom in custom_collection.keys():
+            prop_value_custom = custom_collection[prop_name_custom]
+
+            print (prop_name_custom, dir(prop_value_custom))
+            for i in (prop_value_custom):
+                print (i.values())
         
         
 
 
-        for prop_name in context.scene.ifc_properties.keys():
-            prop_value = context.scene.ifc_properties[prop_name]
+        for prop_name in ifc_properties.keys():
+            prop_value = ifc_properties[prop_name]
 
-            print (prop_name, prop_value)
+            #print (prop_name, prop_value)
             saved_selection_list.append([prop_name, prop_value])
 
-        for i in saved_selection_list:
-            print ('test',i)
+      
+
+        with open(replace_with_IfcStore.replace('.ifc','_selectionset.txt'), 'w') as fp:
+            for item in saved_selection_list:
+                # write each item on a new line
+                fp.write("%s\n" % item)
+            print('Done')
+
+        ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.txt'))
 
 
         return {"FINISHED"} 
