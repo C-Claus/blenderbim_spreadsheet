@@ -26,7 +26,7 @@ bl_info = {
         "version": (1, 0),
         "blender": (3, 4, 1),
         "location": "BlenderBIM | Spreadsheet tab",
-        "warning": "depends on pandas, xlsxwriter and ods",
+        #"warning": "depends on pandas, openpyxl, xlsxwriter and ods",
         "wiki_url": "https://github.com/C-Claus",
         "tracker_url": "https://community.osarch.org/",
         "support": "COMMUNITY",

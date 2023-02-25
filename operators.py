@@ -381,11 +381,54 @@ class SaveAndLoadSelection(bpy.types.Operator):
 
     def execute(self, context):
 
-        print ('hoi vanuit save and load selection')
-        saved_selection_list = []
+        ifc_properties = context.scene.ifc_properties
+        custom_collection = context.scene.custom_collection
+
+        for ifc_property in ifc_properties.keys():
+            #print (ifc_property)
+
+            prop_value = ifc_properties[ifc_property]
+
+            print (ifc_property, prop_value)
+
+        for prop_name_custom in custom_collection.keys():
+            prop_value_custom = custom_collection[prop_name_custom]
+
+            print (prop_name_custom, prop_value_custom)
+
+            #for j in prop_value_custom:
+            #    print (j)
+
+        #for i in (custom_collection["items"]):
+        #    print ('i.name',i.name)
+        #    print ('i.values', i.values())
+        #    print ('i.items', i.items())
+
+
+
+        #for i in range(len(custom_collection)):
+        #    name = custom_collection.keys()[i]
+        #    value = custom_collection.get(name)
+        #    print(name, value)
+
+            
+
+        #print (my_string_prop)
+
+        #my_string_prop = bpy.data.objects["MyObject"]["items"]
+
+
+         
+
+   
+
+        """
 
         ifc_properties = context.scene.ifc_properties
         custom_collection = context.scene.custom_collection
+
+
+        
 
         for prop_name_custom in custom_collection.keys():
             prop_value_custom = custom_collection[prop_name_custom]
@@ -400,7 +443,7 @@ class SaveAndLoadSelection(bpy.types.Operator):
         for prop_name in ifc_properties.keys():
             prop_value = ifc_properties[prop_name]
 
-            #print (prop_name, prop_value)
+            print (prop_name, prop_value)
             saved_selection_list.append([prop_name, prop_value])
 
       
@@ -411,7 +454,9 @@ class SaveAndLoadSelection(bpy.types.Operator):
                 fp.write("%s\n" % item)
             print('Done')
 
-        ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.txt'))
+        """ 
+
+        ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.json'))
 
 
         return {"FINISHED"} 
