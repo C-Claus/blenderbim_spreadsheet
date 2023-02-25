@@ -4,7 +4,7 @@ from bpy.types import Panel
 from . import  prop, operators
 
 
-class EXAMPLE_panel:
+class GENERAL_panel:
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     #bl_category = "Example Tab"
@@ -18,7 +18,7 @@ class EXAMPLE_panel:
     bl_options = {"DEFAULT_CLOSED"}
 
 
-class EXAMPLE_PT_panel_1(EXAMPLE_panel, Panel):
+class GENERAL_PT_PANEL(GENERAL_panel, Panel):
     bl_idname = "EXAMPLE_PT_panel_1"
     bl_label = "BlenderBIM | Spreadsheet"
 
@@ -28,7 +28,7 @@ class EXAMPLE_PT_panel_1(EXAMPLE_panel, Panel):
 
 
 
-class EXAMPLE_PT_panel_2(EXAMPLE_panel, Panel):
+class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "General"
 
@@ -56,7 +56,7 @@ class EXAMPLE_PT_panel_2(EXAMPLE_panel, Panel):
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
 
-class EXAMPLE_PT_panel_3(EXAMPLE_panel, Panel):
+class COMMON_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Common Properties"
 
@@ -82,7 +82,7 @@ class EXAMPLE_PT_panel_3(EXAMPLE_panel, Panel):
         row = box.row()
         row.prop(ifc_properties, "my_acousticrating")
 
-class EXAMPLE_PT_panel_4(EXAMPLE_panel, Panel):
+class CUSTOM_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Custom Properties"
 
@@ -104,7 +104,7 @@ class EXAMPLE_PT_panel_4(EXAMPLE_panel, Panel):
             box.prop(item, "name")
 
 
-class EXAMPLE_PT_panel_5(EXAMPLE_panel, Panel):
+class SPREADSHEET_IFC_FILE(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"
 
@@ -125,7 +125,7 @@ class EXAMPLE_PT_panel_5(EXAMPLE_panel, Panel):
         
         box_spreadsheet.operator("export.tospreadsheet")
         
-class EXAMPLE_PT_panel_6(EXAMPLE_panel, Panel):
+class FILTER_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Filter IFC elements"
 
@@ -136,7 +136,7 @@ class EXAMPLE_PT_panel_6(EXAMPLE_panel, Panel):
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 
 
-class EXAMPLE_PT_panel_7(EXAMPLE_panel, Panel):
+class BASE_QUANTITIES_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "BaseQuantities"
 
@@ -186,7 +186,7 @@ class EXAMPLE_PT_panel_7(EXAMPLE_panel, Panel):
 
 
 
-class EXAMPLE_PT_panel_8(EXAMPLE_panel, Panel):
+class SAVE_SELECTION_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Save Selection"
 
@@ -331,19 +331,19 @@ class BlenderBIMSpreadSheetPanelGeneral(BlenderBIMSpreadSheetPanel, Panel):
 """
 
 classes = ( 
-            EXAMPLE_PT_panel_1,
-            EXAMPLE_PT_panel_2,
-            EXAMPLE_PT_panel_3,
+            GENERAL_PT_PANEL,
+            GENERAL_IFC_PT_PANEL,
+            COMMON_PROPERTIES_IFC_PANEL,
 
-            EXAMPLE_PT_panel_7,
+            BASE_QUANTITIES_PANEL,
 
-            EXAMPLE_PT_panel_4,
+            CUSTOM_PROPERTIES_IFC_PANEL,
             
-            EXAMPLE_PT_panel_5,
+            SPREADSHEET_IFC_FILE,
             
-            EXAMPLE_PT_panel_6,
+            FILTER_PANEL,
             
-            EXAMPLE_PT_panel_8)
+            SAVE_SELECTION_PANEL)
 
 
 
