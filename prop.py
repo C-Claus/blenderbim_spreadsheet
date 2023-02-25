@@ -21,6 +21,7 @@ prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
 prop_spreadsheetfile    = 'Spreadsheet'
+prop_selectionfile      = 'SelectionFile'
 
 class IFCProperties(bpy.types.PropertyGroup):
 

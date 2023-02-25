@@ -4,6 +4,145 @@ from bpy.types import Panel
 from . import  prop, operators
 
 
+class EXAMPLE_panel:
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Example Tab"
+    bl_options = {"DEFAULT_CLOSED"}
+
+
+class EXAMPLE_PT_panel_1(EXAMPLE_panel, bpy.types.Panel):
+    bl_idname = "EXAMPLE_PT_panel_1"
+    bl_label = "BlenderBIM | Spreadsheet"
+
+    def draw(self, context):
+        layout = self.layout
+        #layout.label(text="This is the main panel.")
+
+
+
+class EXAMPLE_PT_panel_2(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "General"
+
+    def draw(self, context):
+
+        ifc_properties = context.scene.ifc_properties
+        layout = self.layout
+
+        box = layout.box()
+        row = box.row()
+        box.prop(ifc_properties, "my_ifcproduct")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcproductname")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcproducttypename")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcbuildingstorey")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcclassification")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_ifcmaterial" )
+
+class EXAMPLE_PT_panel_3(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "Common Properties"
+
+    def draw(self, context):
+
+        ifc_properties = context.scene.ifc_properties
+
+        layout = self.layout
+        box = layout.box()
+        row = box.row()
+       
+
+
+        row = box.row()
+        row.prop(ifc_properties, "my_isexternal")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_loadbearing")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_firerating")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_acousticrating")
+
+class EXAMPLE_PT_panel_4(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "Custom Properties"
+
+    def draw(self, context):
+        ifc_properties = context.scene.ifc_properties
+
+
+
+        layout = self.layout
+        box = layout.box()
+
+        custom_collection = context.scene.custom_collection
+
+        row = layout.row(align=True)
+        row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
+        row.operator("custom.collection_actions", text="Remove Last", icon="REMOVE").action = "remove"
+
+        for item in custom_collection.items:
+            box.prop(item, "name")
+
+
+class EXAMPLE_PT_panel_5(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "Spreadsheet"
+
+    def draw(self, context):
+        ifc_properties = context.scene.ifc_properties
+        layout = self.layout
+       
+
+        box_spreadsheet = layout.box()
+
+        row = box_spreadsheet.row()
+        row.prop(ifc_properties, "my_spreadsheetfile")
+
+        row = box_spreadsheet.row()
+        row.prop(ifc_properties, "ods_or_xlsx")
+
+        
+        
+        box_spreadsheet.operator("export.tospreadsheet")
+        
+class EXAMPLE_PT_panel_6(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "Filter IFC elements"
+
+    def draw(self, context):
+        layout = self.layout
+
+        self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
+        self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
+
+
+class EXAMPLE_PT_panel_7(EXAMPLE_panel, bpy.types.Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "Save Selection"
+
+    def draw(self, context):
+
+        ifc_properties = context.scene.ifc_properties
+        layout = self.layout
+        
+        box = layout.box()
+        row = box.row()
+        row.prop(ifc_properties, "my_selectionload")
+        box.operator("save.save_and_load_selection")
+
 class BlenderBIMSpreadSheetPanel(Panel):
     bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
     bl_label = "BlenderBIM Spreadsheet"
@@ -121,6 +260,7 @@ class BlenderBIMSpreadSheetPanel(Panel):
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 
+
 class BlenderBIMSpreadSheetPanelGeneral(BlenderBIMSpreadSheetPanel, Panel):
     bl_parent_id = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
     bl_label = "General"
@@ -129,12 +269,29 @@ class BlenderBIMSpreadSheetPanelGeneral(BlenderBIMSpreadSheetPanel, Panel):
         layout = self.layout
         layout.label(text="First Sub Panel of Panel 1.")
 
+
+classes = ( EXAMPLE_PT_panel_1,
+            EXAMPLE_PT_panel_2,
+            EXAMPLE_PT_panel_3,
+            EXAMPLE_PT_panel_4,
+            EXAMPLE_PT_panel_5,
+            EXAMPLE_PT_panel_6,
+            EXAMPLE_PT_panel_7)
+
+classes_spreadsheet = (BlenderBIMSpreadSheetPanel, BlenderBIMSpreadSheetPanelGeneral)
+
+
 def register():
     bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
 
 def unregister():
     bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
+
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
 
 
 """    
