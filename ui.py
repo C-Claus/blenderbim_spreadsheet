@@ -15,7 +15,6 @@ class GENERAL_PT_PANEL(GENERAL_panel, Panel):
 
     def draw(self, context):
         layout = self.layout
-
 class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "General"
@@ -43,8 +42,7 @@ class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
-
-class COMMON_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
+class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Common Properties"
 
@@ -67,8 +65,7 @@ class COMMON_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
 
         row = box.row()
         row.prop(ifc_properties, "my_acousticrating")
-
-class CUSTOM_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
+class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Custom Properties"
 
@@ -86,9 +83,7 @@ class CUSTOM_PROPERTIES_IFC_PANEL(GENERAL_panel, Panel):
 
         for item in custom_collection.items:
             box.prop(item, "name")
-
-
-class SPREADSHEET_IFC_FILE(GENERAL_panel, Panel):
+class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"
 
@@ -102,9 +97,8 @@ class SPREADSHEET_IFC_FILE(GENERAL_panel, Panel):
 
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "ods_or_xlsx")
-        box_spreadsheet.operator("export.tospreadsheet")
-        
-class FILTER_PANEL(GENERAL_panel, Panel):
+        box_spreadsheet.operator("export.tospreadsheet")   
+class FILTER_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Filter IFC elements"
 
@@ -113,9 +107,7 @@ class FILTER_PANEL(GENERAL_panel, Panel):
 
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
-
-
-class BASE_QUANTITIES_PANEL(GENERAL_panel, Panel):
+class BASE_QUANTITIES_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "BaseQuantities"
 
@@ -158,9 +150,7 @@ class BASE_QUANTITIES_PANEL(GENERAL_panel, Panel):
 
         row = box.row()
         row.prop(ifc_properties, "my_grossvolume")
-
-
-class SAVE_SELECTION_PANEL(GENERAL_panel, Panel):
+class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Save Selection"
 
@@ -177,24 +167,17 @@ class SAVE_SELECTION_PANEL(GENERAL_panel, Panel):
 classes = ( 
             GENERAL_PT_PANEL,
             GENERAL_IFC_PT_PANEL,
-            COMMON_PROPERTIES_IFC_PANEL,
-
-            BASE_QUANTITIES_PANEL,
-
-            CUSTOM_PROPERTIES_IFC_PANEL,
-            
-            SPREADSHEET_IFC_FILE,
-            
-            FILTER_PANEL,
-            
-            SAVE_SELECTION_PANEL)
+            COMMON_PROPERTIES_IFC_PT_PANEL,
+            BASE_QUANTITIES_PT_PANEL,
+            CUSTOM_PROPERTIES_IFC_PT_PANEL,
+            SPREADSHEET_IFC_FILE_PT_PANEL,
+            FILTER_PT_PANEL,
+            SAVE_SELECTION_PT_PANEL)
 
 def register():
-
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
-
     for cls in classes:
         bpy.utils.unregister_class(cls)
