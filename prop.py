@@ -15,11 +15,21 @@ prop_firerating         = 'FireRating'
 prop_acousticrating     = 'AcousticRating'
 prop_classification     = 'Classification(s)'
 prop_materials          = 'Material(s)'
+
 prop_length             = 'Length'
 prop_width              = 'Width'
+prop_height             = 'Height'
+
+
 prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
+prop_grossarea          = 'GrossArea'
+prop_grosssidearea      = 'GrossSideArea'
+prop_volume             = 'Volume'
+prop_netvolume          = 'NetVolume'
+prop_grossvolume        = 'GrossVolume'
+
 prop_spreadsheetfile    = 'Spreadsheet'
 prop_selectionfile      = 'SelectionFile'
 
@@ -50,6 +60,23 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=True)
     my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=True)
     my_acousticrating:          bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
+
+
+    my_length:                  bpy.props.BoolProperty(name=prop_length,            default=False)
+    my_width:                   bpy.props.BoolProperty(name=prop_width,             default=True)
+    my_height:                  bpy.props.BoolProperty(name=prop_height,            default=True)
+
+    my_area:                    bpy.props.BoolProperty(name=prop_area,              default=False)
+    my_netarea:                 bpy.props.BoolProperty(name=prop_netarea,           default=False)
+    my_netsidearea:             bpy.props.BoolProperty(name=prop_netsidearea,       default=False)
+    my_grossarea:               bpy.props.BoolProperty(name=prop_grossarea,         default=False)
+    my_grosssidearea:           bpy.props.BoolProperty(name=prop_grosssidearea,     default=False)
+
+    my_volume:                  bpy.props.BoolProperty(name=prop_volume,            default=True)
+    my_netvolume:               bpy.props.BoolProperty(name=prop_netvolume,         default=True)
+    my_grossvolume:             bpy.props.BoolProperty(name=prop_grossvolume,       default=True)
+  
+
     my_spreadsheetfile:         bpy.props.StringProperty(   name="Spreadsheet",
                                                             description="your .ods or .xlsx file",
                                                             default="",

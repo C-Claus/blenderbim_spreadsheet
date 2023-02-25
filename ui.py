@@ -7,11 +7,18 @@ from . import  prop, operators
 class EXAMPLE_panel:
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "Example Tab"
+    #bl_category = "Example Tab"
+    #bl_options = {"DEFAULT_CLOSED"}
+
+    #bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
+    bl_label = "BlenderBIM Spreadsheet"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "BlenderBIM | Spreadsheet"
     bl_options = {"DEFAULT_CLOSED"}
 
 
-class EXAMPLE_PT_panel_1(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_1(EXAMPLE_panel, Panel):
     bl_idname = "EXAMPLE_PT_panel_1"
     bl_label = "BlenderBIM | Spreadsheet"
 
@@ -21,7 +28,7 @@ class EXAMPLE_PT_panel_1(EXAMPLE_panel, bpy.types.Panel):
 
 
 
-class EXAMPLE_PT_panel_2(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_2(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "General"
 
@@ -49,7 +56,7 @@ class EXAMPLE_PT_panel_2(EXAMPLE_panel, bpy.types.Panel):
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
 
-class EXAMPLE_PT_panel_3(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_3(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Common Properties"
 
@@ -75,7 +82,7 @@ class EXAMPLE_PT_panel_3(EXAMPLE_panel, bpy.types.Panel):
         row = box.row()
         row.prop(ifc_properties, "my_acousticrating")
 
-class EXAMPLE_PT_panel_4(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_4(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Custom Properties"
 
@@ -97,7 +104,7 @@ class EXAMPLE_PT_panel_4(EXAMPLE_panel, bpy.types.Panel):
             box.prop(item, "name")
 
 
-class EXAMPLE_PT_panel_5(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_5(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"
 
@@ -118,7 +125,7 @@ class EXAMPLE_PT_panel_5(EXAMPLE_panel, bpy.types.Panel):
         
         box_spreadsheet.operator("export.tospreadsheet")
         
-class EXAMPLE_PT_panel_6(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_6(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Filter IFC elements"
 
@@ -129,7 +136,57 @@ class EXAMPLE_PT_panel_6(EXAMPLE_panel, bpy.types.Panel):
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 
 
-class EXAMPLE_PT_panel_7(EXAMPLE_panel, bpy.types.Panel):
+class EXAMPLE_PT_panel_7(EXAMPLE_panel, Panel):
+    bl_parent_id = "EXAMPLE_PT_panel_1"
+    bl_label = "BaseQuantities"
+
+    def draw(self, context):
+
+        ifc_properties = context.scene.ifc_properties
+        layout = self.layout
+        
+        box = layout.box()
+        row = box.row()
+
+        row.prop(ifc_properties, "my_length")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_width")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_height")
+
+  
+
+   
+        row = box.row()
+        row.prop(ifc_properties, "my_area")
+
+       
+        row = box.row()       
+        row.prop(ifc_properties, "my_netarea")
+
+        row = box.row() 
+        row.prop(ifc_properties, "my_netsidearea")
+
+        row = box.row() 
+        row.prop(ifc_properties, "my_grosssidearea")
+
+        row = box.row() 
+        row.prop(ifc_properties, "my_grossarea")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_volume")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_netvolume")
+
+        row = box.row()
+        row.prop(ifc_properties, "my_grossvolume")
+
+
+
+class EXAMPLE_PT_panel_8(EXAMPLE_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Save Selection"
 
@@ -143,6 +200,9 @@ class EXAMPLE_PT_panel_7(EXAMPLE_panel, bpy.types.Panel):
         row.prop(ifc_properties, "my_selectionload")
         box.operator("save.save_and_load_selection")
 
+
+
+""" 
 class BlenderBIMSpreadSheetPanel(Panel):
     bl_idname = "OBJECT_PT_BlenderBIMSpreadSheet_panel"
     bl_label = "BlenderBIM Spreadsheet"
@@ -268,27 +328,34 @@ class BlenderBIMSpreadSheetPanelGeneral(BlenderBIMSpreadSheetPanel, Panel):
     def draw(self, context):
         layout = self.layout
         layout.label(text="First Sub Panel of Panel 1.")
+"""
 
-
-classes = ( EXAMPLE_PT_panel_1,
+classes = ( 
+            EXAMPLE_PT_panel_1,
             EXAMPLE_PT_panel_2,
             EXAMPLE_PT_panel_3,
-            EXAMPLE_PT_panel_4,
-            EXAMPLE_PT_panel_5,
-            EXAMPLE_PT_panel_6,
-            EXAMPLE_PT_panel_7)
 
-classes_spreadsheet = (BlenderBIMSpreadSheetPanel, BlenderBIMSpreadSheetPanelGeneral)
+            EXAMPLE_PT_panel_7,
+
+            EXAMPLE_PT_panel_4,
+            
+            EXAMPLE_PT_panel_5,
+            
+            EXAMPLE_PT_panel_6,
+            
+            EXAMPLE_PT_panel_8)
+
+
 
 
 def register():
-    bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
+    #bpy.utils.register_class(BlenderBIMSpreadSheetPanel)
     for cls in classes:
         bpy.utils.register_class(cls)
 
 
 def unregister():
-    bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
+    #bpy.utils.unregister_class(BlenderBIMSpreadSheetPanel)
 
     for cls in classes:
         bpy.utils.unregister_class(cls)
