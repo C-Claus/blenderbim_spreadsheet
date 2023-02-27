@@ -38,11 +38,7 @@ class IFCProperties(bpy.types.PropertyGroup):
                                                             maxlen=1024,
                                                             subtype="FILE_PATH")
     
-    my_selectionsave:           bpy.props.StringProperty(   name="Save Selection",
-                                                            description="Save selection",
-                                                            default="",
-                                                            maxlen=1024,
-                                                            subtype="FILE_PATH")
+
     
     my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,        default=True)
     my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,    default=True)
