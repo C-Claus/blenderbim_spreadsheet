@@ -83,6 +83,12 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         for item in custom_collection.items:
             box.prop(item, "name")
+
+        row = layout.row(align=True)    
+
+        row.operator("save.confirm_selection", text="Confirm")
+
+        
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"

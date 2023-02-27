@@ -483,6 +483,47 @@ class SaveAndLoadSelection(bpy.types.Operator):
 
         return {"FINISHED"} 
 
+class ConfirmSelection(bpy.types.Operator):
+    bl_idname = "save.confirm_selection"
+    bl_label = "confirm selection"
+
+    
+
+    def execute(self, context):
+        custom_collection_list = []
+        
+
+
+        print ('confirm selection')
+
+        #1 add user name to list
+        #2 make end user see confirmation
+        #3 use list in save selection to write to json
+        #4 als hier confirmed is kan niet meer bewerkt worden
+
+        #ifc_properties = context.scene.ifc_properties
+        #custom_collection = context.scene.custom_collection
+        custom_items = context.scene.custom_collection.items
+
+     
+
+        for prop_name_custom in custom_items.keys():
+            prop_value_custom = custom_items[prop_name_custom]
+          
+
+            print ('name', prop_value_custom.name)
+
+            custom_collection_list.append(prop_value_custom.name)
+
+            #prop_value_custom.enabled = False
+            #prop_name_custom.enabled = False
+            #custom_items.enabled = False
+            print (dir(prop_value_custom))
+
+        print (custom_collection_list)
+
+        return {"FINISHED"} 
+        
 
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
@@ -490,6 +531,7 @@ def register():
     bpy.utils.register_class(UnhideIFCElements)
     bpy.utils.register_class(CustomCollectionActions)
     bpy.utils.register_class(SaveAndLoadSelection)
+    bpy.utils.register_class(ConfirmSelection)
     
 
 def unregister():
@@ -498,6 +540,7 @@ def unregister():
     bpy.utils.unregister_class(UnhideIFCElements)
     bpy.utils.unregister_class(CustomCollectionActions)
     bpy.utils.unregister_class(SaveAndLoadSelection)
+    bpy.utils.unregister_class(ConfirmSelection)
 
 
 
