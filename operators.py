@@ -387,19 +387,13 @@ class SaveAndLoadSelection(bpy.types.Operator):
         custom_items = context.scene.custom_collection.items
         configuration_dictionary = {}
 
-    
         for my_ifcproperty in ifc_properties.__annotations__.keys():
             my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-
             configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
 
         for prop_name_custom in custom_items.keys():
             prop_value_custom = custom_items[prop_name_custom]
-          
             configuration_dictionary['key' + prop_value_custom.name] = prop_value_custom.name
-
-        for k,v in (configuration_dictionary.items()):
-            print (k,v)
 
         with open(replace_with_IfcStore.replace('.ifc','_selectionset.json'), "w") as selection_file:
             json.dump(configuration_dictionary, selection_file, indent=4)
@@ -417,14 +411,14 @@ class ConfirmSelection(bpy.types.Operator):
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
+        selection_file = open(ifc_properties.my_selectionload)
+        selection_configuration = json.load(selection_file)
         
-
-
-
-        print ('confirm selection', ifc_properties.my_selectionload)
-
-
-
+        for k,v in selection_configuration.items():
+            print (k,v)
+        
+        selection_file.close()
+        
         return {"FINISHED"} 
         
 
