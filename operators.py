@@ -416,32 +416,63 @@ class ConfirmSelection(bpy.types.Operator):
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
 
-        
-        for property_name, property_value in selection_configuration.items():
+        #1 eerst kijken wat in de blender UI staat
+        #2 dan kijken wat er in de json staat
+        #3 vergelijk waarden en set
 
-            print (property_value)
+        #1 eerst kijken wat in de blender UI staat
 
-            if property_value == False:
-                print ('allemaal false')
-                ifc_properties.my_ifcproduct            = False
-                ifc_properties.my_ifcproductname        = False
-                ifc_properties.my_ifcproducttypename    = False
-                ifc_properties.my_ifcbuildingstorey     = False
-                ifc_properties.my_ifcclassification     = False
-                ifc_properties.my_ifcbuildingstorey     = False
-                ifc_properties.my_ifcmaterial           = False
+        for my_ifcproperty in ifc_properties.__annotations__.keys():
+            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
+            #print (my_ifcproperty, my_ifcpropertyvalue)
+            #if my_ifcpropertyvalue == False:
+
+            for property_name, property_value in selection_configuration.items():
+
+                bool_property = property_value 
+                bool_property_value = bool(bool_property)
+
+         
+
+
+
+                if property_value == my_ifcpropertyvalue:
+
+                    print ('test',my_ifcproperty, property_value, bool_property_value)
+                    ifc_properties.my_ifcproduct            = bool_property_value
+                    ifc_properties.my_ifcproductname        = bool_property_value
+                    ifc_properties.my_ifcproducttypename    = bool_property_value
+                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    ifc_properties.my_ifcclassification     = bool_property_value
+                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    ifc_properties.my_ifcmaterial           = bool_property_value
+                    #break
+
+                    #if property_value == True:
+                    #    print ('allemaal True')
+                    #    ifc_properties.my_ifcproduct            = True
+                    #    ifc_properties.my_ifcproductname        = True
+                    #    ifc_properties.my_ifcproducttypename    = True
+                    #    ifc_properties.my_ifcbuildingstorey     = True
+                    #    ifc_properties.my_ifcclassification     = True
+                    #    ifc_properties.my_ifcbuildingstorey     = True
+                    #    ifc_properties.my_ifcmaterial           = True
 
                
+            #if my_ifcpropertyvalue == True:
 
-            if property_value == True:
-                print ('allemaal True')
-                ifc_properties.my_ifcproduct            = True
-                ifc_properties.my_ifcproductname        = True
-                ifc_properties.my_ifcproducttypename    = True
-                ifc_properties.my_ifcbuildingstorey     = True
-                ifc_properties.my_ifcclassification     = True
-                ifc_properties.my_ifcbuildingstorey     = True
-                ifc_properties.my_ifcmaterial           = True
+            #    for property_name, property_value in selection_configuration.items():
+            #        if property_value == True:
+            #            print ('allemaal True')
+            #            ifc_properties.my_ifcproduct            = True
+            #            ifc_properties.my_ifcproductname        = True
+            #            ifc_properties.my_ifcproducttypename    = True
+            #            ifc_properties.my_ifcbuildingstorey     = True
+            #            ifc_properties.my_ifcclassification     = True
+            #            ifc_properties.my_ifcbuildingstorey     = True
+            #            ifc_properties.my_ifcmaterial           = True
+            #break
+          
 
             #for my_ifcproperty in ifc_properties.__annotations__.keys():
             #    my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
