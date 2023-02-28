@@ -429,16 +429,10 @@ class ConfirmSelection(bpy.types.Operator):
 
             for property_name, property_value in selection_configuration.items():
 
-                bool_property = property_value 
-                bool_property_value = bool(bool_property)
+                if property_value == True:
+                    bool_property = property_value 
+                    bool_property_value = bool(bool_property)
 
-         
-
-
-
-                if property_value == my_ifcpropertyvalue:
-
-                    print ('test',my_ifcproperty, property_value, bool_property_value)
                     ifc_properties.my_ifcproduct            = bool_property_value
                     ifc_properties.my_ifcproductname        = bool_property_value
                     ifc_properties.my_ifcproducttypename    = bool_property_value
@@ -446,6 +440,40 @@ class ConfirmSelection(bpy.types.Operator):
                     ifc_properties.my_ifcclassification     = bool_property_value
                     ifc_properties.my_ifcbuildingstorey     = bool_property_value
                     ifc_properties.my_ifcmaterial           = bool_property_value
+
+
+                if property_value == False:
+                    bool_property = property_value 
+                    bool_property_value = bool(bool_property)
+
+                    ifc_properties.my_ifcproduct            = bool_property_value
+                    ifc_properties.my_ifcproductname        = bool_property_value
+                    ifc_properties.my_ifcproducttypename    = bool_property_value
+                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    ifc_properties.my_ifcclassification     = bool_property_value
+                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    ifc_properties.my_ifcmaterial           = bool_property_value
+
+                    break
+
+                #print ('bool property value',property_name, bool_property_value)
+
+         
+
+
+
+                #if property_value == my_ifcpropertyvalue:
+                 
+
+                    #print ('test',my_ifcproperty, property_value, bool_property_value)
+                    #ifc_properties.my_ifcproduct            = bool_property_value
+                    #ifc_properties.my_ifcproductname        = bool_property_value
+                    #ifc_properties.my_ifcproducttypename    = bool_property_value
+                    #ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    #ifc_properties.my_ifcclassification     = bool_property_value
+                    #ifc_properties.my_ifcbuildingstorey     = bool_property_value
+                    #ifc_properties.my_ifcmaterial           = bool_property_value
+
                     #break
 
                     #if property_value == True:
