@@ -373,7 +373,7 @@ class CustomCollectionActions(bpy.types.Operator):
         if self.action == "add":           
             item = custom_collection.items.add()  
         if self.action == "remove":
-            custom_collection.items.remove(len(custom_collection.items) - 1)
+            custom_collection.items.remove(len(custom_collection.items) - 1 )
         return {"FINISHED"}             
        
 class SaveAndLoadSelection(bpy.types.Operator):
@@ -458,7 +458,7 @@ def register():
     bpy.utils.register_class(UnhideIFCElements)
     bpy.utils.register_class(CustomCollectionActions)
     bpy.utils.register_class(SaveAndLoadSelection)
-    bpy.utils.register_class(ConfirmSelection)
+    #bpy.utils.register_class(ConfirmSelection)
     
 
 def unregister():
@@ -467,7 +467,7 @@ def unregister():
     bpy.utils.unregister_class(UnhideIFCElements)
     bpy.utils.unregister_class(CustomCollectionActions)
     bpy.utils.unregister_class(SaveAndLoadSelection)
-    bpy.utils.unregister_class(ConfirmSelection)
+    #bpy.utils.unregister_class(ConfirmSelection)
 
 
 

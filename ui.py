@@ -86,7 +86,7 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         row = layout.row(align=True)    
 
-        row.operator("save.confirm_selection", text="Confirm")
+        #row.operator("save.confirm_selection", text="Confirm")
 
         
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
