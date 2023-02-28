@@ -179,9 +179,10 @@ classes = (
             COMMON_PROPERTIES_IFC_PT_PANEL,
             BASE_QUANTITIES_PT_PANEL,
             CUSTOM_PROPERTIES_IFC_PT_PANEL,
+            SAVE_SELECTION_PT_PANEL,
             SPREADSHEET_IFC_FILE_PT_PANEL,
             FILTER_PT_PANEL,
-            SAVE_SELECTION_PT_PANEL)
+            )
 
 def register():
     for cls in classes:
