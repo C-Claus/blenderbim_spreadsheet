@@ -410,15 +410,87 @@ class ConfirmSelection(bpy.types.Operator):
 
     def execute(self, context):
 
+        print ('hallo uit confirm and set ui class')
+
         ifc_properties = context.scene.ifc_properties
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
+
         
-        for k,v in selection_configuration.items():
-            print (k,v)
+        for property_name, property_value in selection_configuration.items():
+
+            print (property_value)
+
+            if property_value == False:
+                print ('allemaal false')
+                ifc_properties.my_ifcproduct            = False
+                ifc_properties.my_ifcproductname        = False
+                ifc_properties.my_ifcproducttypename    = False
+                ifc_properties.my_ifcbuildingstorey     = False
+                ifc_properties.my_ifcclassification     = False
+                ifc_properties.my_ifcbuildingstorey     = False
+                ifc_properties.my_ifcmaterial           = False
+
+               
+
+            if property_value == True:
+                print ('allemaal True')
+                ifc_properties.my_ifcproduct            = True
+                ifc_properties.my_ifcproductname        = True
+                ifc_properties.my_ifcproducttypename    = True
+                ifc_properties.my_ifcbuildingstorey     = True
+                ifc_properties.my_ifcclassification     = True
+                ifc_properties.my_ifcbuildingstorey     = True
+                ifc_properties.my_ifcmaterial           = True
+
+            #for my_ifcproperty in ifc_properties.__annotations__.keys():
+            #    my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
+            #    my_ifcproperty = True
+
+    #def get_property(self, property, boolean):
+    #    print ('get property')
+            #    if property_name == my_ifcproperty:
+                 
+            #        if my_ifcpropertyvalue == True:
+
+            #            print (property_name,'deze moet op true')
+            #            ifc_properties.my_ifcproduct = True
+                        
+                   
+
+            #        if my_ifcpropertyvalue == False:
+            #            print (property_name,'deze moet op False')
+            #           ifc_properties.my_ifcproduct = False
+                    
+
+
+
+        #break
+
+
+
+
+        
+        #for k_json,v_json in selection_configuration.items():
+        #    print (k_json, ifc_properties.my_ifcproduct)
+
+
+
+            #if k_json == ifc_properties.my_ifcproduct:
+            #    ifc_properties.my_ifcproduct = True
+
+            #print (k_json,v_json)
+            #for my_ifcproperty in ifc_properties.__annotations__.keys():
+            #    my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
+
+                #print (my_ifcproperty, v_json)
+
+            #    my_ifcproperty = True
+
+            #break
         
         selection_file.close()
-        
+
         return {"FINISHED"} 
         
 
