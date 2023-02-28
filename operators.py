@@ -401,6 +401,9 @@ class SaveAndLoadSelection(bpy.types.Operator):
         for k,v in (configuration_dictionary.items()):
             print (k,v)
 
+        with open(replace_with_IfcStore.replace('.ifc','_selectionset.json'), "w") as selection_file:
+            json.dump(configuration_dictionary, selection_file, indent=4)
+
 
         ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.json'))
 
