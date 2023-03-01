@@ -393,7 +393,7 @@ class SaveAndLoadSelection(bpy.types.Operator):
 
         for prop_name_custom in custom_items.keys():
             prop_value_custom = custom_items[prop_name_custom]
-            configuration_dictionary['key' + prop_value_custom.name] = prop_value_custom.name
+            configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
 
         with open(replace_with_IfcStore.replace('.ifc','_selectionset.json'), "w") as selection_file:
             json.dump(configuration_dictionary, selection_file, indent=4)
@@ -416,128 +416,12 @@ class ConfirmSelection(bpy.types.Operator):
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
 
-        #1 eerst kijken wat in de blender UI staat
-        #2 dan kijken wat er in de json staat
-        #3 vergelijk waarden en set
-
-        #1 eerst kijken wat in de blender UI staat
-
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            #print (my_ifcproperty, my_ifcpropertyvalue)
-            #if my_ifcpropertyvalue == False:
-
-            for property_name, property_value in selection_configuration.items():
-
-                
-                    bool_property = property_value 
-                    bool_property_value = bool(bool_property)
-
-                    ifc_properties.my_ifcproduct            = bool_property_value
-                    ifc_properties.my_ifcproductname        = bool_property_value
-                    ifc_properties.my_ifcproducttypename    = bool_property_value
-                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
-                    ifc_properties.my_ifcclassification     = bool_property_value
-                    ifc_properties.my_ifcbuildingstorey     = bool_property_value
-                    ifc_properties.my_ifcmaterial           = bool_property_value
+        for property_name_from_json, property_value_from_json in selection_configuration.items():
+            if not hasattr(ifc_properties, property_name_from_json):
+                continue  
+            setattr(ifc_properties, property_name_from_json, property_value_from_json)
 
 
-            
-
-                    break
-
-                #print ('bool property value',property_name, bool_property_value)
-
-         
-
-
-
-                #if property_value == my_ifcpropertyvalue:
-                 
-
-                    #print ('test',my_ifcproperty, property_value, bool_property_value)
-                    #ifc_properties.my_ifcproduct            = bool_property_value
-                    #ifc_properties.my_ifcproductname        = bool_property_value
-                    #ifc_properties.my_ifcproducttypename    = bool_property_value
-                    #ifc_properties.my_ifcbuildingstorey     = bool_property_value
-                    #ifc_properties.my_ifcclassification     = bool_property_value
-                    #ifc_properties.my_ifcbuildingstorey     = bool_property_value
-                    #ifc_properties.my_ifcmaterial           = bool_property_value
-
-                    #break
-
-                    #if property_value == True:
-                    #    print ('allemaal True')
-                    #    ifc_properties.my_ifcproduct            = True
-                    #    ifc_properties.my_ifcproductname        = True
-                    #    ifc_properties.my_ifcproducttypename    = True
-                    #    ifc_properties.my_ifcbuildingstorey     = True
-                    #    ifc_properties.my_ifcclassification     = True
-                    #    ifc_properties.my_ifcbuildingstorey     = True
-                    #    ifc_properties.my_ifcmaterial           = True
-
-               
-            #if my_ifcpropertyvalue == True:
-
-            #    for property_name, property_value in selection_configuration.items():
-            #        if property_value == True:
-            #            print ('allemaal True')
-            #            ifc_properties.my_ifcproduct            = True
-            #            ifc_properties.my_ifcproductname        = True
-            #            ifc_properties.my_ifcproducttypename    = True
-            #            ifc_properties.my_ifcbuildingstorey     = True
-            #            ifc_properties.my_ifcclassification     = True
-            #            ifc_properties.my_ifcbuildingstorey     = True
-            #            ifc_properties.my_ifcmaterial           = True
-            #break
-          
-
-            #for my_ifcproperty in ifc_properties.__annotations__.keys():
-            #    my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            #    my_ifcproperty = True
-
-    #def get_property(self, property, boolean):
-    #    print ('get property')
-            #    if property_name == my_ifcproperty:
-                 
-            #        if my_ifcpropertyvalue == True:
-
-            #            print (property_name,'deze moet op true')
-            #            ifc_properties.my_ifcproduct = True
-                        
-                   
-
-            #        if my_ifcpropertyvalue == False:
-            #            print (property_name,'deze moet op False')
-            #           ifc_properties.my_ifcproduct = False
-                    
-
-
-
-        #break
-
-
-
-
-        
-        #for k_json,v_json in selection_configuration.items():
-        #    print (k_json, ifc_properties.my_ifcproduct)
-
-
-
-            #if k_json == ifc_properties.my_ifcproduct:
-            #    ifc_properties.my_ifcproduct = True
-
-            #print (k_json,v_json)
-            #for my_ifcproperty in ifc_properties.__annotations__.keys():
-            #    my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-
-                #print (my_ifcproperty, v_json)
-
-            #    my_ifcproperty = True
-
-            #break
-        
         selection_file.close()
 
         return {"FINISHED"} 
