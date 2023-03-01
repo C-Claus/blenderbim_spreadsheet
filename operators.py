@@ -98,22 +98,22 @@ class ConstructDataFrame:
 
 
             if ifc_properties.my_length:
-                ifc_dictionary[prop.prop_length].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                ifc_product=product,
-                                                                                                ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                ifc_property_name=prop.prop_length)[0])
+                ifc_dictionary[prop.prop_length].append(self.get_ifc_properties_and_quantities(         context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_length)[0])
                 
             if ifc_properties.my_width:
-                ifc_dictionary[prop.prop_width].append(self.get_ifc_properties_and_quantities(  context,
-                                                                                                ifc_product=product,
-                                                                                                ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                ifc_property_name=prop.prop_width)[0])
+                ifc_dictionary[prop.prop_width].append(self.get_ifc_properties_and_quantities(          context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_width)[0])
 
             if ifc_properties.my_area:
-                ifc_dictionary[prop.prop_area].append(self.get_ifc_properties_and_quantities(   context,
-                                                                                                ifc_product=product,
-                                                                                                ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                ifc_property_name=prop.prop_area)[0])
+                ifc_dictionary[prop.prop_area].append(self.get_ifc_properties_and_quantities(           context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_area)[0])
                 
             if ifc_properties.my_netarea:
                 ifc_dictionary[prop.prop_netarea].append(self.get_ifc_properties_and_quantities(        context,
@@ -156,8 +156,8 @@ class ConstructDataFrame:
                                                                                                         ifc_product=product,
                                                                                                         ifc_propertyset_name=prop.prop_basequantities,
                                                                                                         ifc_property_name=prop.prop_grossvolume)[0])
-            if custom_collection:
-                print (custom_collection)
+        if custom_collection:
+            print (custom_collection)
                                                                                                    
         
 

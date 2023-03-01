@@ -27,19 +27,14 @@ class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
         box = layout.box()
         row = box.row()
         box.prop(ifc_properties, "my_ifcproduct")
-
         row = box.row()
         row.prop(ifc_properties, "my_ifcproductname")
-
         row = box.row()
         row.prop(ifc_properties, "my_ifcproducttypename")
-
         row = box.row()
         row.prop(ifc_properties, "my_ifcbuildingstorey")
-
         row = box.row()
         row.prop(ifc_properties, "my_ifcclassification")
-
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
 class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
@@ -52,17 +47,14 @@ class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         layout = self.layout
         box = layout.box()
-        row = box.row()
+        #row = box.row()
 
         row = box.row()
         row.prop(ifc_properties, "my_isexternal")
-
         row = box.row()
         row.prop(ifc_properties, "my_loadbearing")
-
         row = box.row()
         row.prop(ifc_properties, "my_firerating")
-
         row = box.row()
         row.prop(ifc_properties, "my_acousticrating")
 class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
@@ -86,10 +78,7 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         row = layout.row(align=True)    
 
-        
-
-
-        
+             
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"
@@ -127,34 +116,24 @@ class BASE_QUANTITIES_PT_PANEL(GENERAL_panel, Panel):
         row = box.row()
 
         row.prop(ifc_properties, "my_length")
-
         row = box.row()
         row.prop(ifc_properties, "my_width")
-
         row = box.row()
         row.prop(ifc_properties, "my_height")
-
         row = box.row()
         row.prop(ifc_properties, "my_area")
-
         row = box.row()       
         row.prop(ifc_properties, "my_netarea")
-
         row = box.row() 
         row.prop(ifc_properties, "my_netsidearea")
-
         row = box.row() 
         row.prop(ifc_properties, "my_grosssidearea")
-
         row = box.row() 
         row.prop(ifc_properties, "my_grossarea")
-
         row = box.row()
         row.prop(ifc_properties, "my_volume")
-
         row = box.row()
         row.prop(ifc_properties, "my_netvolume")
-
         row = box.row()
         row.prop(ifc_properties, "my_grossvolume")
 class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
