@@ -7,18 +7,20 @@ prop_ifcproduct         = 'IfcProduct'
 prop_ifcbuildingstorey  = 'IfcBuildingStorey'
 prop_ifcproductname     = 'Name'
 prop_ifcproducttypename = 'Type'
+prop_classification     = 'Classification(s)'
+prop_materials          = 'Material(s)'
+
 prop_psetcommon         = 'Pset_Common'
+
 prop_isexternal         = 'IsExternal'
 prop_loadbearing        = 'LoadBearing'
 prop_firerating         = 'FireRating'
 prop_acousticrating     = 'AcousticRating'
-prop_classification     = 'Classification(s)'
-prop_materials          = 'Material(s)'
 
+prop_basequantities     = 'BaseQuantities'
 prop_length             = 'Length'
 prop_width              = 'Width'
 prop_height             = 'Height'
-
 prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
@@ -27,6 +29,18 @@ prop_grosssidearea      = 'GrossSideArea'
 prop_volume             = 'Volume'
 prop_netvolume          = 'NetVolume'
 prop_grossvolume        = 'GrossVolume'
+
+quantity_list = [
+                 prop_length,
+                 prop_width,
+                 prop_height,
+                 prop_area,
+                 prop_netarea,
+                 prop_netsidearea,
+                 prop_grossarea,
+                 prop_volume,
+                 prop_netvolume,
+                 prop_grossvolume]
 
 prop_spreadsheetfile    = 'Spreadsheet'
 prop_selectionfile      = 'SelectionFile'
@@ -47,6 +61,7 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_ifcclassification:       bpy.props.BoolProperty(name=prop_classification,    default=True)
     my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,         default=True)
     my_ifcpsetcommon:           bpy.props.BoolProperty(name=prop_psetcommon,        default=True)
+
     my_isexternal:              bpy.props.BoolProperty(name=prop_isexternal,        default=True)
     my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=True)
     my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=True)

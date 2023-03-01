@@ -6,7 +6,7 @@ from collections import defaultdict
 import json
 
 
-#import pandas as pd
+import pandas as pd
 import xlsxwriter
 import pyexcel_ods
 import openpyxl
@@ -15,8 +15,8 @@ from openpyxl import load_workbook
 import ifcopenshell
 import blenderbim
 import blenderbim.tool as tool
-#replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
-replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
+replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
+#replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 #todo
 #get filtering to work from ods
@@ -33,16 +33,22 @@ class ConstructDataFrame:
     def __init__(self, context):
         print ('hallo uit Construct dataframe class')
 
-        ifc_dictionary = defaultdict(list)
-        ifc_properties = context.scene.ifc_properties
+        ifc_dictionary      = defaultdict(list) 
+        ifc_properties      = context.scene.ifc_properties
+        custom_collection   = context.scene.custom_collection
+        custom_items        = context.scene.custom_collection.items
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
+        base_quanties = 'BaseQuantities'
 
+      
         for product in products:
-            ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+            
+
+            ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
             if ifc_properties.my_ifcproduct:
                 ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
@@ -61,7 +67,6 @@ class ConstructDataFrame:
 
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context, ifc_product=product))
-
 
             if ifc_properties.my_isexternal:
                 ifc_dictionary[prop.prop_isexternal].append(self.get_ifc_properties_and_quantities( context,
@@ -86,17 +91,95 @@ class ConstructDataFrame:
                 
             if ifc_properties.my_acousticrating:
                 ifc_dictionary[prop.prop_acousticrating].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                    ifc_product=product,
-                                                                                                    ifc_propertyset_name=ifc_pset_common,
-                                                                                                    ifc_property_name=prop.prop_acousticrating,
-                                                                                                    )[0])
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=ifc_pset_common,
+                                                                                                        ifc_property_name=prop.prop_acousticrating)[0])
+                
 
+
+            if ifc_properties.my_length:
+                ifc_dictionary[prop.prop_length].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                ifc_property_name=prop.prop_length)[0])
+                
+            if ifc_properties.my_width:
+                ifc_dictionary[prop.prop_width].append(self.get_ifc_properties_and_quantities(  context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                ifc_property_name=prop.prop_width)[0])
+
+            if ifc_properties.my_area:
+                ifc_dictionary[prop.prop_area].append(self.get_ifc_properties_and_quantities(   context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                ifc_property_name=prop.prop_area)[0])
+                
+            if ifc_properties.my_netarea:
+                ifc_dictionary[prop.prop_netarea].append(self.get_ifc_properties_and_quantities(        context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_netarea)[0])
+                
+            if ifc_properties.my_netsidearea:
+                ifc_dictionary[prop.prop_netsidearea].append(self.get_ifc_properties_and_quantities(    context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_netsidearea)[0])
+                
+            if ifc_properties.my_grosssidearea:
+                ifc_dictionary[prop.prop_grosssidearea].append(self.get_ifc_properties_and_quantities(  context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_grosssidearea)[0])
+                
+            if ifc_properties.my_grossarea:
+                ifc_dictionary[prop.prop_grossarea].append(self.get_ifc_properties_and_quantities(      context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_grossarea)[0])
+                
+            if ifc_properties.my_volume:
+                ifc_dictionary[prop.prop_volume].append(self.get_ifc_properties_and_quantities(         context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_volume)[0])
+                
+            if ifc_properties.my_netvolume:
+                ifc_dictionary[prop.prop_netvolume].append(self.get_ifc_properties_and_quantities(      context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_netvolume)[0])
+                
+            if ifc_properties.my_grossvolume:
+                ifc_dictionary[prop.prop_grossvolume].append(self.get_ifc_properties_and_quantities(    context,
+                                                                                                        ifc_product=product,
+                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                        ifc_property_name=prop.prop_grossvolume)[0])
+            if custom_collection:
+                print (custom_collection)
+                                                                                                   
+        
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
+        
+        print ('data frame is created')
 
-        #print (self.df)
 
+    def get_properties_from_ui(self, context):
+
+        print ('get properties from UI')
+
+        ifc_properties = context.scene.ifc_properties
+        ifc_dictionary = {}
+
+        for my_ifcproperty in ifc_properties.__annotations__.keys():
+            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
+            #print (my_ifcproperty, my_ifcpropertyvalue)
+            ifc_dictionary[my_ifcproperty] = my_ifcpropertyvalue
+
+        return ifc_dictionary
 
 
     def get_ifc_type(self, context, ifc_product):
@@ -369,12 +452,39 @@ class CustomCollectionActions(bpy.types.Operator):
         ),
     )
     def execute(self, context):
+
         custom_collection = context.scene.custom_collection
         if self.action == "add":           
             item = custom_collection.items.add()  
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
-        return {"FINISHED"}             
+        return {"FINISHED"}  
+
+    def set_configuration(context, property_set, property_name):
+        print ('set configuration')  
+
+        print (property_set, property_name) 
+
+        print (context.scene.custom_collection)
+
+        #print ('hier',dir(context.scene.custom_collection.items.clear))
+
+
+        #clear selection
+        #custom_collection = context.scene.custom_collection
+        #context.scene.custom_collection.items#.append(property_set, property_name, property_name)
+        #custom_collection.my_ifccustomproperty1 = 'Hoi'
+
+        #setattr(custom_collection, property_set, property_name)
+
+  
+
+
+
+
+
+
+        return {"FINISHED"}        
        
 class SaveAndLoadSelection(bpy.types.Operator):
     bl_idname = "save.save_and_load_selection"
@@ -382,10 +492,12 @@ class SaveAndLoadSelection(bpy.types.Operator):
 
     def execute(self, context):
 
+        configuration_dictionary = {}
+
         ifc_properties = context.scene.ifc_properties
         custom_collection = context.scene.custom_collection
         custom_items = context.scene.custom_collection.items
-        configuration_dictionary = {}
+        
 
         for my_ifcproperty in ifc_properties.__annotations__.keys():
             my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
@@ -413,13 +525,31 @@ class ConfirmSelection(bpy.types.Operator):
         print ('hallo uit confirm and set ui class')
 
         ifc_properties = context.scene.ifc_properties
+
+        
+
+        custom_collections_actions = CustomCollectionActions
+        set_configuration = custom_collections_actions.set_configuration
+   
+
+        
+        
+
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
 
+   
+
+
         for property_name_from_json, property_value_from_json in selection_configuration.items():
+            if property_name_from_json.startswith('my_ifccustomproperty'):
+                set_configuration(context, property_set=property_name_from_json, property_name=property_value_from_json)
+
             if not hasattr(ifc_properties, property_name_from_json):
                 continue  
             setattr(ifc_properties, property_name_from_json, property_value_from_json)
+            
+
 
 
         selection_file.close()
