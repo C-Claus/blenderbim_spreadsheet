@@ -2,7 +2,7 @@ import bpy
 from . import prop
 
 import collections
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import json
 
 
@@ -451,10 +451,11 @@ class CustomCollectionActions(bpy.types.Operator):
 
     def set_configuration(context, property_set, property_name):
 
-        custom_collection = context.scene.custom_collection
+        print (property_name)
 
-        custom_collection.items.remove(1)
+        custom_collection = context.scene.custom_collection  
         custom_collection.items.add().name = property_name
+     
 
         return {"FINISHED"}        
        
@@ -498,21 +499,39 @@ class ConfirmSelection(bpy.types.Operator):
 
         ifc_properties = context.scene.ifc_properties
         custom_collections_actions = CustomCollectionActions
+        custom_collection = context.scene.custom_collection
+        custom_items = context.scene.custom_collection.items
         set_configuration = custom_collections_actions.set_configuration
    
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
 
+ 
 
+    
+        custom_collection.items.clear()
+
+            
+        
+
+        length_list = []
         for property_name_from_json, property_value_from_json in selection_configuration.items():
             if property_name_from_json.startswith('my_ifccustomproperty'):
-                set_configuration(context, property_set=property_name_from_json, property_name=property_value_from_json)
+
+                set_configuration(  context,
+                                    property_set=property_name_from_json,
+                                    property_name=property_value_from_json,
+                                    )
+                
     
             if not hasattr(ifc_properties, property_name_from_json):
                 continue  
             setattr(ifc_properties, property_name_from_json, property_value_from_json)
             
         selection_file.close()
+
+        #print ('na',len(custom_collection.items))
+        #print ('na custom list length', custom_list_length)
 
         return {"FINISHED"} 
         
