@@ -444,19 +444,16 @@ class CustomCollectionActions(bpy.types.Operator):
 
         custom_collection = context.scene.custom_collection
         if self.action == "add":        
-
             item = custom_collection.items.add()  
-
-            #print (item)
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
         return {"FINISHED"}  
 
     def set_configuration(context, property_set, property_name):
-        #print ('set configuration')  
 
-        print ('set configuration method',property_set, property_name) 
         custom_collection = context.scene.custom_collection
+
+        custom_collection.items.remove(1)
         custom_collection.items.add().name = property_name
 
         return {"FINISHED"}        
@@ -500,33 +497,21 @@ class ConfirmSelection(bpy.types.Operator):
         print ('hallo uit confirm and set ui class')
 
         ifc_properties = context.scene.ifc_properties
-
-        
-
         custom_collections_actions = CustomCollectionActions
         set_configuration = custom_collections_actions.set_configuration
    
-
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
-
-   
 
 
         for property_name_from_json, property_value_from_json in selection_configuration.items():
             if property_name_from_json.startswith('my_ifccustomproperty'):
                 set_configuration(context, property_set=property_name_from_json, property_name=property_value_from_json)
-                #print ('hallp uit confirm selection', property_name_from_json, property_value_from_json)
-                #break #needs to break af
-
-
+    
             if not hasattr(ifc_properties, property_name_from_json):
                 continue  
             setattr(ifc_properties, property_name_from_json, property_value_from_json)
             
-
-
-
         selection_file.close()
 
         return {"FINISHED"} 
