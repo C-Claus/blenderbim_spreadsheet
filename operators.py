@@ -42,32 +42,8 @@ class ConstructDataFrame:
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
  
-
-        #for product in products:
-        """ 
-        for property_name, property_boolean in self.get_properties_from_ui(context).items():
-            if property_name and property_boolean:
-                print ('is checked true',property_name, property_boolean)
-                #break
-                for product in products:
-                    #ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
-                    #ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
-                    #ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
-                    
-                    if property_name.startswith('my_quantity'):
-                        ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
-                        quantity_name = property_name.replace('my_quantity_','')
-                        ifc_dictionary[quantity_name].append(self.get_ifc_properties_and_quantities(    context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name='BaseQuantities',
-                                                                                                        ifc_property_name=quantity_name,
-                                                                                                        )[0])
-
-        """
         for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
-            
-
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
             if ifc_properties.my_ifcproduct:
@@ -180,41 +156,20 @@ class ConstructDataFrame:
                                                                                                         ifc_product=product,
                                                                                                         ifc_propertyset_name=prop.prop_basequantities,
                                                                                                         ifc_property_name=prop.prop_grossvolume)[0])
+                
+            if len(custom_collection.items) > 1:
+                for item in custom_collection.items:
+                    print (item.name)
+                    ifc_dictionary[item.name].append(self.get_ifc_properties_and_quantities(        context,
+                                                                                                    ifc_product=product,
+                                                                                                    ifc_propertyset_name=str(item.name).split('.')[0],
+                                                                                                    ifc_property_name=str(item.name).split('.')[1])[0])   
     
-                                                                                                   
-        
-       
+
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
         
         print ('data frame is created')
-        
-    def loop_over_products(self, context):
-        
-        
-
-        ifc_file = ifcopenshell.open(replace_with_IfcStore)
-        products = ifc_file.by_type('IfcProduct')
-
-        return products
-
-
-    def get_properties_from_ui(self, context):
-
-        print ('get properties from UI')
-
-        ifc_properties = context.scene.ifc_properties
-        ifc_dictionary = {}
-
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            #print (my_ifcproperty, my_ifcpropertyvalue)
-            ifc_dictionary[my_ifcproperty] = my_ifcpropertyvalue
-        #print (ifc_dictionary)
-        return ifc_dictionary
-    
-    
-
 
     def get_ifc_type(self, context, ifc_product):
     
@@ -495,29 +450,17 @@ class CustomCollectionActions(bpy.types.Operator):
         return {"FINISHED"}  
 
     def set_configuration(context, property_set, property_name):
-        print ('set configuration')  
+        #print ('set configuration')  
 
-        print (property_set, property_name) 
+        print ('set configruaton method',property_set, property_name) 
 
-        print (context.scene.custom_collection)
+        #custom_items = context.scene.custom_collection.items
 
-        #print ('hier',dir(context.scene.custom_collection.items.clear))
-
-
-        #clear selection
-        #custom_collection = context.scene.custom_collection
-        #context.scene.custom_collection.items#.append(property_set, property_name, property_name)
-        #custom_collection.my_ifccustomproperty1 = 'Hoi'
-
-        #setattr(custom_collection, property_set, property_name)
+        #for prop_name_custom in custom_items.keys():
+        #    prop_value_custom = custom_items[prop_name_custom]
+        #    print (prop_value_custom, prop_name_custom)
 
   
-
-
-
-
-
-
         return {"FINISHED"}        
        
 class SaveAndLoadSelection(bpy.types.Operator):
@@ -566,9 +509,6 @@ class ConfirmSelection(bpy.types.Operator):
         set_configuration = custom_collections_actions.set_configuration
    
 
-        
-        
-
         selection_file = open(ifc_properties.my_selectionload)
         selection_configuration = json.load(selection_file)
 
@@ -578,6 +518,9 @@ class ConfirmSelection(bpy.types.Operator):
         for property_name_from_json, property_value_from_json in selection_configuration.items():
             if property_name_from_json.startswith('my_ifccustomproperty'):
                 set_configuration(context, property_set=property_name_from_json, property_name=property_value_from_json)
+                #print ('hallp uit confirm selection', property_name_from_json, property_value_from_json)
+                #break #needs to break af
+
 
             if not hasattr(ifc_properties, property_name_from_json):
                 continue  
