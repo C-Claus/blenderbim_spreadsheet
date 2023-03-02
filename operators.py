@@ -159,7 +159,7 @@ class ConstructDataFrame:
                 
             if len(custom_collection.items) > 1:
                 for item in custom_collection.items:
-                    print (item.name)
+                    #check if . is used
                     ifc_dictionary[item.name].append(self.get_ifc_properties_and_quantities(        context,
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=str(item.name).split('.')[0],
@@ -443,8 +443,11 @@ class CustomCollectionActions(bpy.types.Operator):
     def execute(self, context):
 
         custom_collection = context.scene.custom_collection
-        if self.action == "add":           
+        if self.action == "add":        
+
             item = custom_collection.items.add()  
+
+            #print (item)
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
         return {"FINISHED"}  
@@ -452,15 +455,10 @@ class CustomCollectionActions(bpy.types.Operator):
     def set_configuration(context, property_set, property_name):
         #print ('set configuration')  
 
-        print ('set configruaton method',property_set, property_name) 
+        print ('set configuration method',property_set, property_name) 
+        custom_collection = context.scene.custom_collection
+        custom_collection.items.add().name = property_name
 
-        #custom_items = context.scene.custom_collection.items
-
-        #for prop_name_custom in custom_items.keys():
-        #    prop_value_custom = custom_items[prop_name_custom]
-        #    print (prop_value_custom, prop_name_custom)
-
-  
         return {"FINISHED"}        
        
 class SaveAndLoadSelection(bpy.types.Operator):

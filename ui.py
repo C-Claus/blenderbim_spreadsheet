@@ -47,8 +47,6 @@ class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         layout = self.layout
         box = layout.box()
-        #row = box.row()
-
         row = box.row()
         row.prop(ifc_properties, "my_property_IsExternal")
         row = box.row()

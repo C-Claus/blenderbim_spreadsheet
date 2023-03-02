@@ -30,17 +30,6 @@ prop_volume             = 'Volume'
 prop_netvolume          = 'NetVolume'
 prop_grossvolume        = 'GrossVolume'
 
-quantity_list = [
-                 prop_length,
-                 prop_width,
-                 prop_height,
-                 prop_area,
-                 prop_netarea,
-                 prop_netsidearea,
-                 prop_grossarea,
-                 prop_volume,
-                 prop_netvolume,
-                 prop_grossvolume]
 
 prop_spreadsheetfile    = 'Spreadsheet'
 prop_selectionfile      = 'SelectionFile'
