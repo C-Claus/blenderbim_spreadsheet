@@ -41,13 +41,16 @@ class TreeBuilder:
     def __init__(self):
         self.root = Element("root", None)
         self.path = [self.root]
+
     def start_element(self, name, attrs):
         element = Element(name, attrs)
         self.path[-1].append(element)
         self.path.append(element)
+
     def end_element(self, name):
         assert name == self.path[-1].name
         self.path.pop()
+
     def char_data(self, data):
         self.path[-1].append(data)
 
@@ -62,9 +65,7 @@ def get_hidden_rows(node):
             continue
         attrs = e.attrs
         rows = int(attrs.get("table:number-rows-repeated", 1))
-        if "table:visibility" in attrs.keys():  # If the key is here, we can assume it's hidden (or can we ?)
-            #for row_idx in range(rows):
-            #    yield row + row_idx
+        if "table:visibility" in attrs.keys():  
             yield from range(row, row + rows)
         row += rows
 
@@ -351,12 +352,31 @@ class ExportToSpreadSheet(bpy.types.Operator):
         if ifc_properties.ods_or_xlsx == 'ODS':
             print ('hallo uit ods')
 
-            spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
-            writer_ods = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
-            construct_data_frame.df.to_excel(writer_ods, sheet_name='workbook', startrow=0, header=True, index=False)
+            spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
+            writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
 
-            worksheet_ods = writer_ods.sheets['workbook']
-            writer_ods.save()
+            construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=0, header=True, index=False)
+
+            worksheet = writer.sheets['workbook']
+
+            #for i in (dir(worksheet)):
+            #    print (i)
+
+            #print (worksheet.toXml())
+            """ 
+            (max_row, max_col) = construct_data_frame.df.shape
+         
+            column_settings = []
+            for header in construct_data_frame.df.columns:
+                column_settings.append({'header': header})
+
+            worksheet.add_table(1, 0, max_row, max_col - 1, {'columns': column_settings})
+            """
+
+
+            writer.close()
+
+            print ('.ods file has been created at:')
 
 
 
