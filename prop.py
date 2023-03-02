@@ -62,25 +62,23 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,         default=True)
     my_ifcpsetcommon:           bpy.props.BoolProperty(name=prop_psetcommon,        default=True)
 
-    my_isexternal:              bpy.props.BoolProperty(name=prop_isexternal,        default=False)
-    my_loadbearing:             bpy.props.BoolProperty(name=prop_loadbearing,       default=False)
-    my_firerating:              bpy.props.BoolProperty(name=prop_firerating,        default=False)
-    my_acousticrating:          bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
+    my_property_IsExternal:     bpy.props.BoolProperty(name=prop_isexternal,        default=False)
+    my_property_LoadBearing:    bpy.props.BoolProperty(name=prop_loadbearing,       default=False)
+    my_property_FireRating:     bpy.props.BoolProperty(name=prop_firerating,        default=False)
+    my_property_AcousticRating: bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
 
 
-    my_length:                  bpy.props.BoolProperty(name=prop_length,            default=False)
-    my_width:                   bpy.props.BoolProperty(name=prop_width,             default=False)
-    my_height:                  bpy.props.BoolProperty(name=prop_height,            default=False)
-
-    my_area:                    bpy.props.BoolProperty(name=prop_area,              default=False)
-    my_netarea:                 bpy.props.BoolProperty(name=prop_netarea,           default=False)
-    my_netsidearea:             bpy.props.BoolProperty(name=prop_netsidearea,       default=False)
-    my_grossarea:               bpy.props.BoolProperty(name=prop_grossarea,         default=False)
-    my_grosssidearea:           bpy.props.BoolProperty(name=prop_grosssidearea,     default=False)
-
-    my_volume:                  bpy.props.BoolProperty(name=prop_volume,            default=False)
-    my_netvolume:               bpy.props.BoolProperty(name=prop_netvolume,         default=False)
-    my_grossvolume:             bpy.props.BoolProperty(name=prop_grossvolume,       default=False)
+    my_quantity_Length:         bpy.props.BoolProperty(name=prop_length,            default=False)
+    my_quantity_Width:          bpy.props.BoolProperty(name=prop_width,             default=False)
+    my_quantity_Height:         bpy.props.BoolProperty(name=prop_height,            default=False)
+    my_quantity_Area:           bpy.props.BoolProperty(name=prop_area,              default=False)
+    my_quantity_NetArea:        bpy.props.BoolProperty(name=prop_netarea,           default=False)
+    my_quantity_NetSideArea:    bpy.props.BoolProperty(name=prop_netsidearea,       default=False)
+    my_quantity_GrossArea:      bpy.props.BoolProperty(name=prop_grossarea,         default=False)
+    my_quantity_GrossSideArea:  bpy.props.BoolProperty(name=prop_grosssidearea,     default=False)
+    my_quantity_Volume:         bpy.props.BoolProperty(name=prop_volume,            default=False)
+    my_quantity_NetVolume:      bpy.props.BoolProperty(name=prop_netvolume,         default=False)
+    my_quantity_GrossVolume:    bpy.props.BoolProperty(name=prop_grossvolume,       default=False)
   
     my_spreadsheetfile:         bpy.props.StringProperty(   name="Spreadsheet",
                                                             description="your .ods or .xlsx file",
