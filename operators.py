@@ -449,7 +449,7 @@ class CustomCollectionActions(bpy.types.Operator):
             custom_collection.items.remove(len(custom_collection.items) - 1 )
         return {"FINISHED"}  
 
-    def set_configuration(context, property_set, property_name):
+    def set_configuration(context,property_name):
 
         custom_collection = context.scene.custom_collection  
         custom_collection.items.add().name = property_name
@@ -508,10 +508,7 @@ class ConfirmSelection(bpy.types.Operator):
         for property_name_from_json, property_value_from_json in selection_configuration.items():
             if property_name_from_json.startswith('my_ifccustomproperty'):
 
-                set_configuration(  context,
-                                    property_set=property_name_from_json,
-                                    property_name=property_value_from_json,
-                                    )
+                set_configuration(context,property_name=property_value_from_json)
                 
     
             if not hasattr(ifc_properties, property_name_from_json):
