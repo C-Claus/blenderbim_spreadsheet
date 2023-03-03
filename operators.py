@@ -4,7 +4,7 @@ from . import prop
 import collections
 from collections import defaultdict, OrderedDict
 import json
-
+import re
 
 import pandas as pd
 import xlsxwriter
@@ -84,7 +84,15 @@ class ConstructDataFrame:
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
- 
+        custom_propertyset_list = [] #set(list(custom_collection.items))
+   
+        for custom_property in custom_collection.items:
+            custom_propertyset_list.append(custom_property.name)
+
+        custom_property_unique_list = (set(custom_propertyset_list))
+      
+       
+
         for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
@@ -199,14 +207,24 @@ class ConstructDataFrame:
                                                                                                         ifc_product=product,
                                                                                                         ifc_propertyset_name=prop.prop_basequantities,
                                                                                                         ifc_property_name=prop.prop_grossvolume)[0])
-                
+            
             if len(custom_collection.items) > 0:
-                for item in custom_collection.items:
-                    #check if . is used
-                    ifc_dictionary[item.name].append(self.get_ifc_properties_and_quantities(        context,
+                #for item in custom_collection.items:
+                #    item.name
+                for item in custom_property_unique_list:
+                
+                    #while item.name:
+                    #regex = "^[a-z']+\.[a-z']+$"
+                    #x = re.search("^[a-z']+\.[a-z']+$", str(item.name))
+                    #print ('x',x)
+
+                    #if x:
+                 
+                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities(        context,
                                                                                                     ifc_product=product,
-                                                                                                    ifc_propertyset_name=str(item.name).split('.')[0],
-                                                                                                    ifc_property_name=str(item.name).split('.')[1])[0])   
+                                                                                                    ifc_propertyset_name=str(item).split('.')[0],
+                                                                                                    ifc_property_name=str(item).split('.')[1])[0])  
+             
     
 
         df = pd.DataFrame(ifc_dictionary)
