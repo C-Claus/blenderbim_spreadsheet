@@ -200,7 +200,7 @@ class ConstructDataFrame:
                                                                                                         ifc_propertyset_name=prop.prop_basequantities,
                                                                                                         ifc_property_name=prop.prop_grossvolume)[0])
                 
-            if len(custom_collection.items) > 1:
+            if len(custom_collection.items) > 0:
                 for item in custom_collection.items:
                     #check if . is used
                     ifc_dictionary[item.name].append(self.get_ifc_properties_and_quantities(        context,
@@ -337,7 +337,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             worksheet.set_column(0, max_col - 1, 30)
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
-
             writer.close()
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
@@ -475,6 +474,11 @@ class CustomCollectionActions(bpy.types.Operator):
     def execute(self, context):
 
         custom_collection = context.scene.custom_collection
+
+        #print (custom_collection.items)
+        #custom_collection.items.add().name = 'test.test'
+        #custom_collection.items.add().name = 'test1.test1'
+       
         if self.action == "add":        
             item = custom_collection.items.add()  
         if self.action == "remove":
@@ -549,7 +553,6 @@ class ClearSelection(bpy.types.Operator):
     bl_label = "Clear Selection"
 
     def execute(self, context):
-        print ('hallo uit clear slection')
 
         ifc_properties = context.scene.ifc_properties
         custom_collection = context.scene.custom_collection
@@ -564,7 +567,6 @@ class ClearSelection(bpy.types.Operator):
         return {"FINISHED"} 
 
         
-
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
     bpy.utils.register_class(FilterIFCElements)

@@ -10,8 +10,6 @@ prop_ifcproducttypename = 'Type'
 prop_classification     = 'Classification(s)'
 prop_materials          = 'Material(s)'
 
-#prop_psetcommon         = 'Pset_Common'
-
 prop_isexternal         = 'IsExternal'
 prop_loadbearing        = 'LoadBearing'
 prop_firerating         = 'FireRating'
@@ -74,7 +72,6 @@ class IFCProperties(bpy.types.PropertyGroup):
                                     ("XLSX", ".xlsx", "xlsx"),
                                 ],
                                 default="ODS",
-                               
                                 )
     
 class CustomItem(bpy.types.PropertyGroup):
