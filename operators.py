@@ -11,9 +11,13 @@ import xlsxwriter
 import pyexcel_ods
 import openpyxl
 from openpyxl import load_workbook
+import ezodf
+
+
 
 import zipfile
 import xml.parsers.expat
+import xml.etree.ElementTree as ET
 
 
 import ifcopenshell
@@ -346,7 +350,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
      
 
-            writer.save()
+            writer.close()
           
 
         if ifc_properties.ods_or_xlsx == 'ODS':
@@ -354,37 +358,20 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
             writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
-
             construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=0, header=True, index=False)
-
-            worksheet = writer.sheets['workbook']
-
-            #for i in (dir(worksheet)):
-            #    print (i)
-
-            #print (worksheet.toXml())
-            """ 
-            (max_row, max_col) = construct_data_frame.df.shape
-         
-            column_settings = []
-            for header in construct_data_frame.df.columns:
-                column_settings.append({'header': header})
-
-            worksheet.add_table(1, 0, max_row, max_col - 1, {'columns': column_settings})
-            """
-
-
+            worksheet               = writer.sheets['workbook']
             writer.close()
 
-            print ('.ods file has been created at:')
+            #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
+            #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
 
+            #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
+                #with ziparchive.open('content.xml') as xmlfile:
+                # parse the XML data
+                    #tree = ET.parse(xmlfile)
+                    #root = tree.getroot()
 
-
-
-          
-
-
-
+                    #print (root)
 
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
@@ -432,9 +419,7 @@ class FilterIFCElements(bpy.types.Operator):
             
                 # Get content xml data from OpenDocument file
                 ziparchive = zipfile.ZipFile(ifc_properties.my_spreadsheetfile, "r")
-                #print (ziparchive)
                 xmldata = ziparchive.read("content.xml")
-                #print (xmldata)
                 ziparchive.close()
                 
                 # Create parser and parsehandler
