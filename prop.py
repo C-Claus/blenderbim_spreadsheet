@@ -77,7 +77,7 @@ class IFCProperties(bpy.types.PropertyGroup):
 class CustomItem(bpy.types.PropertyGroup):
     name: bpy.props.StringProperty(name         ="Property",
                                    description  ="Use the PropertySet name and Property name divided by a .",
-                                   default      ="[PropertySet.Property]") 
+                                   default      ="PropertySet.Property") 
 class CustomCollection(bpy.types.PropertyGroup):
     items: bpy.props.CollectionProperty(type=CustomItem) 
     

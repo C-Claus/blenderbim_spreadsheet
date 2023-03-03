@@ -209,23 +209,12 @@ class ConstructDataFrame:
                                                                                                         ifc_property_name=prop.prop_grossvolume)[0])
             
             if len(custom_collection.items) > 0:
-                #for item in custom_collection.items:
-                #    item.name
                 for item in custom_property_unique_list:
-                
-                    #while item.name:
-                    #regex = "^[a-z']+\.[a-z']+$"
-                    #x = re.search("^[a-z']+\.[a-z']+$", str(item.name))
-                    #print ('x',x)
-
-                    #if x:
-                 
-                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities(        context,
+                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities(             context,
                                                                                                     ifc_product=product,
                                                                                                     ifc_propertyset_name=str(item).split('.')[0],
                                                                                                     ifc_property_name=str(item).split('.')[1])[0])  
              
-    
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
