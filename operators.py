@@ -30,7 +30,9 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #try to apply autofilter ods
 #grey out filter if no speadsheet is loaded
 #grey out create spreadsheet if no ifc is loaded
-#clear selection button
+#check if spreadsheet already openend by checking boolroperty
+#give confirmiatin button to custom properties
+#give feedback to user they should use . notation
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -73,12 +75,11 @@ def get_hidden_rows(node):
 
 class ConstructDataFrame:
     def __init__(self, context):
-        print ('hallo uit Construct dataframe class')
-
+        
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
         custom_collection   = context.scene.custom_collection
-        custom_items        = context.scene.custom_collection.items
+        #custom_items        = context.scene.custom_collection.items
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
@@ -211,7 +212,7 @@ class ConstructDataFrame:
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
         
-        print ('data frame is created')
+        print ('Data frame is created.')
 
     def get_ifc_type(self, context, ifc_product):
     
@@ -314,10 +315,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
         ifc_properties = context.scene.ifc_properties
         construct_data_frame = ConstructDataFrame(context)
 
-        #print (ifc_properties.ods_or_xlsx)
-
         if ifc_properties.ods_or_xlsx == 'XLSX':
-            print ('hoi UIT XLSX')
             
             spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
             #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
@@ -325,12 +323,10 @@ class ExportToSpreadSheet(bpy.types.Operator):
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
             construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
             
-            workbook  = writer.book
-            #cell_format = workbook.add_format({'bold': True,'border': 1,'bg_color': '#4F81BD','font_color': 'white','font_size':14})
+            #workbook  = writer.book
+           
             
             worksheet = writer.sheets['workbook']
-
-
 
             (max_row, max_col) = construct_data_frame.df.shape
          
@@ -340,24 +336,25 @@ class ExportToSpreadSheet(bpy.types.Operator):
                 column_settings.append({'header': header})
 
             # Add the table.
-            worksheet.add_table(1, 0, max_row, max_col - 1, {'columns': column_settings})
+            worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
+            worksheet.set_column(0, max_col - 1, 30)
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
 
      
 
             writer.close()
+
+            print ("Spreadsheet is created at: ", spreadsheet_filepath)
           
 
         if ifc_properties.ods_or_xlsx == 'ODS':
-            print ('hallo uit ods')
-
+           
             spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
             writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
             construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=0, header=True, index=False)
             worksheet               = writer.sheets['workbook']
             writer.close()
-
 
             #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
             #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
@@ -369,9 +366,9 @@ class ExportToSpreadSheet(bpy.types.Operator):
             #        tree = ET.parse(xmlfile)
             #        root = tree.getroot()
 
- 
-
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
+
+            print ("Spreadsheet is created at: ", spreadsheet_filepath)
 
         
             

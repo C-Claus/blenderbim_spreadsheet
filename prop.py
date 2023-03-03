@@ -10,7 +10,7 @@ prop_ifcproducttypename = 'Type'
 prop_classification     = 'Classification(s)'
 prop_materials          = 'Material(s)'
 
-prop_psetcommon         = 'Pset_Common'
+#prop_psetcommon         = 'Pset_Common'
 
 prop_isexternal         = 'IsExternal'
 prop_loadbearing        = 'LoadBearing'
@@ -30,32 +30,24 @@ prop_volume             = 'Volume'
 prop_netvolume          = 'NetVolume'
 prop_grossvolume        = 'GrossVolume'
 
-
-prop_spreadsheetfile    = 'Spreadsheet'
-prop_selectionfile      = 'SelectionFile'
-
 class IFCProperties(bpy.types.PropertyGroup):
     my_selectionload:           bpy.props.StringProperty(   name="Load Selection",
                                                             description="Load your previous saved selections",
                                                             default="",
                                                             maxlen=1024,
                                                             subtype="FILE_PATH")
-    
-
-    
+     
     my_ifcproduct:              bpy.props.BoolProperty(name=prop_ifcproduct,        default=True)
     my_ifcproductname:          bpy.props.BoolProperty(name=prop_ifcproductname,    default=True)
     my_ifcproducttypename:      bpy.props.BoolProperty(name=prop_ifcproducttypename,default=True)
     my_ifcbuildingstorey:       bpy.props.BoolProperty(name=prop_ifcbuildingstorey, default=True)
     my_ifcclassification:       bpy.props.BoolProperty(name=prop_classification,    default=True)
     my_ifcmaterial:             bpy.props.BoolProperty(name=prop_materials,         default=True)
-    my_ifcpsetcommon:           bpy.props.BoolProperty(name=prop_psetcommon,        default=True)
-
+   
     my_property_IsExternal:     bpy.props.BoolProperty(name=prop_isexternal,        default=False)
     my_property_LoadBearing:    bpy.props.BoolProperty(name=prop_loadbearing,       default=False)
     my_property_FireRating:     bpy.props.BoolProperty(name=prop_firerating,        default=False)
     my_property_AcousticRating: bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
-
 
     my_quantity_Length:         bpy.props.BoolProperty(name=prop_length,            default=False)
     my_quantity_Width:          bpy.props.BoolProperty(name=prop_width,             default=False)
