@@ -29,6 +29,10 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #check if spreadsheet already openend by checking boolroperty
 #give confirmiatin button to custom properties
 #give feedback to user they should use . notation
+#custom properties will fail if:
+#   same values are added
+#   no dot . notation is used
+#make sure to export multiple classification
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -361,11 +365,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
 
-        
-            
-        
-     
-   
         return {'FINISHED'}
 
 
