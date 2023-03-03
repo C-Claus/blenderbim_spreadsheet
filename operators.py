@@ -11,7 +11,7 @@ import xlsxwriter
 import pyexcel_ods
 import openpyxl
 from openpyxl import load_workbook
-import ezodf
+
 
 
 
@@ -27,11 +27,7 @@ import blenderbim.tool as tool
 replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 #todo
-#get filtering to work from ods
 #try to apply autofilter ods
-#add basequantities to ui
-#add custom properties to ui
-#option to save selection and load into UI make list and write to text file
 #grey out filter if no speadsheet is loaded
 #grey out create spreadsheet if no ifc is loaded
 
@@ -362,17 +358,18 @@ class ExportToSpreadSheet(bpy.types.Operator):
             worksheet               = writer.sheets['workbook']
             writer.close()
 
+
             #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
             #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
+            #ns = {'my_table':'urn:oasis:names:tc:opendocument:xmlns:table:1.0'}
 
             #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
-                #with ziparchive.open('content.xml') as xmlfile:
-                # parse the XML data
-                    #tree = ET.parse(xmlfile)
-                    #root = tree.getroot()
+            #    with ziparchive.open('content.xml') as xmlfile:
+           
+            #        tree = ET.parse(xmlfile)
+            #        root = tree.getroot()
 
-                    #print (root)
-
+ 
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
 
