@@ -304,7 +304,6 @@ class ConstructDataFrame:
         return ifc_property_list
 
 
-
 class ExportToSpreadSheet(bpy.types.Operator):
     """Export to a .xlsx or .ods file"""
     bl_idname = "export.tospreadsheet"
@@ -501,7 +500,8 @@ class CustomCollectionActions(bpy.types.Operator):
         custom_collection.items.add().name = property_name
      
         return {"FINISHED"}        
-       
+
+
 class SaveAndLoadSelection(bpy.types.Operator):
     bl_idname = "save.save_and_load_selection"
     bl_label = "Save selection"
@@ -572,6 +572,20 @@ class ClearSelection(bpy.types.Operator):
 
     def execute(self, context):
         print ('hallo uit clear slection')
+
+        ifc_properties = context.scene.ifc_properties
+        custom_collection = context.scene.custom_collection
+
+
+        exlude_list = ['my_spreadsheetfile','ods_or_xlsx','my_selectionload']
+
+
+        for my_ifcproperty in ifc_properties.__annotations__.keys():
+            if my_ifcproperty not in exlude_list:
+                setattr(ifc_properties, my_ifcproperty, False)
+
+        custom_collection.items.clear()
+       
 
         return {"FINISHED"} 
 
