@@ -146,8 +146,9 @@ class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
         box = layout.box()
         row = box.row()
         row.prop(ifc_properties, "my_selectionload")
-        box.operator("save.confirm_selection", text="Confirm and set UI")
-        box.operator("save.save_and_load_selection")
+        box.operator("save.confirm_selection", text="Set Selection")
+        box.operator("save.save_and_load_selection",text="Save Selection")
+        box.operator("save.clear_selection",text="Clear Selection")
         
 
 classes = ( 

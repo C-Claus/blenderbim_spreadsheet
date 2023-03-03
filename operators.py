@@ -30,6 +30,7 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #try to apply autofilter ods
 #grey out filter if no speadsheet is loaded
 #grey out create spreadsheet if no ifc is loaded
+#clear selection button
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -564,6 +565,15 @@ class ConfirmSelection(bpy.types.Operator):
 
         return {"FINISHED"} 
     
+class ClearSelection(bpy.types.Operator):
+
+    bl_idname = "save.clear_selection"
+    bl_label = "Clear Selection"
+
+    def execute(self, context):
+        print ('hallo uit clear slection')
+
+        return {"FINISHED"} 
 
         
 
@@ -574,6 +584,7 @@ def register():
     bpy.utils.register_class(CustomCollectionActions)
     bpy.utils.register_class(SaveAndLoadSelection)
     bpy.utils.register_class(ConfirmSelection)
+    bpy.utils.register_class(ClearSelection)
     
 
 def unregister():
@@ -583,3 +594,4 @@ def unregister():
     bpy.utils.unregister_class(CustomCollectionActions)
     bpy.utils.unregister_class(SaveAndLoadSelection)
     bpy.utils.unregister_class(ConfirmSelection)
+    bpy.utils.unregister_class(ClearSelection)
