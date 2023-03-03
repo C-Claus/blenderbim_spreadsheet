@@ -12,13 +12,9 @@ import pyexcel_ods
 import openpyxl
 from openpyxl import load_workbook
 
-
-
-
 import zipfile
 import xml.parsers.expat
 import xml.etree.ElementTree as ET
-
 
 import ifcopenshell
 import blenderbim
@@ -322,10 +318,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
             construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
-            
-            #workbook  = writer.book
-           
-            
+ 
             worksheet = writer.sheets['workbook']
 
             (max_row, max_col) = construct_data_frame.df.shape
@@ -340,8 +333,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             worksheet.set_column(0, max_col - 1, 30)
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
-
-     
 
             writer.close()
 
@@ -506,12 +497,9 @@ class SaveAndLoadSelection(bpy.types.Operator):
     def execute(self, context):
 
         configuration_dictionary = {}
-
         ifc_properties = context.scene.ifc_properties
-        custom_collection = context.scene.custom_collection
         custom_items = context.scene.custom_collection.items
         
-
         for my_ifcproperty in ifc_properties.__annotations__.keys():
             my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
             configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
@@ -523,9 +511,8 @@ class SaveAndLoadSelection(bpy.types.Operator):
         with open(replace_with_IfcStore.replace('.ifc','_selectionset.json'), "w") as selection_file:
             json.dump(configuration_dictionary, selection_file, indent=4)
 
-
         ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.json'))
-
+        print ('Selection has been saved at: ', ifc_properties.my_selectionload)
 
         return {"FINISHED"} 
 
@@ -535,12 +522,9 @@ class ConfirmSelection(bpy.types.Operator):
 
     def execute(self, context):
 
-        print ('hallo uit confirm and set ui class')
-
         ifc_properties = context.scene.ifc_properties
         custom_collections_actions = CustomCollectionActions
         custom_collection = context.scene.custom_collection
-       
         set_configuration = custom_collections_actions.set_configuration
    
         selection_file = open(ifc_properties.my_selectionload)
@@ -550,10 +534,8 @@ class ConfirmSelection(bpy.types.Operator):
 
         for property_name_from_json, property_value_from_json in selection_configuration.items():
             if property_name_from_json.startswith('my_ifccustomproperty'):
-
                 set_configuration(context,property_name=property_value_from_json)
                 
-    
             if not hasattr(ifc_properties, property_name_from_json):
                 continue  
             setattr(ifc_properties, property_name_from_json, property_value_from_json)
@@ -572,10 +554,7 @@ class ClearSelection(bpy.types.Operator):
 
         ifc_properties = context.scene.ifc_properties
         custom_collection = context.scene.custom_collection
-
-
         exlude_list = ['my_spreadsheetfile','ods_or_xlsx','my_selectionload']
-
 
         for my_ifcproperty in ifc_properties.__annotations__.keys():
             if my_ifcproperty not in exlude_list:
@@ -583,7 +562,6 @@ class ClearSelection(bpy.types.Operator):
 
         custom_collection.items.clear()
        
-
         return {"FINISHED"} 
 
         
