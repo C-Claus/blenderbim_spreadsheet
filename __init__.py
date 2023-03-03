@@ -23,7 +23,7 @@ bl_info = {
         "name": "BlenderBIM Spreadsheet",
         "description": "Filter IFC elements from a spreadsheet",
         "author": "Coen Claus",
-        "version": (1, 0),
+        "version": (2, 0),
         "blender": (3, 4, 1),
         "location": "BlenderBIM | Spreadsheet tab",
         #"warning": "depends on pandas, openpyxl, xlsxwriter and ods",
