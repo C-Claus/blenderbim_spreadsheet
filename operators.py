@@ -38,6 +38,7 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #7. make user set the file name for selection set
 #8. after set selection, set selection file should not be cleared
 #9. make sure end user can't accidently wipe selection by greying out
+#10. if spreadsheet is openened on os, make sure end-user closes it first
 
 class Element(list):
     def __init__(self, name, attrs):
