@@ -24,18 +24,20 @@ import blenderbim.tool as tool
 replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 #todo
-#try to apply autofilter ods
-#grey out filter if no speadsheet is loaded
-#grey out create spreadsheet if no ifc is loaded
-#check if spreadsheet already openend by checking boolroperty
-#give confirmiatin button to custom properties
-#give feedback to user they should use . notation
-#custom properties will fail if:
-#   same values are added
-#   no dot . notation is used
-#make sure to export multiple classification
-#user blender button to open spreadsheet file
-#check if .xlsx file is already openend
+#1. try to apply autofilter ods
+#2. grey out filter if no speadsheet is loaded
+#3. grey out create spreadsheet if no ifc is loaded
+#4. check if spreadsheet already openend by checking boolproperty (ods just opens the file, xlsx gives an error)
+#5. give feedback to user they should use . notation when adding custom properties
+    #custom properties will fail if:
+    #   same values are added
+    #   no dot . notation is used
+#6. make sure to export multiple classifications, set classification system as dropdown
+
+
+#7. make user set the file name for selection set
+#8. after set selection, set selection file should not be cleared
+#9. make sure end user can't accidently wipe selection by greying out
 
 class Element(list):
     def __init__(self, name, attrs):
