@@ -359,10 +359,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
             self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
-
-            if spreadsheet_filepath is not None:
-                print ("Spreadsheet file already opened at: ", spreadsheet_filepath)
-          
+        
 
         if ifc_properties.ods_or_xlsx == 'ODS':
            
