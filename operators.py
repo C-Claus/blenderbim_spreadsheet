@@ -402,8 +402,6 @@ class FilterIFCElements(bpy.types.Operator):
          
         if ifc_properties.my_spreadsheetfile:
             if ifc_properties.my_spreadsheetfile.endswith(".xlsx"):
-
-                print ('hallo vanuit filtering xlsx')
                 
                 workbook_openpyxl = load_workbook(ifc_properties.my_spreadsheetfile)
                 worksheet_openpyxl = workbook_openpyxl['workbook'] 
@@ -501,34 +499,14 @@ class CustomCollectionActions(bpy.types.Operator):
 
         custom_collection = context.scene.custom_collection
 
-        #print (custom_collection.items)
-        #custom_collection.items.add().name = 'test.test'
-        #custom_collection.items.add().name = 'test1.test1'
-       
-        #print ('hoi', self.index)
-
         if self.action == "add":        
             item = custom_collection.items.add()  
 
-           
-
-
+ 
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
 
-            
-
-        #if self.action == "remove":
-        #    if self.index < 0:
-        #        custom_collection.items.remove(len(custom_collection.items) - 1 )
-            #else:
-            #    custom_collection.items.remove(index)   
-            # 
-            # 
-
- 
-
-           
+               
         return {"FINISHED"}  
 
     def set_configuration(context,property_name):

@@ -64,17 +64,7 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         layout = self.layout
         box = layout.box()
-
-        #for i, item in enumerate(context.scene.custom_collection.items):
-        #    op = box.operator("custom.collection_actions")
-        #    op.action = "remove"
-        #    op.index = i
-        #    box.operator("custom.collection_actions").action = "add"
-
-
-
-       
-
+        
         custom_collection = context.scene.custom_collection
 
         row = layout.row(align=True)
@@ -85,30 +75,6 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
             box.prop(item, "name")
 
         row = layout.row(align=True)  
-
-
-
-
-
-
-
-
-        """ 
-        col = layout.column()
-        box = col.box()
-        column = box.column(align=True)
-
-
-        for i, container in enumerate(custom_collection.items):
-            row = column.row()
-            row.prop(container, "collection", text=f"Collection {i + 1}")
-            op = row.operator("prj.container_collection_add_or_remove", icon="REMOVE", text="")
-            op.operation = "REMOVE"
-            op.idx = i
-        """    
-
-        
-
              
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
