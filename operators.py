@@ -5,6 +5,7 @@ import collections
 from collections import defaultdict, OrderedDict
 import json
 import re
+import subprocess, os, platform
 
 import pandas as pd
 import xlsxwriter
@@ -33,6 +34,8 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #   same values are added
 #   no dot . notation is used
 #make sure to export multiple classification
+#user blender button to open spreadsheet file
+#check if .xlsx file is already openend
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -347,6 +350,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
             writer.close()
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
+            self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
           
 
         if ifc_properties.ods_or_xlsx == 'ODS':
@@ -368,10 +372,20 @@ class ExportToSpreadSheet(bpy.types.Operator):
             #        root = tree.getroot()
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
-
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
+            self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
 
         return {'FINISHED'}
+    
+    def open_file_on_each_os(self, spreadsheet_filepath):
+
+        if platform.system() == 'Darwin':       # macOS
+            subprocess.call(('open', spreadsheet_filepath))
+        elif platform.system() == 'Windows':    # Windows
+            os.startfile(spreadsheet_filepath)
+        else:                                   # linux variants
+            subprocess.call(('xdg-open', spreadsheet_filepath))
+
 
 
 class FilterIFCElements(bpy.types.Operator):
@@ -478,6 +492,9 @@ class CustomCollectionActions(bpy.types.Operator):
             ("remove",) * 3,
         ),
     )
+
+    index: bpy.props.IntProperty() 
+
     def execute(self, context):
 
         custom_collection = context.scene.custom_collection
@@ -486,10 +503,30 @@ class CustomCollectionActions(bpy.types.Operator):
         #custom_collection.items.add().name = 'test.test'
         #custom_collection.items.add().name = 'test1.test1'
        
+        #print ('hoi', self.index)
+
         if self.action == "add":        
             item = custom_collection.items.add()  
+
+           
+
+
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
+
+            
+
+        #if self.action == "remove":
+        #    if self.index < 0:
+        #        custom_collection.items.remove(len(custom_collection.items) - 1 )
+            #else:
+            #    custom_collection.items.remove(index)   
+            # 
+            # 
+
+ 
+
+           
         return {"FINISHED"}  
 
     def set_configuration(context,property_name):
@@ -557,7 +594,7 @@ class ConfirmSelection(bpy.types.Operator):
 class ClearSelection(bpy.types.Operator):
 
     bl_idname = "save.clear_selection"
-    bl_label = "Clear Selection"
+    bl_label = "Clear All"
 
     def execute(self, context):
 
