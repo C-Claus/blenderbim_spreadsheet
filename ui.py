@@ -60,11 +60,11 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_label = "Custom Properties"
 
     def draw(self, context):
-        ifc_properties = context.scene.ifc_properties
+        #ifc_properties = context.scene.ifc_properties
 
         layout = self.layout
         box = layout.box()
-        
+
         custom_collection = context.scene.custom_collection
 
         row = layout.row(align=True)
