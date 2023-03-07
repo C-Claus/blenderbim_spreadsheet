@@ -20,8 +20,8 @@ import xml.etree.ElementTree as ET
 import ifcopenshell
 import blenderbim
 import blenderbim.tool as tool
-#replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
-replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
+replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
+#replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 #todo
 #1. try to apply autofilter ods
@@ -39,6 +39,9 @@ replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\I
 #8. after set selection, set selection file should not be cleared
 #9. make sure end user can't accidently wipe selection by greying out
 #10. if spreadsheet is openened on os, make sure end-user closes it first
+#11. .ods gives back 0, not true or false like xlsx
+#12. xlsx does not return valid xmls
+#13. allow user to export only one ifc element
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -225,7 +228,7 @@ class ConstructDataFrame:
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
         
-        print ('Data frame is created.')
+        #print ('Data frame is created.')
 
     def get_ifc_type(self, context, ifc_product):
     
@@ -310,7 +313,7 @@ class ConstructDataFrame:
         ifc_property_list = []
         
         if ifc_product:
-            ifc_property_list.append(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name))
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name)))
             
         if not ifc_property_list:
             ifc_property_list.append(None)
@@ -328,18 +331,20 @@ class ExportToSpreadSheet(bpy.types.Operator):
         ifc_properties = context.scene.ifc_properties
         construct_data_frame = ConstructDataFrame(context)
 
+        
+
         if ifc_properties.ods_or_xlsx == 'XLSX':
-            
+           
             spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
             #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
             construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
- 
+
             worksheet = writer.sheets['workbook']
 
             (max_row, max_col) = construct_data_frame.df.shape
-         
+        
             # Create a list of column headers, to use in add_table().
             column_settings = []
             for header in construct_data_frame.df.columns:
@@ -354,6 +359,9 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
             self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
+
+            if spreadsheet_filepath is not None:
+                print ("Spreadsheet file already opened at: ", spreadsheet_filepath)
           
 
         if ifc_properties.ods_or_xlsx == 'ODS':
