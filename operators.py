@@ -551,7 +551,7 @@ class SaveAndLoadSelection(bpy.types.Operator):
 
 class ConfirmSelection(bpy.types.Operator):
     bl_idname = "save.confirm_selection"
-    bl_label = "confirm selection"
+    bl_label = "Confirm Selection"
 
     def execute(self, context):
 

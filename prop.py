@@ -68,7 +68,7 @@ class IFCProperties(bpy.types.PropertyGroup):
     ods_or_xlsx:    bpy.props.EnumProperty(
                                 name="File format",
                                 items=[
-                                    ("ODS", ".ods", "ods"),
+                                    ("ODS", ".ods (recommended)", "ods"),
                                     ("XLSX", ".xlsx", "xlsx"),
                                 ],
                                 default="ODS",

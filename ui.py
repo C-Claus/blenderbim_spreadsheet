@@ -88,9 +88,11 @@ class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "my_spreadsheetfile")
 
+        
+
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "ods_or_xlsx")
-        box_spreadsheet.operator("export.tospreadsheet")   
+        box_spreadsheet.operator("export.tospreadsheet",icon="SPREADSHEET")   
 class FILTER_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Filter IFC elements"
@@ -145,7 +147,7 @@ class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
         box = layout.box()
         row = box.row()
         row.prop(ifc_properties, "my_selectionload")
-        box.operator("save.confirm_selection", text="Set Selection")
+        row.operator("save.confirm_selection", text="",icon="PLAY")
         box.operator("save.save_and_load_selection",text="Save Selection Set")
         box.operator("save.clear_selection",text="Clear Selection")
         
