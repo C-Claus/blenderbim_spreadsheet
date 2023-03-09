@@ -42,7 +42,8 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #11. .ods gives back 0, not true or false like xlsx
 #12. xlsx does not return valid xmls
 #13. allow user to export only one ifc element
-
+#14. seperate ui code from data generation
+prop.prop_workbook
 class Element(list):
     def __init__(self, name, attrs):
         self.name = name
@@ -100,7 +101,10 @@ class ConstructDataFrame:
 
         custom_property_unique_list = (set(custom_propertyset_list))
       
-       
+       #get properties from ui
+       #create a list
+       #loop through list to see if property is set to True
+       #loop through products
 
         for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -339,9 +343,9 @@ class ExportToSpreadSheet(bpy.types.Operator):
             #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
-            construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=1, header=False, index=False)
+            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
 
-            worksheet = writer.sheets['workbook']
+            worksheet = writer.sheets[prop.prop_workbook]
 
             (max_row, max_col) = construct_data_frame.df.shape
         
@@ -365,8 +369,8 @@ class ExportToSpreadSheet(bpy.types.Operator):
            
             spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
             writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
-            construct_data_frame.df.to_excel(writer, sheet_name='workbook', startrow=0, header=True, index=False)
-            worksheet               = writer.sheets['workbook']
+            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
+            worksheet               = writer.sheets[prop.prop_workbook]
             writer.close()
 
             #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
@@ -410,7 +414,7 @@ class FilterIFCElements(bpy.types.Operator):
             if ifc_properties.my_spreadsheetfile.endswith(".xlsx"):
                 
                 workbook_openpyxl = load_workbook(ifc_properties.my_spreadsheetfile)
-                worksheet_openpyxl = workbook_openpyxl['workbook'] 
+                worksheet_openpyxl = workbook_openpyxl[prop.prop_workbook] 
                 
                 global_id_filtered_list = []
                        
@@ -445,7 +449,7 @@ class FilterIFCElements(bpy.types.Operator):
 
                 hidden_rows = get_hidden_rows(treebuilder.root)  # This returns a generator object
         
-                dataframe = pd.read_excel(ifc_properties.my_spreadsheetfile, sheet_name='workbook', skiprows=hidden_rows, engine="odf")
+                dataframe = pd.read_excel(ifc_properties.my_spreadsheetfile, sheet_name=prop.prop_workbook, skiprows=hidden_rows, engine="odf")
                 self.filter_IFC_elements(context, guid_list=dataframe['GlobalId'].values.tolist())
                 
                 return {'FINISHED'}

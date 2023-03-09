@@ -68,11 +68,15 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
         custom_collection = context.scene.custom_collection
 
         row = layout.row(align=True)
+        #icon="SPREADSHEET"
+        #row.operator("save.confirm_selection", text="",icon="PLAY")
         row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
         row.operator("custom.collection_actions", text="Remove Last", icon="REMOVE").action = "remove"
 
         for item in custom_collection.items:
-            box.prop(item, "name")
+            box.prop(item, "name" )
+            #row.prop(item, "name" )
+            #row.prop(item, "name",icon="X")
 
         row = layout.row(align=True)  
              

@@ -28,6 +28,8 @@ prop_volume             = 'Volume'
 prop_netvolume          = 'NetVolume'
 prop_grossvolume        = 'GrossVolume'
 
+prop_workbook           = 'Workbook'
+
 class IFCProperties(bpy.types.PropertyGroup):
     my_selectionload:           bpy.props.StringProperty(   name="Load Selection",
                                                             description="Load your previous saved selections",
@@ -74,10 +76,12 @@ class IFCProperties(bpy.types.PropertyGroup):
                                 default="ODS",
                                 )
     
+    
 class CustomItem(bpy.types.PropertyGroup):
     name: bpy.props.StringProperty(name         ="Property",
                                    description  ="Use the PropertySet name and Property name divided by a .",
-                                   default      ="PropertySet.Property") 
+                                   default      ="PropertySet.Property"
+                                   ) 
 class CustomCollection(bpy.types.PropertyGroup):
     items: bpy.props.CollectionProperty(type=CustomItem) 
     
