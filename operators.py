@@ -96,13 +96,11 @@ class ConstructDataFrame:
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
-        custom_propertyset_list = [] #set(list(custom_collection.items))
-   
+        custom_propertyset_list = [] 
+
         for custom_property in custom_collection.items:
             custom_propertyset_list.append(custom_property.name)
-
         custom_property_unique_list = (set(custom_propertyset_list))
-      
       
         common_property_dict = {}
         quantity_property_dict = {}
