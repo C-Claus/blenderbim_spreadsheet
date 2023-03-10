@@ -43,7 +43,9 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #12. xlsx does not return valid xmls
 #13. allow user to export only one ifc element
 #14. seperate ui code from data generation
-prop.prop_workbook
+#15. if new workbook is created from blender close libre office automatically 
+#16. somehow store the filtering made from the first session after creating a workbook so users don't have to make the filtering again
+
 class Element(list):
     def __init__(self, name, attrs):
         self.name = name
@@ -101,10 +103,17 @@ class ConstructDataFrame:
 
         custom_property_unique_list = (set(custom_propertyset_list))
       
-       #get properties from ui
-       #create a list
-       #loop through list to see if property is set to True
-       #loop through products
+      
+        common_property_dict = {}
+        quantity_property_dict = {}
+
+        for my_ifcproperty in ifc_properties.__annotations__.keys():
+            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
+            if my_ifcproperty.startswith('my_property'):
+                common_property_dict[my_ifcproperty.replace('my_property_','')] = my_ifcpropertyvalue
+
+            if my_ifcproperty.startswith('my_quantity'):
+                quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue
 
         for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -131,102 +140,27 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(                  context,
                                                                                                     ifc_product=product))
-
-            if ifc_properties.my_property_IsExternal:
-                ifc_dictionary[prop.prop_isexternal].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                    ifc_product=product,
-                                                                                                    ifc_propertyset_name=ifc_pset_common,
-                                                                                                    ifc_property_name=prop.prop_isexternal,
-                                                                                                    )[0])
-
-            if ifc_properties.my_property_LoadBearing:
-                ifc_dictionary[prop.prop_loadbearing].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                    ifc_product=product,
-                                                                                                    ifc_propertyset_name=ifc_pset_common,
-                                                                                                    ifc_property_name=prop.prop_loadbearing,
-                                                                                                    )[0])
-
-            if ifc_properties.my_property_FireRating:
-                ifc_dictionary[prop.prop_firerating].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                    ifc_product=product,
-                                                                                                    ifc_propertyset_name=ifc_pset_common,
-                                                                                                    ifc_property_name=prop.prop_firerating,
-                                                                                                    )[0])
-                
-            if ifc_properties.my_property_AcousticRating:
-                ifc_dictionary[prop.prop_acousticrating].append(self.get_ifc_properties_and_quantities( context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=ifc_pset_common,
-                                                                                                        ifc_property_name=prop.prop_acousticrating)[0])
-                
-
-
-            if ifc_properties.my_quantity_Length:
-                ifc_dictionary[prop.prop_length].append(self.get_ifc_properties_and_quantities(         context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_length)[0])
-                
-            if ifc_properties.my_quantity_Width:
-                ifc_dictionary[prop.prop_width].append(self.get_ifc_properties_and_quantities(          context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_width)[0])
-
-            if ifc_properties.my_quantity_Area:
-                ifc_dictionary[prop.prop_area].append(self.get_ifc_properties_and_quantities(           context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_area)[0])
-                
-            if ifc_properties.my_quantity_NetArea:
-                ifc_dictionary[prop.prop_netarea].append(self.get_ifc_properties_and_quantities(        context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_netarea)[0])
-                
-            if ifc_properties.my_quantity_NetSideArea:
-                ifc_dictionary[prop.prop_netsidearea].append(self.get_ifc_properties_and_quantities(    context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_netsidearea)[0])
-                
-            if ifc_properties.my_quantity_GrossSideArea:
-                ifc_dictionary[prop.prop_grosssidearea].append(self.get_ifc_properties_and_quantities(  context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_grosssidearea)[0])
-                
-            if ifc_properties.my_quantity_GrossArea:
-                ifc_dictionary[prop.prop_grossarea].append(self.get_ifc_properties_and_quantities(      context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_grossarea)[0])
-                
-            if ifc_properties.my_quantity_Volume:
-                ifc_dictionary[prop.prop_volume].append(self.get_ifc_properties_and_quantities(         context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_volume)[0])
-                
-            if ifc_properties.my_quantity_NetVolume:
-                ifc_dictionary[prop.prop_netvolume].append(self.get_ifc_properties_and_quantities(      context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_netvolume)[0])
-                
-            if ifc_properties.my_quantity_GrossVolume:
-                ifc_dictionary[prop.prop_grossvolume].append(self.get_ifc_properties_and_quantities(    context,
-                                                                                                        ifc_product=product,
-                                                                                                        ifc_propertyset_name=prop.prop_basequantities,
-                                                                                                        ifc_property_name=prop.prop_grossvolume)[0])
-            
+       
+            for k,v in common_property_dict.items():
+                if v:
+                    property = str(k)
+                    ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+                                                                                            ifc_product=product,
+                                                                                            ifc_propertyset_name=ifc_pset_common,
+                                                                                            ifc_property_name=property)[0])
+            for k,v in quantity_property_dict.items():
+                if v:
+                    property = str(k)
+                    ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+                                                                                            ifc_product=product,
+                                                                                            ifc_propertyset_name=prop.prop_basequantities,
+                                                                                            ifc_property_name=property)[0])
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
-                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities(             context,
-                                                                                                    ifc_product=product,
-                                                                                                    ifc_propertyset_name=str(item).split('.')[0],
-                                                                                                    ifc_property_name=str(item).split('.')[1])[0])  
+                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities( context,
+                                                                                        ifc_product=product,
+                                                                                        ifc_propertyset_name=str(item).split('.')[0],
+                                                                                        ifc_property_name=str(item).split('.')[1])[0])  
              
 
         df = pd.DataFrame(ifc_dictionary)
