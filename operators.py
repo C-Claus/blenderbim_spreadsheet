@@ -119,6 +119,10 @@ class ConstructDataFrame:
 
             if ifc_properties.my_ifcproduct:
                 ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
+
+            if ifc_properties.my_ifcbuildingstorey:
+                ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(    context,
+                                                                                                    ifc_product=product)[0])
             
             if ifc_properties.my_ifcproductname:
                 ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
@@ -127,9 +131,7 @@ class ConstructDataFrame:
                 ifc_dictionary[prop.prop_ifcproducttypename].append(self.get_ifc_type(              context,
                                                                                                     ifc_product=product)[0])
 
-            if ifc_properties.my_ifcbuildingstorey:
-                ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(    context,
-                                                                                                    ifc_product=product)[0])
+
 
             if ifc_properties.my_ifcclassification:
                 ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification(        context,
