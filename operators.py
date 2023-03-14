@@ -180,7 +180,6 @@ class ConstructDataFrame:
                                                                                             ifc_property_name=property)[0])
                
             for k,v in quantity_property_dict.items():
-
                 if v:
                     property = str(k)
                     ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
@@ -195,7 +194,7 @@ class ConstructDataFrame:
                                                                                         ifc_property_name=str(item).split('.')[1])[0])  
             
             #attempt at making code faster:
-
+        
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
         
@@ -287,7 +286,7 @@ class ConstructDataFrame:
         ifc_property_list = []
         
         if ifc_product:
-            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name)))
+            ifc_property_list.append((ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name)))
             
         if not ifc_property_list:
             ifc_property_list.append(None)
@@ -313,8 +312,13 @@ class ExportToSpreadSheet(bpy.types.Operator):
                 self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
 
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
-                self.close_file(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
+                if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
+                    print ("Please close the spreadsheet file first")
+
+                else:
+                    self.create_spreadsheet(context)
                 #ifc_properties.my_spreadsheetfile = ''
+                #print ('is the spreadsheet file closed? (y/n)')
                 #self.create_spreadsheet(context)
 
         return {'FINISHED'}
@@ -387,10 +391,20 @@ class ExportToSpreadSheet(bpy.types.Operator):
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
 
-    def close_file(self, spreadsheet_filepath):
+    def check_if_file_is_open(self, spreadsheet_filepath):
        
-        print ('Please close the excel file at', spreadsheet_filepath, ' first, before you are able to create a new spreadsheet')
+        boolean_open = None
+        
+        if platform.system() == 'Windows': 
+            try: 
+                os.rename(spreadsheet_filepath, 'tempfile.xls')
+                os.rename('tempfile.xls', spreadsheet_filepath)
+            except OSError:
+                boolean_open = True
 
+        return boolean_open
+
+        
 
     def store_temp_ui_settings(self, context):
 
