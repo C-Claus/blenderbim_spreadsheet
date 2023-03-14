@@ -382,23 +382,15 @@ class ExportToSpreadSheet(bpy.types.Operator):
     
     def open_file_on_each_os(self, spreadsheet_filepath):
 
-        
         if platform.system() == 'Darwin':       # macOS
-            path_to_libre_office_calc = 'C:\Program Files\LibreOffice\program\soffice.exe'
-            subprocess.call([path_to_libre_office_calc, spreadsheet_filepath])
-            #subprocess.call(('open', spreadsheet_filepath))
+            subprocess.call(('open', spreadsheet_filepath))
         elif platform.system() == 'Windows':    # Windows
             os.startfile(spreadsheet_filepath)
-
-            #path_to_libre_office_calc = 'C:\Program Files\LibreOffice\program\soffice.exe'
-            #subprocess.call([path_to_libre_office_calc, spreadsheet_filepath])
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
 
     def close_file(self):
         print ('close file')
-
-        print ('close file and overwrite it')
 
         # Get the process name of Excel on each OS
         if platform.system() == 'Windows':
@@ -423,8 +415,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
                 subprocess.call(['taskkill', '/F', '/PID', str(pid)])
             else:
                 subprocess.call(['kill', str(pid)])
-
-
 
     def store_temp_ui_settings(self, context):
 
