@@ -34,7 +34,6 @@ class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
         row = box.row()
         row.prop(ifc_properties, "my_ifcproducttypename")
         row = box.row()
-        
         row.prop(ifc_properties, "my_ifcclassification")
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )

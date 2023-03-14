@@ -6,6 +6,8 @@ from collections import defaultdict, OrderedDict
 import json
 import re
 import subprocess, os, platform
+import time
+
 
 import pandas as pd
 import xlsxwriter
@@ -45,6 +47,13 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #14. seperate ui code from data generation
 #15. if new workbook is created from blender close libre office automatically 
 #16. somehow store the filtering made from the first session after creating a workbook so users don't have to make the filtering again
+
+#add libre office calc to blenderbim spreadsheet add-on libs site package folder
+#use a macro to set the filter and table on opening libre offie calc
+
+
+#"C:\Program Files\LibreOffice\program\soffice.bin"
+#"C:\Program Files\LibreOffice\program\soffice.exe"
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -87,11 +96,16 @@ def get_hidden_rows(node):
 
 class ConstructDataFrame:
     def __init__(self, context):
+
+        
+
+        start_time = time.perf_counter()
         
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
         custom_collection   = context.scene.custom_collection
         #custom_items        = context.scene.custom_collection.items
+ 
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
@@ -148,6 +162,7 @@ class ConstructDataFrame:
                                                                                             ifc_product=product,
                                                                                             ifc_propertyset_name=ifc_pset_common,
                                                                                             ifc_property_name=property)[0])
+            """        
             for k,v in quantity_property_dict.items():
                 if v:
                     property = str(k)
@@ -161,12 +176,16 @@ class ConstructDataFrame:
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=str(item).split('.')[0],
                                                                                         ifc_property_name=str(item).split('.')[1])[0])  
-             
+            """ 
+            #attempt at making code faster:
 
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
         
         #print ('Data frame is created.')
+        #7.7897383000236005 seconds for the dateframe to be created
+        #
+        print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
 
     def get_ifc_type(self, context, ifc_product):
     
@@ -267,68 +286,88 @@ class ExportToSpreadSheet(bpy.types.Operator):
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
-        construct_data_frame = ConstructDataFrame(context)
 
-        
+        if len(ifc_properties.my_spreadsheetfile) > 1:
+                self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
 
-        if ifc_properties.ods_or_xlsx == 'XLSX':
+        if len(ifc_properties.my_spreadsheetfile) == 0:
+                
+            if ifc_properties.ods_or_xlsx == 'XLSX':
+
+                
+                construct_data_frame = ConstructDataFrame(context)
            
-            spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
-            #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
+                spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
+                #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
 
-            writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
-            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
+                writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
+                construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
 
-            worksheet = writer.sheets[prop.prop_workbook]
+                worksheet = writer.sheets[prop.prop_workbook]
 
-            (max_row, max_col) = construct_data_frame.df.shape
+                (max_row, max_col) = construct_data_frame.df.shape
+            
+                # Create a list of column headers, to use in add_table().
+                column_settings = []
+                for header in construct_data_frame.df.columns:
+                    column_settings.append({'header': header})
+
+                # Add the table.
+                worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
+                worksheet.set_column(0, max_col - 1, 30)
+
+                ifc_properties.my_spreadsheetfile = spreadsheet_filepath
+                writer.close()
+
+                print ("Spreadsheet is created at: ", spreadsheet_filepath)
+                self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
+
         
-            # Create a list of column headers, to use in add_table().
-            column_settings = []
-            for header in construct_data_frame.df.columns:
-                column_settings.append({'header': header})
-
-            # Add the table.
-            worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
-            worksheet.set_column(0, max_col - 1, 30)
-
-            ifc_properties.my_spreadsheetfile = spreadsheet_filepath
-            writer.close()
-
-            print ("Spreadsheet is created at: ", spreadsheet_filepath)
-            self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
         
-
         if ifc_properties.ods_or_xlsx == 'ODS':
-           
-            spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
-            writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
-            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
-            worksheet               = writer.sheets[prop.prop_workbook]
-            writer.close()
+            if len(ifc_properties.my_spreadsheetfile) > 1:
+                self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
 
-            #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
-            #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
-            #ns = {'my_table':'urn:oasis:names:tc:opendocument:xmlns:table:1.0'}
+            if len(ifc_properties.my_spreadsheetfile) == 0:
 
-            #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
-            #    with ziparchive.open('content.xml') as xmlfile:
-           
-            #        tree = ET.parse(xmlfile)
-            #        root = tree.getroot()
+                #ifc_properties = context.scene.ifc_properties
+                construct_data_frame = ConstructDataFrame(context)
+        
+                spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
+                writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
+                construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
+                worksheet               = writer.sheets[prop.prop_workbook]
+                writer.close()
 
-            ifc_properties.my_spreadsheetfile = spreadsheet_filepath
-            print ("Spreadsheet is created at: ", spreadsheet_filepath)
-            self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
+                #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
+                #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
+                #ns = {'my_table':'urn:oasis:names:tc:opendocument:xmlns:table:1.0'}
+
+                #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
+                #    with ziparchive.open('content.xml') as xmlfile:
+            
+                #        tree = ET.parse(xmlfile)
+                #        root = tree.getroot()
+
+                ifc_properties.my_spreadsheetfile = spreadsheet_filepath
+                print ("Spreadsheet is created at: ", spreadsheet_filepath)
+                self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
 
         return {'FINISHED'}
     
     def open_file_on_each_os(self, spreadsheet_filepath):
 
+        
+
         if platform.system() == 'Darwin':       # macOS
-            subprocess.call(('open', spreadsheet_filepath))
+            path_to_libre_office_calc = 'C:\Program Files\LibreOffice\program\soffice.exe'
+            subprocess.call([path_to_libre_office_calc, spreadsheet_filepath])
+            #subprocess.call(('open', spreadsheet_filepath))
         elif platform.system() == 'Windows':    # Windows
             os.startfile(spreadsheet_filepath)
+
+            #path_to_libre_office_calc = 'C:\Program Files\LibreOffice\program\soffice.exe'
+            #subprocess.call([path_to_libre_office_calc, spreadsheet_filepath])
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
 
