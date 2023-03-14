@@ -308,14 +308,14 @@ class ExportToSpreadSheet(bpy.types.Operator):
             self.create_spreadsheet(context)
 
         if len(ifc_properties.my_spreadsheetfile) > 1:
-    
+
             if self.get_current_ui_settings(context) == self.get_stored_ui_settings():
                 self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
 
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
-                self.close_file()
-                ifc_properties.my_spreadsheetfile = ''
-                self.create_spreadsheet(context)
+                self.close_file(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
+                #ifc_properties.my_spreadsheetfile = ''
+                #self.create_spreadsheet(context)
 
         return {'FINISHED'}
 
@@ -378,8 +378,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
             self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
 
-        #return {'FINISHED'}
-    
     def open_file_on_each_os(self, spreadsheet_filepath):
 
         if platform.system() == 'Darwin':       # macOS
@@ -389,39 +387,15 @@ class ExportToSpreadSheet(bpy.types.Operator):
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
 
-    def close_file(self):
-        print ('close file')
+    def close_file(self, spreadsheet_filepath):
+       
+        print ('Please close the excel file at', spreadsheet_filepath, ' first, before you are able to create a new spreadsheet')
 
-        # Get the process name of Excel on each OS
-        if platform.system() == 'Windows':
-            process_name = 'EXCEL.EXE'
-        elif platform.system() == 'Darwin':
-            process_name = 'Microsoft Excel'
-        else:
-            process_name = 'soffice.bin'
-
-        # Find the process ID (PID) of the Excel process
-        cmd = f'tasklist /FI "IMAGENAME eq {process_name}" /FI "STATUS eq running" /NH /FO CSV'
-        output = subprocess.check_output(cmd, shell=True).decode()
-        pid = None
-        for line in output.splitlines():
-            if line.startswith('"{0}"'.format(process_name)):
-                pid = int(line.split(',')[1].strip('"'))
-                break
-
-        # Kill the process if the PID is found
-        if pid is not None:
-            if platform.system() == 'Windows':
-                subprocess.call(['taskkill', '/F', '/PID', str(pid)])
-            else:
-                subprocess.call(['kill', str(pid)])
 
     def store_temp_ui_settings(self, context):
 
         ifc_properties = context.scene.ifc_properties
         configuration_dictionary = {}
-
-        print ('store selection for comparision')
 
         cwd = Path.cwd()
         temp_file = str(cwd) + "\\libs\\site\\packages\\ui_settings\\temp.json"
