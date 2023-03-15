@@ -1,13 +1,13 @@
 # BlenderBIM Spreadsheet
 
-BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 with the lastes stable BlenderBIM release
+BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 with the lastest stable BlenderBIM release
 ## Installation
 
 Prequisites
 
-Blender 3.4
-BlenderBIM add-on
-Libre Office Calc
+Blender 3.4\n
+BlenderBIM add-on\n
+Libre Office Calc\n
 
 ## Setup 
 
@@ -24,6 +24,13 @@ Download a macro here which creates a table style and autofilter on startup
 6. Stop Recording Macro and Save it
 7. Go to Advanced to Uncheck > Java Runtime
 8. Make the Macro a hotkey
+
+## About filtering in Libre Office Calc
+
+1. Advanced filters
+2. Saving filter
+3. Resetting filters
+
 
 ## Functionality
 
