@@ -188,10 +188,10 @@ class ConstructDataFrame:
                                                                                             ifc_property_name=property)[0])
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
-                    ifc_dictionary[item].append(self.get_ifc_properties_and_quantities( context,
+                    ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities( context,
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=str(item).split('.')[0],
-                                                                                        ifc_property_name=str(item).split('.')[1])[0])  
+                                                                                        ifc_property_name=str(item).split('.')[1])[0]))  
             
             #attempt at making code faster:
         

@@ -8,12 +8,22 @@ Prequisites
 Blender 3.4
 BlenderBIM add-on
 Libre Office Calc
-Knowledge of the IFC Schema
+
 ## Setup 
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
 Download a macro here which creates a table style and autofilter on startup
+## Creating your own custom Macro which creates an autofilter and table style
+
+1. Press Record Macro
+2. Select cell A1 and Press Ctrl+Shift+Down Arrow then Right Arrow
+3. Go to > Format -> Autoformat Styles > Box List Blue > OK
+4. Press Home
+5. Press Ctrl + Shift + L
+6. Stop Recording Macro and Save it
+7. Go to Advanced to Uncheck > Java Runtime
+8. Make the Macro a hotkey
 
 ## Functionality
 
