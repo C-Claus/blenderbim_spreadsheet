@@ -411,8 +411,20 @@ class ExportToSpreadSheet(bpy.types.Operator):
         ifc_properties = context.scene.ifc_properties
         configuration_dictionary = {}
 
-        cwd = Path.cwd()
-        temp_file = str(cwd) + "\\ui_settings\\temp.json"
+        #cwd = Path.cwd()
+        #add_ons_folder = bpy.utils.user_resource('SCRIPTS', "addons")
+        #print (add_ons_folder)
+        #temp_file = str(cwd) + "\\ui_settings\\temp.json"
+        #temp_file = add_ons_folder + "//blenderbim_spreadsheet//temp.json"
+
+        #print (temp_file, 'from store temp ui settings')
+
+        script_file = os.path.realpath(__file__)
+        directory = os.path.dirname(script_file)
+        #print (directory)
+
+        temp_file = directory + "\\ui_settings\\temp.json"
+
 
         configuration_dictionary = {}
         ifc_properties = context.scene.ifc_properties
@@ -432,7 +444,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
         return {'FINISHED'}
     
     def get_current_ui_settings(self, context):
-        print ('get current ui settings')
+        #print ('get current ui settings')
 
         ifc_properties = context.scene.ifc_properties
         custom_items = context.scene.custom_collection.items
@@ -449,10 +461,23 @@ class ExportToSpreadSheet(bpy.types.Operator):
         return configuration_dictionary
 
     def get_stored_ui_settings(self):
-        print ('get stored ui settings')
+        #print ('get stored ui settings')
 
-        cwd = Path.cwd()
-        temp_file = str(cwd) + "\\ui_settings\\temp.json"
+        #cwd = Path.cwd()
+        #temp_file = str(cwd) + "\\ui_settings\\temp.json"
+
+        #add_ons_folder = bpy.utils.user_resource('SCRIPTS', "addons")
+        #print (add_ons_folder)
+        #temp_file = add_ons_folder + "//blenderbim_spreadsheet//temp.json"
+        #print (temp_file, ' from get stored ui settings')
+
+        script_file = os.path.realpath(__file__)
+        directory = os.path.dirname(script_file)
+        print ('test', directory)
+
+        temp_file = directory + "\\ui_settings\\temp.json"
+
+        #temp_file = "C:\\Users\\cclaus\\AppData\\Roaming\\Blender Foundation\\Blender\\3.4\\scripts\\addons\\blenderbim_spreadsheet\\ui_settings\\temp.json"
 
         selection_file = open(temp_file)
         selection_configuration = json.load(selection_file)
