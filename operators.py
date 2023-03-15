@@ -412,7 +412,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
         configuration_dictionary = {}
 
         cwd = Path.cwd()
-        temp_file = str(cwd) + "\\libs\\site\\packages\\ui_settings\\temp.json"
+        temp_file = str(cwd) + "\\ui_settings\\temp.json"
 
         configuration_dictionary = {}
         ifc_properties = context.scene.ifc_properties
@@ -452,7 +452,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
         print ('get stored ui settings')
 
         cwd = Path.cwd()
-        temp_file = str(cwd) + "\\libs\\site\\packages\\ui_settings\\temp.json"
+        temp_file = str(cwd) + "\\ui_settings\\temp.json"
 
         selection_file = open(temp_file)
         selection_configuration = json.load(selection_file)
