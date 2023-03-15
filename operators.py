@@ -314,12 +314,12 @@ class ExportToSpreadSheet(bpy.types.Operator):
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
                 if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
                     print ("Please close the spreadsheet file first")
+                    ifc_properties.my_spreadsheetfile = ''
 
                 else:
                     self.create_spreadsheet(context)
                 #ifc_properties.my_spreadsheetfile = ''
-                #print ('is the spreadsheet file closed? (y/n)')
-                #self.create_spreadsheet(context)
+                
 
         return {'FINISHED'}
 
