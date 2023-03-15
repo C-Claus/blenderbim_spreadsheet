@@ -169,7 +169,7 @@ class ConstructDataFrame:
 
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(                  context,
-                                                                                                    ifc_product=product))
+                                                                                                    ifc_product=product)[0])
        
             for k,v in common_property_dict.items():
                 if v:
@@ -277,9 +277,11 @@ class ConstructDataFrame:
                         material_list.append(material_profile.Material.Name)
         
         if not material_list:
-            material_list.append(None)
+            material_list.append('None')
+
+        joined_material_list = '\n'.join(material_list)
             
-        return material_list
+        return [joined_material_list]
 
     def get_ifc_properties_and_quantities(self, context, ifc_product, ifc_propertyset_name, ifc_property_name):
     
