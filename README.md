@@ -5,9 +5,9 @@ BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 w
 
 Prequisites
 
-Blender 3.4\n
-BlenderBIM add-on\n
-Libre Office Calc\n
+Blender 3.4\
+BlenderBIM add-on\
+Libre Office Calc\
 
 ## Setup 
 
