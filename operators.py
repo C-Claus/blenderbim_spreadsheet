@@ -147,12 +147,12 @@ class ConstructDataFrame:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
-            if ifc_properties.my_ifcproduct:
-                ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
-
             if ifc_properties.my_ifcbuildingstorey:
                 ifc_dictionary[prop.prop_ifcbuildingstorey].append(self.get_ifc_building_storey(    context,
                                                                                                     ifc_product=product)[0])
+
+            if ifc_properties.my_ifcproduct:
+                ifc_dictionary[prop.prop_ifcproduct].append(str(product.is_a()))
             
             if ifc_properties.my_ifcproductname:
                 ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
@@ -242,7 +242,7 @@ class ConstructDataFrame:
         if ifc_product:
             for reference in references:
                 system = ifcopenshell.util.classification.get_classification(reference)
-                classification_list.append(str(system.Name) + ' | ' + str(reference[1]) +  ' | ' + str(reference[2]))
+                classification_list.append(str(system.Name) + '\n' + str(reference[1]) +  '\n' + str(reference[2]))
                      
         if not classification_list:
             classification_list.append(None)  
