@@ -1,19 +1,21 @@
 # BlenderBIM Spreadsheet
 
-BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 with the lastest stable BlenderBIM release
+BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 with the lastest stable BlenderBIM release.
+With the intention that it will be rolled into BlenderBIM.
 ## Installation
 
 Prequisites
 
 Blender 3.4\
 BlenderBIM add-on\
-Libre Office Calc\
+Libre Office Calc
 
 ## Setup 
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
 Download a macro here which creates a table style and autofilter on startup
+Or create your own macro
 ## Creating your own custom Macro which creates an autofilter and table style
 
 1. Press Record Macro

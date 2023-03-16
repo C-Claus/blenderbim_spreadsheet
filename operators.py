@@ -3,6 +3,7 @@ from . import prop
 
 import collections
 from collections import defaultdict, OrderedDict
+import itertools
 import json
 import re
 import subprocess, os, platform
@@ -26,50 +27,10 @@ import blenderbim.tool as tool
 replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
 #replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
-#todo
-#1. try to apply autofilter ods
-#2. grey out filter if no speadsheet is loaded
-#3. grey out create spreadsheet if no ifc is loaded
-#4. check if spreadsheet already openend by checking boolproperty (ods just opens the file, xlsx gives an error)
-#5. give feedback to user they should use . notation when adding custom properties
-    #custom properties will fail if:
-    #   same values are added
-    #   no dot . notation is used
-#6. make sure to export multiple classifications, set classification system as dropdown
-
-
-#7. make user set the file name for selection set
-#8. after set selection, set selection file should not be cleared
-#9. make sure end user can't accidently wipe selection by greying out
-#10. if spreadsheet is openened on os, make sure end-user closes it first
-#11. .ods gives back 0, not true or false like xlsx
-#12. xlsx does not return valid xmls
-#13. allow user to export only one ifc element
-#14. seperate ui code from data generation
-#15. if new workbook is created from blender close libre office automatically 
-
-
-#16. somehow store the filtering made from the first session after creating a workbook so users don't have to make the filtering again
-#17. add button to clear spreadsheet 
-#18. if changes made in ui, clear my_spreadsheetfile to allow for creation of 
-#    new spreadsheet and save and close old spreadsheet so it can be overwritten
-
-#libre office calc stuff
-#add libre office calc to blenderbim spreadsheet add-on libs site package folder
-#use a macro to set the filter and table on opening libre offie calc
-
-
-#"C:\Program Files\LibreOffice\program\soffice.bin"
-#"C:\Program Files\LibreOffice\program\soffice.exe"
-
-#pseudocode:
-#if myspreadsheetfile has value
-#   for i in ifc_properties.items:
-#        store_list in memory:
-#      '''' user clicks some buttons''' 
-#        added to list 
-#      ''' user clicks create spreadsheet '''
-#         spreadsheet value is empty and overwritten
+#1. allow for multiple classification
+#2. dialog user should close the spreadsheet
+#3. better code performance at creating dataframe
+#4. use list comprehensions where possible
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -113,7 +74,6 @@ def get_hidden_rows(node):
 class ConstructDataFrame:
     def __init__(self, context):
 
-        
 
         start_time = time.perf_counter()
         
@@ -143,8 +103,26 @@ class ConstructDataFrame:
             if my_ifcproperty.startswith('my_quantity'):
                 quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue
 
+        ifc_dictionary[prop.prop_globalid].append([product.GlobalId for product in products])
+
+        if ifc_properties.my_ifcbuildingstorey:
+            ifc_dictionary[prop.prop_ifcbuildingstorey].append([self.get_ifc_building_storey(context,ifc_product=product)[0] for product in products])
+        if ifc_properties.my_ifcproduct:
+            ifc_dictionary[prop.prop_ifcproduct].append([str(product.is_a()) for product in products])
+        if ifc_properties.my_ifcproductname:
+            ifc_dictionary[prop.prop_ifcproductname].append([str(product.Name) for product in products])
+        if ifc_properties.my_ifcproducttypename:
+            ifc_dictionary[prop.prop_ifcproducttypename].append([self.get_ifc_type(context, ifc_product=product)[0] for product in products])
+        if ifc_properties.my_ifcclassification:   
+            ifc_dictionary[prop.prop_classification].append([self.get_ifc_classification(context, ifc_product=product)[0] for product in products])
+        if ifc_properties.my_ifcmaterial:
+            ifc_dictionary[prop.prop_materials].append([self.get_ifc_materials(context,ifc_product=product)[0] for product in products])
+        
+        
+
+        """
         for product in products:
-            ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+            #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
             if ifc_properties.my_ifcbuildingstorey:
@@ -170,7 +148,10 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(                  context,
                                                                                                     ifc_product=product)[0])
-       
+        
+
+        for product in products:
+            ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             for k,v in common_property_dict.items():
                 if v:
                     property = str(k)
@@ -190,17 +171,12 @@ class ConstructDataFrame:
                 for item in custom_property_unique_list:
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities( context,
                                                                                         ifc_product=product,
-                                                                                        ifc_propertyset_name=str(item).split('.')[0],
-                                                                                        ifc_property_name=str(item).split('.')[1])[0]))  
-            
-            #attempt at making code faster:
-        
+                                                                                        ifc_propertyset_name=str(item).split('.')[0],ifc_property_name=str(item).split('.')[1])[0]))  
+        """ 
         df = pd.DataFrame(ifc_dictionary)
+        df = df.apply(pd.Series.explode)
         self.df = df
-        
-        #print ('Data frame is created.')
-        #7.7897383000236005 seconds for the dateframe to be created
-        #
+
         print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
 
     def get_ifc_type(self, context, ifc_product):
@@ -304,6 +280,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
     def execute(self, context):
 
         ifc_properties = context.scene.ifc_properties
+        
 
         if len(ifc_properties.my_spreadsheetfile) == 0:
             self.create_spreadsheet(context)
@@ -316,6 +293,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
                 if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
                     print ("Please close the spreadsheet file first")
+                    message_spreadsheet = True
                     ifc_properties.my_spreadsheetfile = ''
 
                 else:
@@ -577,12 +555,10 @@ class CustomCollectionActions(bpy.types.Operator):
 
         if self.action == "add":        
             item = custom_collection.items.add()  
-
  
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
-
-               
+     
         return {"FINISHED"}  
 
     def set_configuration(context,property_name):

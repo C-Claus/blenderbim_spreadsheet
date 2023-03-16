@@ -92,18 +92,17 @@ class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "my_spreadsheetfile")
 
-        
-
         row = box_spreadsheet.row()
         row.prop(ifc_properties, "ods_or_xlsx")
         box_spreadsheet.operator("export.tospreadsheet",icon="SPREADSHEET")   
+
+
 class FILTER_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Filter IFC elements"
 
     def draw(self, context):
         layout = self.layout
-
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
 class BASE_QUANTITIES_PT_PANEL(GENERAL_panel, Panel):
