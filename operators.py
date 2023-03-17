@@ -31,6 +31,10 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #2. dialog user should close the spreadsheet
 #3. better code performance at creating dataframe
 #4. use list comprehensions where possible
+#5. user should be able to delete custom item from list
+#6. create two branches to compare two methods of what is faster 
+#   develop\create_dataframe_for_loop
+#   develop\create_dataframe_list_comprehension
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -129,6 +133,7 @@ class ConstructDataFrame:
             if property_value:
                 ifc_dictionary[property_name].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, pset_name=prop.prop_basequantities,ifc_property_name=property_name)[0] for product in products])
         
+        #takes 20 seconds for the code to run over two properties
         if len(custom_collection.items) > 0:
             for item in custom_property_unique_list:
                 property_set = str(item).split('.')[0]
