@@ -105,6 +105,7 @@ class ConstructDataFrame:
 
         ifc_dictionary[prop.prop_globalid].append([product.GlobalId for product in products])
 
+        #takes 7 seconds
         if ifc_properties.my_ifcbuildingstorey:
             ifc_dictionary[prop.prop_ifcbuildingstorey].append([self.get_ifc_building_storey(context,ifc_product=product)[0] for product in products])
         if ifc_properties.my_ifcproduct:
@@ -118,9 +119,39 @@ class ConstructDataFrame:
         if ifc_properties.my_ifcmaterial:
             ifc_dictionary[prop.prop_materials].append([self.get_ifc_materials(context,ifc_product=product)[0] for product in products])
         
+        #takes 15 seconds 
+        for property_name, property_value in common_property_dict.items():
+            if property_value:
+               ifc_dictionary[property_name].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, pset_name='pset_common', ifc_property_name=property_name)[0] for product in products])
         
+        #takes 42 seconds
+        for property_name,property_value in quantity_property_dict.items():
+            if property_value:
+                ifc_dictionary[property_name].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, pset_name=prop.prop_basequantities,ifc_property_name=property_name)[0] for product in products])
+        
+        if len(custom_collection.items) > 0:
+            for item in custom_property_unique_list:
+                property_set = str(item).split('.')[0]
+                property_name = str(item).split('.')[1]
 
+                ifc_dictionary[item].append([self.get_ifc_properties_and_quantities(context,ifc_product=product,pset_name=property_set,ifc_property_name=property_name)[0] for product in products])
+        
         """
+
+        14.55665889987722 seconds for the dataframe to be created
+        if ifc_properties.my_property_IsExternal:
+            ifc_dictionary['IsExternal'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='IsExternal')[0] for product in products])
+
+        if ifc_properties.my_property_LoadBearing:
+            ifc_dictionary['LoadBearing'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='LoadBearing')[0] for product in products])
+
+        if ifc_properties.my_property_FireRating:
+            ifc_dictionary['FireRating'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='FireRating')[0] for product in products])
+
+        if ifc_properties.my_property_AcousticRating:
+            ifc_dictionary['AcousticRating'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='AcousticRating')[0] for product in products])
+
+        
         for product in products:
             #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
@@ -259,16 +290,25 @@ class ConstructDataFrame:
             
         return [joined_material_list]
 
-    def get_ifc_properties_and_quantities(self, context, ifc_product, ifc_propertyset_name, ifc_property_name):
-    
+    def get_ifc_properties_and_quantities(self, context, ifc_product, pset_name, ifc_property_name):
+
         ifc_property_list = []
-        
-        if ifc_product:
-            ifc_property_list.append((ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name,ifc_property_name)))
-            
+
+        if pset_name.startswith('pset_common'):
+            pset_name = 'Pset_' +  (str(ifc_product.is_a()).replace('Ifc','')) + 'Common'
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
+                
+        if pset_name.startswith(prop.prop_basequantities):
+            pset_name=prop.prop_basequantities
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
+
+        else:
+            print ('hier',pset_name, ifc_property_name)
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
+                
         if not ifc_property_list:
             ifc_property_list.append(None)
-            
+   
         return ifc_property_list
 
 
