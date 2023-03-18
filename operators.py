@@ -107,55 +107,6 @@ class ConstructDataFrame:
             if my_ifcproperty.startswith('my_quantity'):
                 quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue
 
-        ifc_dictionary[prop.prop_globalid].append([product.GlobalId for product in products])
-
-        #takes 7 seconds
-        if ifc_properties.my_ifcbuildingstorey:
-            ifc_dictionary[prop.prop_ifcbuildingstorey].append([self.get_ifc_building_storey(context,ifc_product=product)[0] for product in products])
-        if ifc_properties.my_ifcproduct:
-            ifc_dictionary[prop.prop_ifcproduct].append([str(product.is_a()) for product in products])
-        if ifc_properties.my_ifcproductname:
-            ifc_dictionary[prop.prop_ifcproductname].append([str(product.Name) for product in products])
-        if ifc_properties.my_ifcproducttypename:
-            ifc_dictionary[prop.prop_ifcproducttypename].append([self.get_ifc_type(context, ifc_product=product)[0] for product in products])
-        if ifc_properties.my_ifcclassification:   
-            ifc_dictionary[prop.prop_classification].append([self.get_ifc_classification(context, ifc_product=product)[0] for product in products])
-        if ifc_properties.my_ifcmaterial:
-            ifc_dictionary[prop.prop_materials].append([self.get_ifc_materials(context,ifc_product=product)[0] for product in products])
-        
-        #takes 15 seconds 
-        for property_name, property_value in common_property_dict.items():
-            if property_value:
-               ifc_dictionary[property_name].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, pset_name='pset_common', ifc_property_name=property_name)[0] for product in products])
-        
-        #takes 42 seconds
-        for property_name,property_value in quantity_property_dict.items():
-            if property_value:
-                ifc_dictionary[property_name].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, pset_name=prop.prop_basequantities,ifc_property_name=property_name)[0] for product in products])
-        
-        #takes 20 seconds for the code to run over two properties
-        if len(custom_collection.items) > 0:
-            for item in custom_property_unique_list:
-                property_set = str(item).split('.')[0]
-                property_name = str(item).split('.')[1]
-
-                ifc_dictionary[item].append([self.get_ifc_properties_and_quantities(context,ifc_product=product,pset_name=property_set,ifc_property_name=property_name)[0] for product in products])
-        
-        """
-
-        14.55665889987722 seconds for the dataframe to be created
-        if ifc_properties.my_property_IsExternal:
-            ifc_dictionary['IsExternal'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='IsExternal')[0] for product in products])
-
-        if ifc_properties.my_property_LoadBearing:
-            ifc_dictionary['LoadBearing'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='LoadBearing')[0] for product in products])
-
-        if ifc_properties.my_property_FireRating:
-            ifc_dictionary['FireRating'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='FireRating')[0] for product in products])
-
-        if ifc_properties.my_property_AcousticRating:
-            ifc_dictionary['AcousticRating'].append([self.get_ifc_properties_and_quantities(context,ifc_product=product, ifc_property_name='AcousticRating')[0] for product in products])
-
         
         for product in products:
             #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
@@ -208,9 +159,8 @@ class ConstructDataFrame:
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities( context,
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=str(item).split('.')[0],ifc_property_name=str(item).split('.')[1])[0]))  
-        """ 
+       
         df = pd.DataFrame(ifc_dictionary)
-        df = df.apply(pd.Series.explode)
         self.df = df
 
         print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
