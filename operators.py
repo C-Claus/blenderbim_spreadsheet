@@ -245,21 +245,14 @@ class ConstructDataFrame:
             
         return [joined_material_list]
 
-    def get_ifc_properties_and_quantities(self, context, ifc_product, pset_name, ifc_property_name):
+    def get_ifc_properties_and_quantities(self, context, ifc_product, ifc_propertyset_name, ifc_property_name):
 
         ifc_property_list = []
 
-        if pset_name.startswith('pset_common'):
+        if ifc_product:
             pset_name = 'Pset_' +  (str(ifc_product.is_a()).replace('Ifc','')) + 'Common'
-            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name, ifc_property_name)))
                 
-        if pset_name.startswith(prop.prop_basequantities):
-            pset_name=prop.prop_basequantities
-            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
-
-        else:
-            print ('hier',pset_name, ifc_property_name)
-            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, pset_name, ifc_property_name)))
                 
         if not ifc_property_list:
             ifc_property_list.append(None)
