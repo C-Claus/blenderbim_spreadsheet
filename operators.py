@@ -80,7 +80,8 @@ class ConstructDataFrame:
 
 
         start_time = time.perf_counter()
-        
+        wm = bpy.context.window_manager
+
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
         custom_collection   = context.scene.custom_collection
@@ -91,6 +92,7 @@ class ConstructDataFrame:
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
         custom_propertyset_list = [] 
+
 
         for custom_property in custom_collection.items:
             custom_propertyset_list.append(custom_property.name)
@@ -107,8 +109,11 @@ class ConstructDataFrame:
             if my_ifcproperty.startswith('my_quantity'):
                 quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue
 
+        total = len(products)
+        wm.progress_begin(0, total)
         
-        for product in products:
+        for i, product in enumerate(products):
+            wm.progress_update(i)
             #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
@@ -126,8 +131,6 @@ class ConstructDataFrame:
                 ifc_dictionary[prop.prop_ifcproducttypename].append(self.get_ifc_type(              context,
                                                                                                     ifc_product=product)[0])
 
-
-
             if ifc_properties.my_ifcclassification:
                 ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification(        context,
                                                                                                     ifc_product=product)[0])
@@ -137,7 +140,7 @@ class ConstructDataFrame:
                                                                                                     ifc_product=product)[0])
         
 
-        for product in products:
+        #for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             for k,v in common_property_dict.items():
                 if v:
@@ -164,6 +167,7 @@ class ConstructDataFrame:
         self.df = df
 
         print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
+        wm.progress_end()
 
     def get_ifc_type(self, context, ifc_product):
     
