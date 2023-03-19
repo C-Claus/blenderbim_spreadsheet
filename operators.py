@@ -128,19 +128,18 @@ class ConstructDataFrame:
                 ifc_dictionary[prop.prop_ifcproductname].append(str(product.Name))
 
             if ifc_properties.my_ifcproducttypename:
-                ifc_dictionary[prop.prop_ifcproducttypename].append(self.get_ifc_type(              context,
-                                                                                                    ifc_product=product)[0])
+                ifc_dictionary[prop.prop_ifcproducttypename].append(self.get_ifc_type(context,
+                                                                                      ifc_product=product)[0])
 
             if ifc_properties.my_ifcclassification:
-                ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification(        context,
-                                                                                                    ifc_product=product)[0])
+                ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification(context,
+                                                                                            ifc_product=product)[0])
 
             if ifc_properties.my_ifcmaterial:
-                ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(                  context,
-                                                                                                    ifc_product=product)[0])
+                ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context,
+                                                                                  ifc_product=product)[0])
         
 
-        #for product in products:
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             for k,v in common_property_dict.items():
                 if v:
@@ -159,9 +158,12 @@ class ConstructDataFrame:
                                                                                             ifc_property_name=property)[0])
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
-                    ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities( context,
-                                                                                        ifc_product=product,
-                                                                                        ifc_propertyset_name=str(item).split('.')[0],ifc_property_name=str(item).split('.')[1])[0]))  
+                    property_set = str(item).split('.')[0]
+                    property_name = str(item).split('.')[1]
+                    ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
+                                                                                           ifc_product=product,
+                                                                                           ifc_propertyset_name=property_set,
+                                                                                           ifc_property_name=property_name)[0]))  
        
         df = pd.DataFrame(ifc_dictionary)
         self.df = df

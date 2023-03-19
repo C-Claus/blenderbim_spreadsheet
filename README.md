@@ -34,10 +34,12 @@ Or create your own macro
 3. Resetting filters
 
 
-## Functionality
+## Functionality and new features
 
 - Support for .xlsx and .ods files
-- Users are able to create a Selection Set of Custom Properties which can be saved and shared, similar to Navisworks Search Sets
-- Support for all BaseQuantities
-- Keeps track of what the user is selecting in the user interface, to prevent multiple spreadsheet files.
-- UI of the most commonly used properties such as IsExternal, LoadBearing and FireRating.
+- You can now export all BaseQuantities such as Area, NetArea, NetSideArea etc.
+- You can now store  user interface settings, useful for many custom properties which can be shared through json files.
+- Frienldy user unterface to export one of the most commonly used properties such as IsExternal, LoadBearing, FireRating and AcousticRating.
+- Support for multiple classification references
+- Support for multiple material definitions
+- Support for IFC4
