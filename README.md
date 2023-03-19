@@ -34,6 +34,7 @@ Or create your own macro
 3. Resetting filters
 
 
+
 ## Functionality and new features
 
 - Support for .xlsx and .ods files
