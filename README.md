@@ -10,7 +10,7 @@ Blender 3.4\
 BlenderBIM add-on\
 Libre Office Calc
 
-## Setup 
+## Setup
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
