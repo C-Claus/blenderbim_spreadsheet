@@ -32,9 +32,7 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #3. better code performance at creating dataframe
 #4. use list comprehensions where possible
 #5. user should be able to delete custom item from list
-#6. create two branches to compare two methods of what is faster 
-#   develop\create_dataframe_for_loop
-#   develop\create_dataframe_list_comprehension
+
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -81,6 +79,8 @@ class ConstructDataFrame:
 
         start_time = time.perf_counter()
         wm = bpy.context.window_manager
+        total = len(products)
+        wm.progress_begin(0, total)
 
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
@@ -107,10 +107,7 @@ class ConstructDataFrame:
                 common_property_dict[my_ifcproperty.replace('my_property_','')] = my_ifcpropertyvalue
 
             if my_ifcproperty.startswith('my_quantity'):
-                quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue
-
-        total = len(products)
-        wm.progress_begin(0, total)
+                quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue 
         
         for i, product in enumerate(products):
             wm.progress_update(i)
@@ -491,9 +488,7 @@ class FilterIFCElements(bpy.types.Operator):
                 self.filter_IFC_elements(context, guid_list=dataframe['GlobalId'].values.tolist())
                 
                 return {'FINISHED'}
-    
- 
-                
+               
                 
     def filter_IFC_elements(self, context, guid_list):
         
@@ -534,24 +529,21 @@ class UnhideIFCElements(bpy.types.Operator):
 class CustomCollectionActions(bpy.types.Operator):
     bl_idname = "custom.collection_actions"
     bl_label = "Execute"
-    action: bpy.props.EnumProperty(
-        items=(
-            ("add",) * 3,
-            ("remove",) * 3,
-        ),
-    )
-
-    index: bpy.props.IntProperty() 
+    action: bpy.props.EnumProperty(items=(("add",) * 3,("remove",) * 3,),)
+    #index: bpy.props.IntProperty(default=-1)
 
     def execute(self, context):
 
         custom_collection = context.scene.custom_collection
 
         if self.action == "add":        
-            item = custom_collection.items.add()  
+            custom_item = custom_collection.items.add()  
  
         if self.action == "remove":
             custom_collection.items.remove(len(custom_collection.items) - 1 )
+
+        #else:
+        #    custom_collection.items.remove(self.index)
      
         return {"FINISHED"}  
 

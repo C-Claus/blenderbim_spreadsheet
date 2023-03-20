@@ -82,8 +82,16 @@ class CustomItem(bpy.types.PropertyGroup):
                                    description  ="Use the PropertySet name and Property name divided by a .",
                                    default      ="PropertySet.Property"
                                    ) 
+    
+
 class CustomCollection(bpy.types.PropertyGroup):
     items: bpy.props.CollectionProperty(type=CustomItem) 
+
+    #delete_item:           bpy.props.StringProperty(   name="Load Selection",
+    #                                                        description="Load your previous saved selections",
+    #                                                        default="",
+    #                                                        maxlen=1024,
+    #                                                        subtype="FILE_PATH")
     
 def register():
     bpy.utils.register_class(IFCProperties)
