@@ -2,6 +2,7 @@ import bpy
 from bpy.types import Panel
 from . import  prop, operators
 
+
 class GENERAL_panel:
     bl_label = "BlenderBIM Spreadsheet"
     bl_space_type = "VIEW_3D"
@@ -65,33 +66,18 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
         box = layout.box()
 
         custom_collection = context.scene.custom_collection
-
         row = layout.row(align=True)
         row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
-        row.operator("custom.collection_actions", text="Remove Last", icon="REMOVE").action = "remove"
-        #row.operator("save.confirm_selection", text="",icon="PLAY")
-
+       
         for i, item in enumerate(custom_collection.items):
-            print (i, item)
-            box.prop(item, "name" )
-
-            #op = row.operator("prj.container_collection_add_or_remove", icon="REMOVE", text="")
-            #op.operation = "REMOVE"
-            #op.idx = i
-
+            row = box.row(align=True)
+            row .prop(item, "name")
+            op = row.operator("custom.collection_actions", text="", icon="REMOVE")
+            op.action = "remove"
+            op.index = i
 
         row = layout.row(align=True)  
 
-        """
-
-        box = self.layout.box()
-        for i, item in enumerate(context.scene.custom_collection.items):
-            op = box.operator("custom.collection_actions")
-            op.action = "remove"
-            op.index = i
-        box.operator("custom.collection_actions").action = "add"
-
-        """
              
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
