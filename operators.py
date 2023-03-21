@@ -95,11 +95,17 @@ class ConstructDataFrame:
         total = len(products)
         wm.progress_begin(0, total) 
 
-
         for custom_property in custom_collection.items:
             custom_propertyset_list.append(custom_property.name)
-        custom_property_unique_list = (set(custom_propertyset_list))
-      
+
+        custom_property_unique_list = []
+
+        seen = set()
+        for item in custom_propertyset_list:
+            if item not in seen:
+                seen.add(item)
+                custom_property_unique_list.append(item)
+
         common_property_dict = {}
         quantity_property_dict = {}
 
@@ -534,7 +540,7 @@ class CustomCollectionActions(bpy.types.Operator):
     bl_idname = "custom.collection_actions"
     bl_label = "Execute"
     action: bpy.props.EnumProperty(items=(("add",) * 3,("remove",) * 3,),)
-    #index: bpy.props.IntProperty(default=-1)
+    index: bpy.props.IntProperty(default=-1)
 
     def execute(self, context):
 
@@ -544,11 +550,8 @@ class CustomCollectionActions(bpy.types.Operator):
             custom_item = custom_collection.items.add()  
  
         if self.action == "remove":
-            custom_collection.items.remove(len(custom_collection.items) - 1 )
+            custom_collection.items.remove(self.index)
 
-        #else:
-        #    custom_collection.items.remove(self.index)
-     
         return {"FINISHED"}  
 
     def set_configuration(context,property_name):
