@@ -85,11 +85,13 @@ class ConstructDataFrame:
         custom_collection   = context.scene.custom_collection
         #custom_items        = context.scene.custom_collection.items
  
-
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
+
         custom_propertyset_list = []
+        common_property_dict = {}
+        quantity_property_dict = {}
 
         wm = bpy.context.window_manager
         total = len(products)
@@ -97,7 +99,6 @@ class ConstructDataFrame:
 
         for custom_property in custom_collection.items:
             custom_propertyset_list.append(custom_property.name)
-
         custom_property_unique_list = []
 
         seen = set()
@@ -105,9 +106,6 @@ class ConstructDataFrame:
             if item not in seen:
                 seen.add(item)
                 custom_property_unique_list.append(item)
-
-        common_property_dict = {}
-        quantity_property_dict = {}
 
         for my_ifcproperty in ifc_properties.__annotations__.keys():
             my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
@@ -143,9 +141,10 @@ class ConstructDataFrame:
             if ifc_properties.my_ifcmaterial:
                 ifc_dictionary[prop.prop_materials].append(self.get_ifc_materials(context,
                                                                                   ifc_product=product)[0])
-        
-
+                
+     
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+
             for k,v in common_property_dict.items():
                 if v:
                     property = str(k)
@@ -153,7 +152,7 @@ class ConstructDataFrame:
                                                                                             ifc_product=product,
                                                                                             ifc_propertyset_name=ifc_pset_common,
                                                                                             ifc_property_name=property)[0])
-               
+
             for k,v in quantity_property_dict.items():
                 if v:
                     property = str(k)
@@ -161,6 +160,7 @@ class ConstructDataFrame:
                                                                                             ifc_product=product,
                                                                                             ifc_propertyset_name=prop.prop_basequantities,
                                                                                             ifc_property_name=property)[0])
+                        
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
                     property_set = str(item).split('.')[0]
@@ -168,9 +168,9 @@ class ConstructDataFrame:
                     #if propertyset meets re conditions, then run dictionry
                     #if property does not meet dictionary then 
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
-                                                                                           ifc_product=product,
-                                                                                           ifc_propertyset_name=property_set,
-                                                                                           ifc_property_name=property_name)[0]))  
+                                                                                        ifc_product=product,
+                                                                                        ifc_propertyset_name=property_set,
+                                                                                        ifc_property_name=property_name)[0]))  
        
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
