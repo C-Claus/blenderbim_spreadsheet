@@ -81,7 +81,13 @@ class CustomItem(bpy.types.PropertyGroup):
     name: bpy.props.StringProperty(name         ="Property",
                                    description  ="Use the PropertySet name and Property name divided by a .",
                                    default      ="PropertySet.Property"
+                                   )
+    
+    name: bpy.props.StringProperty(name         ="Property",
+                                   description  ="Use the PropertySet name and Property name divided by a .",
+                                   default      ="PropertySet.Property"
                                    ) 
+    
     
 
 class CustomCollection(bpy.types.PropertyGroup):
