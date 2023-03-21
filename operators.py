@@ -78,9 +78,7 @@ class ConstructDataFrame:
 
 
         start_time = time.perf_counter()
-        wm = bpy.context.window_manager
-        total = len(products)
-        wm.progress_begin(0, total)
+        
 
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
@@ -91,7 +89,11 @@ class ConstructDataFrame:
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
-        custom_propertyset_list = [] 
+        custom_propertyset_list = []
+
+        wm = bpy.context.window_manager
+        total = len(products)
+        wm.progress_begin(0, total) 
 
 
         for custom_property in custom_collection.items:
@@ -157,6 +159,8 @@ class ConstructDataFrame:
                 for item in custom_property_unique_list:
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
+                    #if propertyset meets re conditions, then run dictionry
+                    #if property does not meet dictionary then 
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
                                                                                            ifc_product=product,
                                                                                            ifc_propertyset_name=property_set,
