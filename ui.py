@@ -64,10 +64,11 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
        
         layout = self.layout
         box = layout.box()
+        box.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
 
         custom_collection = context.scene.custom_collection
         row = layout.row(align=True)
-        row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
+        #row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
        
         for i, item in enumerate(custom_collection.items):
             row = box.row(align=True)
