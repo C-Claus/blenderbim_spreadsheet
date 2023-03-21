@@ -586,8 +586,6 @@ class SaveAndLoadSelection(bpy.types.Operator):
         ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.json'))
         print ('Selection has been saved at: ', ifc_properties.my_selectionload)
 
-
-
         return {"FINISHED"} 
 
 class ConfirmSelection(bpy.types.Operator):
@@ -625,10 +623,8 @@ class ClearProperties(bpy.types.Operator):
 
     def execute(self, context):
 
-        print ("Clear all properties")
         custom_collection = context.scene.custom_collection
         custom_collection.items.clear()
-
 
         return {"FINISHED"}
     
