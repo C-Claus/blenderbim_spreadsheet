@@ -618,6 +618,20 @@ class ConfirmSelection(bpy.types.Operator):
 
         return {"FINISHED"} 
     
+class ClearProperties(bpy.types.Operator):
+
+    bl_idname = "clear.clear_properties"
+    bl_label = "Clear Properties"
+
+    def execute(self, context):
+
+        print ("Clear all properties")
+        custom_collection = context.scene.custom_collection
+        custom_collection.items.clear()
+
+
+        return {"FINISHED"}
+    
 class ClearSelection(bpy.types.Operator):
 
     bl_idname = "save.clear_selection"
@@ -646,6 +660,7 @@ def register():
     bpy.utils.register_class(SaveAndLoadSelection)
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
+    bpy.utils.register_class(ClearProperties)
     
 
 def unregister():
@@ -656,3 +671,4 @@ def unregister():
     bpy.utils.unregister_class(SaveAndLoadSelection)
     bpy.utils.unregister_class(ConfirmSelection)
     bpy.utils.unregister_class(ClearSelection)
+    bpy.utils.unregister_class(ClearProperties)

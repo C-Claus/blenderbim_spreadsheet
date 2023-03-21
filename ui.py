@@ -68,16 +68,25 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         custom_collection = context.scene.custom_collection
         row = layout.row(align=True)
-        #row.operator("custom.collection_actions", text="Add", icon="ADD").action = "add"
+        #row.operator("custom.collection_actions", text="Clear").action = "add"
+
+        if len(custom_collection.items) > 0:
+            #row.operator("custom.collection_actions", text="Clear Properties")#.action = "add"
+            row.operator("clear.clear_properties", text="Clear Properties")#.action = "add"
        
         for i, item in enumerate(custom_collection.items):
             row = box.row(align=True)
-            row .prop(item, "name")
+            row.prop(item, "name")
             op = row.operator("custom.collection_actions", text="", icon="REMOVE")
             op.action = "remove"
             op.index = i
 
-        row = layout.row(align=True)  
+        
+
+
+
+        #row = layout.row(align=True)
+
 
              
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
@@ -152,7 +161,7 @@ class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
         row.prop(ifc_properties, "my_selectionload")
         row.operator("save.confirm_selection", text="",icon="PLAY")
         box.operator("save.save_and_load_selection",text="Save Selection Set")
-        box.operator("save.clear_selection",text="Clear Selection")
+        box.operator("save.clear_selection",text="Clear All")
         
 
 classes = ( 
