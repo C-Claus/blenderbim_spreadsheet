@@ -282,7 +282,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
         ifc_properties = context.scene.ifc_properties
         
-
         if len(ifc_properties.my_spreadsheetfile) == 0:
             self.create_spreadsheet(context)
 
@@ -294,14 +293,10 @@ class ExportToSpreadSheet(bpy.types.Operator):
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
                 if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
                     print ("Please close the spreadsheet file first")
-                    message_spreadsheet = True
-                    ifc_properties.my_spreadsheetfile = ''
-
+                    
                 else:
                     self.create_spreadsheet(context)
-                #ifc_properties.my_spreadsheetfile = ''
                 
-
         return {'FINISHED'}
 
     
