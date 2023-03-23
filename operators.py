@@ -295,6 +295,8 @@ class ExportToSpreadSheet(bpy.types.Operator):
             if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
                 if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
                     print ("Please close the spreadsheet file first")
+
+                    print (dir(bpy.ops.wm))
                     
                 else:
                     self.create_spreadsheet(context)
@@ -337,7 +339,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
         if ifc_properties.ods_or_xlsx == 'ODS':
             
-            #ifc_properties = context.scene.ifc_properties
             construct_data_frame = ConstructDataFrame(context)
     
             spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
@@ -345,16 +346,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
             worksheet               = writer.sheets[prop.prop_workbook]
             writer.close()
-
-            #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
-            #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
-            #ns = {'my_table':'urn:oasis:names:tc:opendocument:xmlns:table:1.0'}
-
-            #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
-            #    with ziparchive.open('content.xml') as xmlfile:
-        
-            #        tree = ET.parse(xmlfile)
-            #        root = tree.getroot()
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
@@ -473,24 +464,18 @@ class FilterIFCElements(bpy.types.Operator):
             if ifc_properties.my_spreadsheetfile.endswith(".ods"):
                 print ("Retrieving data from: " , ifc_properties.my_spreadsheetfile)
             
-                # Get content xml data from OpenDocument file
                 ziparchive = zipfile.ZipFile(ifc_properties.my_spreadsheetfile, "r")
                 xmldata = ziparchive.read("content.xml")
                 ziparchive.close()
                 
-                # Create parser and parsehandler
                 parser = xml.parsers.expat.ParserCreate()
                 treebuilder = TreeBuilder()
-                # Assign the handler functions
                 parser.StartElementHandler  = treebuilder.start_element
                 parser.EndElementHandler    = treebuilder.end_element
                 parser.CharacterDataHandler = treebuilder.char_data
-
-                # Parse the data
                 parser.Parse(xmldata, True)
 
-                hidden_rows = get_hidden_rows(treebuilder.root)  # This returns a generator object
-        
+                hidden_rows = get_hidden_rows(treebuilder.root)
                 dataframe = pd.read_excel(ifc_properties.my_spreadsheetfile, sheet_name=prop.prop_workbook, skiprows=hidden_rows, engine="odf")
                 self.filter_IFC_elements(context, guid_list=dataframe['GlobalId'].values.tolist())
                 
@@ -512,8 +497,6 @@ class FilterIFCElements(bpy.types.Operator):
                 obj.hide_viewport = True
                 continue
             data = element.get_info()
-       
-            
             obj.hide_viewport = data.get("GlobalId", False) not in guid_list
 
         bpy.ops.object.select_all(action='SELECT') 
@@ -525,8 +508,6 @@ class UnhideIFCElements(bpy.types.Operator):
     bl_label = "Unhide All"
 
     def execute(self, context):
-        #print("Unhide all")
-        
         for obj in bpy.data.objects:
             obj.hide_viewport = False 
         
@@ -644,6 +625,22 @@ class ClearSelection(bpy.types.Operator):
        
         return {"FINISHED"} 
 
+class SimpleConfirmOperator(bpy.types.Operator):
+    """Really?"""
+    bl_idname = "my_category.custom_confirm_dialog"
+    bl_label = "Do you really want to do that?"
+    bl_options = {'REGISTER', 'INTERNAL'}
+
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def execute(self, context):
+        self.report({'INFO'}, "YES!")
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_confirm(self, event)
         
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
@@ -654,6 +651,7 @@ def register():
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
     bpy.utils.register_class(ClearProperties)
+    bpy.utils.register_class(SimpleConfirmOperator)
     
 
 def unregister():
@@ -665,3 +663,4 @@ def unregister():
     bpy.utils.unregister_class(ConfirmSelection)
     bpy.utils.unregister_class(ClearSelection)
     bpy.utils.unregister_class(ClearProperties)
+    bpy.utils.unregister_class(SimpleConfirmOperator)
