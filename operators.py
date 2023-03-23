@@ -163,6 +163,8 @@ class ConstructDataFrame:
                         
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
+
+                    
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
                     #if propertyset meets re conditions, then run dictionry
@@ -170,7 +172,7 @@ class ConstructDataFrame:
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=property_set,
-                                                                                        ifc_property_name=property_name)[0]))  
+                                                                                        ifc_property_name=property_name)[0]))
        
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
@@ -523,7 +525,7 @@ class UnhideIFCElements(bpy.types.Operator):
     bl_label = "Unhide All"
 
     def execute(self, context):
-        print("Unhide all")
+        #print("Unhide all")
         
         for obj in bpy.data.objects:
             obj.hide_viewport = False 
