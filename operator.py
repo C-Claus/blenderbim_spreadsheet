@@ -19,7 +19,6 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
 #1. allow for multiple classification
-#2. dialog user should close the spreadsheet
 
 class Element(list):
     def __init__(self, name, attrs):
