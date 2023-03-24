@@ -1,27 +1,19 @@
 import bpy
 from . import prop
 
-import collections
-from collections import defaultdict, OrderedDict
-import itertools
+from collections import defaultdict
 import json
 import subprocess, os, platform
 import time
-from pathlib import Path
 
 
 import pandas as pd
-import xlsxwriter
-import pyexcel_ods
-import openpyxl
 from openpyxl import load_workbook
 
 import zipfile
 import xml.parsers.expat
-import xml.etree.ElementTree as ET
 
 import ifcopenshell
-import blenderbim
 import blenderbim.tool as tool
 replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
 #replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
