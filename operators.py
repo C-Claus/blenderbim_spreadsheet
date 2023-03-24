@@ -5,7 +5,6 @@ import collections
 from collections import defaultdict, OrderedDict
 import itertools
 import json
-import re
 import subprocess, os, platform
 import time
 from pathlib import Path
@@ -30,8 +29,8 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #1. allow for multiple classification
 #2. dialog user should close the spreadsheet
 #3. better code performance at creating dataframe
-#4. use list comprehensions where possible
-#5. user should be able to delete custom item from list
+#4. use list comprehensions where possible -> attempted and failed
+#5. user should be able to delete custom item from list -> done
 
 
 class Element(list):
@@ -76,15 +75,12 @@ def get_hidden_rows(node):
 class ConstructDataFrame:
     def __init__(self, context):
 
-
         start_time = time.perf_counter()
         
-
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
         custom_collection   = context.scene.custom_collection
-        #custom_items        = context.scene.custom_collection.items
- 
+
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
@@ -117,7 +113,6 @@ class ConstructDataFrame:
         
         for i, product in enumerate(products):
             wm.progress_update(i)
-            #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
             if ifc_properties.my_ifcbuildingstorey:
@@ -163,8 +158,6 @@ class ConstructDataFrame:
                         
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
-
-                    
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
                     #if propertyset meets re conditions, then run dictionry
@@ -267,8 +260,7 @@ class ConstructDataFrame:
         if ifc_product:
             pset_name = 'Pset_' +  (str(ifc_product.is_a()).replace('Ifc','')) + 'Common'
             ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name, ifc_property_name)))
-                
-                
+                    
         if not ifc_property_list:
             ifc_property_list.append(None)
    
@@ -282,23 +274,8 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
     def execute(self, context):
 
-        ifc_properties = context.scene.ifc_properties
-        
-        if len(ifc_properties.my_spreadsheetfile) == 0:
-            self.create_spreadsheet(context)
-
-        if len(ifc_properties.my_spreadsheetfile) > 1:
-
-            if self.get_current_ui_settings(context) == self.get_stored_ui_settings():
-                self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
-
-            if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
-                if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
-                    print ("Please close the spreadsheet file first")
-                    
-                else:
-                    self.create_spreadsheet(context)
-                
+        self.create_spreadsheet(context)
+         
         return {'FINISHED'}
 
     
@@ -337,7 +314,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
         if ifc_properties.ods_or_xlsx == 'ODS':
             
-            #ifc_properties = context.scene.ifc_properties
             construct_data_frame = ConstructDataFrame(context)
     
             spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
@@ -345,16 +321,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
             worksheet               = writer.sheets[prop.prop_workbook]
             writer.close()
-
-            #filter_tag = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.A1" table:contains-header="false"/>'
-            #filter = '<table:database-range table:name="__Anonymous_Sheet_DB__0" table:target-range-address="Sheet1.A1:Sheet1.B3" table:display-filter-buttons="true"/>'
-            #ns = {'my_table':'urn:oasis:names:tc:opendocument:xmlns:table:1.0'}
-
-            #with zipfile.ZipFile(spreadsheet_filepath, 'r') as ziparchive:
-            #    with ziparchive.open('content.xml') as xmlfile:
-        
-            #        tree = ET.parse(xmlfile)
-            #        root = tree.getroot()
 
             ifc_properties.my_spreadsheetfile = spreadsheet_filepath
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
@@ -368,79 +334,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             os.startfile(spreadsheet_filepath)
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
-
-    def check_if_file_is_open(self, spreadsheet_filepath):
-       
-        boolean_open = None
-        
-        if platform.system() == 'Windows': 
-            try: 
-                os.rename(spreadsheet_filepath, 'tempfile.xls')
-                os.rename('tempfile.xls', spreadsheet_filepath)
-            except OSError:
-                boolean_open = True
-
-        return boolean_open
-
-        
-
-    def store_temp_ui_settings(self, context):
-
-        ifc_properties = context.scene.ifc_properties
-        configuration_dictionary = {}
-
-
-        script_file = os.path.realpath(__file__)
-        directory = os.path.dirname(script_file)
-        temp_file = directory + "\\ui_settings\\temp.json"
-
-
-        configuration_dictionary = {}
-        ifc_properties = context.scene.ifc_properties
-        custom_items = context.scene.custom_collection.items
-        
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
-
-        for prop_name_custom in custom_items.keys():
-            prop_value_custom = custom_items[prop_name_custom]
-            configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
-
-        with open(temp_file, "w") as selection_file:
-            json.dump(configuration_dictionary, selection_file, indent=4)
-
-        return {'FINISHED'}
-    
-    def get_current_ui_settings(self, context):
-        #print ('get current ui settings')
-
-        ifc_properties = context.scene.ifc_properties
-        custom_items = context.scene.custom_collection.items
-        configuration_dictionary = {}
-        
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
-
-        for prop_name_custom in custom_items.keys():
-            prop_value_custom = custom_items[prop_name_custom]
-            configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
-
-        return configuration_dictionary
-
-    def get_stored_ui_settings(self):
-        #print ('get stored ui settings')
-
-        script_file = os.path.realpath(__file__)
-        directory = os.path.dirname(script_file)
-        temp_file = directory + "\\ui_settings\\temp.json"
-       
-        selection_file = open(temp_file)
-        selection_configuration = json.load(selection_file)
-
-        return (selection_configuration)
-
 
 class FilterIFCElements(bpy.types.Operator):
     """Show the IFC elements you filtered in the spreadsheet"""
@@ -473,24 +366,18 @@ class FilterIFCElements(bpy.types.Operator):
             if ifc_properties.my_spreadsheetfile.endswith(".ods"):
                 print ("Retrieving data from: " , ifc_properties.my_spreadsheetfile)
             
-                # Get content xml data from OpenDocument file
                 ziparchive = zipfile.ZipFile(ifc_properties.my_spreadsheetfile, "r")
                 xmldata = ziparchive.read("content.xml")
                 ziparchive.close()
                 
-                # Create parser and parsehandler
                 parser = xml.parsers.expat.ParserCreate()
                 treebuilder = TreeBuilder()
-                # Assign the handler functions
                 parser.StartElementHandler  = treebuilder.start_element
                 parser.EndElementHandler    = treebuilder.end_element
                 parser.CharacterDataHandler = treebuilder.char_data
-
-                # Parse the data
                 parser.Parse(xmldata, True)
 
-                hidden_rows = get_hidden_rows(treebuilder.root)  # This returns a generator object
-        
+                hidden_rows = get_hidden_rows(treebuilder.root)
                 dataframe = pd.read_excel(ifc_properties.my_spreadsheetfile, sheet_name=prop.prop_workbook, skiprows=hidden_rows, engine="odf")
                 self.filter_IFC_elements(context, guid_list=dataframe['GlobalId'].values.tolist())
                 
@@ -512,8 +399,6 @@ class FilterIFCElements(bpy.types.Operator):
                 obj.hide_viewport = True
                 continue
             data = element.get_info()
-       
-            
             obj.hide_viewport = data.get("GlobalId", False) not in guid_list
 
         bpy.ops.object.select_all(action='SELECT') 
@@ -525,8 +410,6 @@ class UnhideIFCElements(bpy.types.Operator):
     bl_label = "Unhide All"
 
     def execute(self, context):
-        #print("Unhide all")
-        
         for obj in bpy.data.objects:
             obj.hide_viewport = False 
         
@@ -654,6 +537,7 @@ def register():
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
     bpy.utils.register_class(ClearProperties)
+
     
 
 def unregister():
