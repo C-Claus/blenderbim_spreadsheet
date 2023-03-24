@@ -38,6 +38,7 @@ class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
         row.prop(ifc_properties, "my_ifcclassification")
         row = box.row()
         row.prop(ifc_properties, "my_ifcmaterial" )
+
 class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Common Properties"
@@ -56,6 +57,7 @@ class COMMON_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
         row.prop(ifc_properties, "my_property_FireRating")
         row = box.row()
         row.prop(ifc_properties, "my_property_AcousticRating")
+
 class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Custom Properties"
@@ -68,11 +70,9 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
 
         custom_collection = context.scene.custom_collection
         row = layout.row(align=True)
-        #row.operator("custom.collection_actions", text="Clear").action = "add"
 
         if len(custom_collection.items) > 0:
-            #row.operator("custom.collection_actions", text="Clear Properties")#.action = "add"
-            row.operator("clear.clear_properties", text="Clear Properties")#.action = "add"
+            row.operator("clear.clear_properties", text="Clear Properties")
        
         for i, item in enumerate(custom_collection.items):
             row = box.row(align=True)
@@ -81,14 +81,6 @@ class CUSTOM_PROPERTIES_IFC_PT_PANEL(GENERAL_panel, Panel):
             op.action = "remove"
             op.index = i
 
-        
-
-
-
-        #row = layout.row(align=True)
-
-
-             
 class SPREADSHEET_IFC_FILE_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Spreadsheet"
@@ -114,6 +106,7 @@ class FILTER_PT_PANEL(GENERAL_panel, Panel):
         layout = self.layout
         self.layout.operator("object.filter_ifc_elements", text="Filter IFC elements", icon="FILTER")
         self.layout.operator("object.unhide_all", text="Unhide IFC elements", icon="LIGHT")
+
 class BASE_QUANTITIES_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "BaseQuantities"
@@ -147,6 +140,7 @@ class BASE_QUANTITIES_PT_PANEL(GENERAL_panel, Panel):
         row.prop(ifc_properties, "my_quantity_NetVolume")
         row = box.row()
         row.prop(ifc_properties, "my_quantity_GrossVolume")
+
 class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
     bl_parent_id = "EXAMPLE_PT_panel_1"
     bl_label = "Save Selection"
@@ -162,7 +156,6 @@ class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
         row.operator("save.confirm_selection", text="",icon="PLAY")
         box.operator("save.save_and_load_selection",text="Save Selection Set")
         box.operator("save.clear_selection",text="Clear All")
-        
 
 classes = ( 
             GENERAL_PT_PANEL,
@@ -176,9 +169,11 @@ classes = (
             )
 
 def register():
+   
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
+
     for cls in classes:
         bpy.utils.unregister_class(cls)
