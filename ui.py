@@ -1,6 +1,6 @@
 import bpy
 from bpy.types import Panel
-from . import  prop, operators
+from . import  prop, operator
 
 
 class GENERAL_panel:
