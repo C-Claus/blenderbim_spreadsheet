@@ -5,7 +5,6 @@ import collections
 from collections import defaultdict, OrderedDict
 import itertools
 import json
-import re
 import subprocess, os, platform
 import time
 from pathlib import Path
@@ -275,33 +274,8 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
     def execute(self, context):
 
-        #ifc_properties = context.scene.ifc_properties
-
         self.create_spreadsheet(context)
-
-        """
-        
-        if len(ifc_properties.my_spreadsheetfile) == 0:
-            self.create_spreadsheet(context)
-
-        if len(ifc_properties.my_spreadsheetfile) > 1:
-
-            if self.get_current_ui_settings(context) == self.get_stored_ui_settings():
-                self.open_file_on_each_os(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)
-
-            if self.get_current_ui_settings(context) != self.get_stored_ui_settings():
-                if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
-                    print ("Please close the spreadsheet file first")
-
-             
-                    #bpy.ops.wm.read_homefile('INVOKE_DEFAULT')
-                    #SimpleConfirmOperator
-                    #layout = self.layout
-                    #layout.operator("my_category.custom_confirm_dialog")
-                else:
-                    self.create_spreadsheet(context)
-        """
-                
+         
         return {'FINISHED'}
 
     
@@ -360,82 +334,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
             os.startfile(spreadsheet_filepath)
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
-
-    """        
-
-    def check_if_file_is_open(self, spreadsheet_filepath):
-       
-        boolean_open = None
-        
-        if platform.system() == 'Windows': 
-            try: 
-                os.rename(spreadsheet_filepath, 'tempfile.xls')
-                os.rename('tempfile.xls', spreadsheet_filepath)
-            except OSError:
-                boolean_open = True
-
-        return boolean_open
-
-        
-
-    def store_temp_ui_settings(self, context):
-
-        ifc_properties = context.scene.ifc_properties
-        configuration_dictionary = {}
-
-
-        script_file = os.path.realpath(__file__)
-        directory = os.path.dirname(script_file)
-        temp_file = directory + "\\ui_settings\\temp.json"
-
-
-        configuration_dictionary = {}
-        ifc_properties = context.scene.ifc_properties
-        custom_items = context.scene.custom_collection.items
-        
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
-
-        for prop_name_custom in custom_items.keys():
-            prop_value_custom = custom_items[prop_name_custom]
-            configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
-
-        with open(temp_file, "w") as selection_file:
-            json.dump(configuration_dictionary, selection_file, indent=4)
-
-        return {'FINISHED'}
-    
-    def get_current_ui_settings(self, context):
-        #print ('get current ui settings')
-
-        ifc_properties = context.scene.ifc_properties
-        custom_items = context.scene.custom_collection.items
-        configuration_dictionary = {}
-        
-        for my_ifcproperty in ifc_properties.__annotations__.keys():
-            my_ifcpropertyvalue = getattr(ifc_properties, my_ifcproperty)
-            configuration_dictionary[my_ifcproperty] = my_ifcpropertyvalue
-
-        for prop_name_custom in custom_items.keys():
-            prop_value_custom = custom_items[prop_name_custom]
-            configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
-
-        return configuration_dictionary
-
-    def get_stored_ui_settings(self):
-        #print ('get stored ui settings')
-
-        script_file = os.path.realpath(__file__)
-        directory = os.path.dirname(script_file)
-        temp_file = directory + "\\ui_settings\\temp.json"
-       
-        selection_file = open(temp_file)
-        selection_configuration = json.load(selection_file)
-
-        return (selection_configuration)
-    """    
-
 
 class FilterIFCElements(bpy.types.Operator):
     """Show the IFC elements you filtered in the spreadsheet"""
@@ -629,22 +527,6 @@ class ClearSelection(bpy.types.Operator):
        
         return {"FINISHED"} 
 
-class SimpleConfirmOperator(bpy.types.Operator):
-    """Really?"""
-    bl_idname = "my_category.custom_confirm_dialog"
-    bl_label = "Do you really want to do that?"
-    bl_options = {'REGISTER', 'INTERNAL'}
-
-    @classmethod
-    def poll(cls, context):
-        return True
-
-    def execute(self, context):
-        self.report({'INFO'}, "YES!")
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
-        return context.window_manager.invoke_confirm(self, event)
         
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
@@ -655,7 +537,7 @@ def register():
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
     bpy.utils.register_class(ClearProperties)
-    #bpy.utils.register_class(SimpleConfirmOperator)
+
     
 
 def unregister():
@@ -667,4 +549,3 @@ def unregister():
     bpy.utils.unregister_class(ConfirmSelection)
     bpy.utils.unregister_class(ClearSelection)
     bpy.utils.unregister_class(ClearProperties)
-    #bpy.utils.unregister_class(SimpleConfirmOperator)
