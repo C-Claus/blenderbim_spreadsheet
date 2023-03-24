@@ -157,19 +157,6 @@ class SAVE_SELECTION_PT_PANEL(GENERAL_panel, Panel):
         box.operator("save.save_and_load_selection",text="Save Selection Set")
         box.operator("save.clear_selection",text="Clear All")
 
-class OBJECT_PT_CustomPanel(bpy.types.Panel):
-    bl_label = "My Panel"
-    bl_idname = "OBJECT_PT_custom_panel"
-    bl_space_type = "VIEW_3D"   
-    bl_region_type = "UI"
-    bl_category = "Tools"
-    bl_context = "objectmode"
-
-    def draw(self, context):
-        layout = self.layout
-        #layout.operator(operators.SimpleConfirmOperator.bl_idname)
-        layout.operator("my_category.custom_confirm_dialog")
-
 classes = ( 
             GENERAL_PT_PANEL,
             GENERAL_IFC_PT_PANEL,
@@ -182,11 +169,11 @@ classes = (
             )
 
 def register():
-    #bpy.utils.register_class(OBJECT_PT_CustomPanel)
+   
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
-    #bpy.utils.unregister_class(OBJECT_PT_CustomPanel)
+
     for cls in classes:
         bpy.utils.unregister_class(cls)
