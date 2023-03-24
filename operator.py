@@ -28,10 +28,6 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 
 #1. allow for multiple classification
 #2. dialog user should close the spreadsheet
-#3. better code performance at creating dataframe
-#4. use list comprehensions where possible -> attempted and failed
-#5. user should be able to delete custom item from list -> done
-
 
 class Element(list):
     def __init__(self, name, attrs):
