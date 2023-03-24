@@ -161,6 +161,20 @@ class ConstructDataFrame:
         print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
         wm.progress_end()
 
+    def get_ifc_building_storey(self, context,ifc_product):
+
+        building_storey_list = []
+            
+        spatial_container = ifcopenshell.util.element.get_container(ifc_product)
+        
+        if spatial_container:    
+            building_storey_list.append(spatial_container.Name)
+            
+        if not building_storey_list:
+            building_storey_list.append(None)
+   
+        return tuple(building_storey_list)
+
     def get_ifc_type(self, context, ifc_product):
     
         ifc_type_list = []
@@ -174,21 +188,8 @@ class ConstructDataFrame:
         if not ifc_type_list:
             ifc_type_list.append(None)
 
-        return ifc_type_list
-
-    def get_ifc_building_storey(self, context,ifc_product):
-
-        building_storey_list = []
-            
-        spatial_container = ifcopenshell.util.element.get_container(ifc_product)
-        
-        if spatial_container:    
-            building_storey_list.append(spatial_container.Name)
-            
-        if not building_storey_list:
-            building_storey_list.append(None)
-            
-        return building_storey_list
+        return tuple(ifc_type_list)
+     
 
     def get_ifc_classification(self, context, ifc_product):
     
@@ -205,7 +206,7 @@ class ConstructDataFrame:
         if not classification_list:
             classification_list.append(None)  
             
-        return classification_list
+        return tuple(classification_list)
 
     def get_ifc_materials(self, context, ifc_product):
     
