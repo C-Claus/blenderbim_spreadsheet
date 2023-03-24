@@ -17,7 +17,7 @@ import os
 import bpy
 import site
 
-from . import operators, ui, prop
+from . import operator, ui, prop
 
 bl_info = {
         "name": "BlenderBIM Spreadsheet",
@@ -39,17 +39,17 @@ site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs"
 def register():
     from . import prop
     from . import ui
-    from . import operators
+    from . import operator
     prop.register()
-    operators.register()
+    operator.register()
     ui.register()
 
 def unregister():
     from . import prop
     from . import ui
-    from . import operators
+    from . import operator
     prop.unregister()
-    operators.register()
+    operator.register()
     ui.unregister()
 
 if __name__ == '__main__':
