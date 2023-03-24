@@ -291,17 +291,14 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
             construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
-
             worksheet = writer.sheets[prop.prop_workbook]
 
             (max_row, max_col) = construct_data_frame.df.shape
         
-            # Create a list of column headers, to use in add_table().
             column_settings = []
             for header in construct_data_frame.df.columns:
                 column_settings.append({'header': header})
-
-            # Add the table.
+      
             worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
             worksheet.set_column(0, max_col - 1, 30)
 
@@ -310,7 +307,6 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             print ("Spreadsheet is created at: ", spreadsheet_filepath)
             self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
-            self.store_temp_ui_settings(context)
 
         if ifc_properties.ods_or_xlsx == 'ODS':
             
