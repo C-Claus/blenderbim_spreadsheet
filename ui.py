@@ -167,7 +167,8 @@ class OBJECT_PT_CustomPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.operator(operators.SimpleConfirmOperator.bl_idname)     
+        #layout.operator(operators.SimpleConfirmOperator.bl_idname)
+        layout.operator("my_category.custom_confirm_dialog")
 
 classes = ( 
             GENERAL_PT_PANEL,
@@ -181,11 +182,11 @@ classes = (
             )
 
 def register():
-    bpy.utils.register_class(OBJECT_PT_CustomPanel)
+    #bpy.utils.register_class(OBJECT_PT_CustomPanel)
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
-    bpy.utils.unregister_class(OBJECT_PT_CustomPanel)
+    #bpy.utils.unregister_class(OBJECT_PT_CustomPanel)
     for cls in classes:
         bpy.utils.unregister_class(cls)

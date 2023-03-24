@@ -30,8 +30,8 @@ replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\
 #1. allow for multiple classification
 #2. dialog user should close the spreadsheet
 #3. better code performance at creating dataframe
-#4. use list comprehensions where possible
-#5. user should be able to delete custom item from list
+#4. use list comprehensions where possible -> attempted and failed
+#5. user should be able to delete custom item from list -> done
 
 
 class Element(list):
@@ -76,15 +76,12 @@ def get_hidden_rows(node):
 class ConstructDataFrame:
     def __init__(self, context):
 
-
         start_time = time.perf_counter()
         
-
         ifc_dictionary      = defaultdict(list) 
         ifc_properties      = context.scene.ifc_properties
         custom_collection   = context.scene.custom_collection
-        #custom_items        = context.scene.custom_collection.items
- 
+
         #ifc_file = ifcopenshell.open(IfcStore.path)
         ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
@@ -117,7 +114,6 @@ class ConstructDataFrame:
         
         for i, product in enumerate(products):
             wm.progress_update(i)
-            #ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
 
             if ifc_properties.my_ifcbuildingstorey:
@@ -163,8 +159,6 @@ class ConstructDataFrame:
                         
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
-
-                    
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
                     #if propertyset meets re conditions, then run dictionry
@@ -267,8 +261,7 @@ class ConstructDataFrame:
         if ifc_product:
             pset_name = 'Pset_' +  (str(ifc_product.is_a()).replace('Ifc','')) + 'Common'
             ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name, ifc_property_name)))
-                
-                
+                    
         if not ifc_property_list:
             ifc_property_list.append(None)
    
@@ -282,7 +275,11 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
     def execute(self, context):
 
-        ifc_properties = context.scene.ifc_properties
+        #ifc_properties = context.scene.ifc_properties
+
+        self.create_spreadsheet(context)
+
+        """
         
         if len(ifc_properties.my_spreadsheetfile) == 0:
             self.create_spreadsheet(context)
@@ -296,10 +293,14 @@ class ExportToSpreadSheet(bpy.types.Operator):
                 if (self.check_if_file_is_open(spreadsheet_filepath=ifc_properties.my_spreadsheetfile)):
                     print ("Please close the spreadsheet file first")
 
-                    print (dir(bpy.ops.wm))
-                    
+             
+                    #bpy.ops.wm.read_homefile('INVOKE_DEFAULT')
+                    #SimpleConfirmOperator
+                    #layout = self.layout
+                    #layout.operator("my_category.custom_confirm_dialog")
                 else:
                     self.create_spreadsheet(context)
+        """
                 
         return {'FINISHED'}
 
@@ -359,6 +360,8 @@ class ExportToSpreadSheet(bpy.types.Operator):
             os.startfile(spreadsheet_filepath)
         else:                                   # linux variants
             subprocess.call(('xdg-open', spreadsheet_filepath))
+
+    """        
 
     def check_if_file_is_open(self, spreadsheet_filepath):
        
@@ -431,6 +434,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
         selection_configuration = json.load(selection_file)
 
         return (selection_configuration)
+    """    
 
 
 class FilterIFCElements(bpy.types.Operator):
@@ -651,7 +655,7 @@ def register():
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
     bpy.utils.register_class(ClearProperties)
-    bpy.utils.register_class(SimpleConfirmOperator)
+    #bpy.utils.register_class(SimpleConfirmOperator)
     
 
 def unregister():
@@ -663,4 +667,4 @@ def unregister():
     bpy.utils.unregister_class(ConfirmSelection)
     bpy.utils.unregister_class(ClearSelection)
     bpy.utils.unregister_class(ClearProperties)
-    bpy.utils.unregister_class(SimpleConfirmOperator)
+    #bpy.utils.unregister_class(SimpleConfirmOperator)
