@@ -15,6 +15,7 @@ import xml.parsers.expat
 
 import ifcopenshell
 import blenderbim.tool as tool
+from blenderbim.bim.ifc import IfcStore
 replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
 #replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
@@ -69,7 +70,9 @@ class ConstructDataFrame:
         custom_collection   = context.scene.custom_collection
 
         #ifc_file = ifcopenshell.open(IfcStore.path)
-        ifc_file = ifcopenshell.open(replace_with_IfcStore)
+        ifc_properties.my_spreadsheet_file  = IfcStore.path.replace('.ifc','_blenderbim') 
+        ifc_file = ifcopenshell.open(IfcStore.path)
+        #ifc_file = ifcopenshell.open(replace_with_IfcStore)
         products = ifc_file.by_type('IfcProduct')
 
         custom_propertyset_list = []
@@ -273,10 +276,15 @@ class ExportToSpreadSheet(bpy.types.Operator):
         ifc_properties = context.scene.ifc_properties
 
         if ifc_properties.ods_or_xlsx == 'XLSX':
+            ifc_properties.my_spreadsheetfile =''
 
             construct_data_frame = ConstructDataFrame(context)
-            spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
+            #spreadsheet_filepath = replace_with_IfcStore.replace('.ifc','_blenderbim.xlsx')
             #IfcStore.path.replace('.ifc','_blenderbim.xlsx')
+            #ifc_properties.my_spreadsheetfile + '.xlsx'
+            #spreadsheet_filepath    = ifc_properties.my_spreadsheetfile# + '.xlsx'
+
+            spreadsheet_filepath    = str(IfcStore.path).replace('.ifc','.xlsx')
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
             construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
@@ -298,10 +306,13 @@ class ExportToSpreadSheet(bpy.types.Operator):
             self.open_file_on_each_os(spreadsheet_filepath=spreadsheet_filepath)
 
         if ifc_properties.ods_or_xlsx == 'ODS':
+
+            ifc_properties.my_spreadsheetfile =''
             
             construct_data_frame = ConstructDataFrame(context)
     
-            spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
+            #spreadsheet_filepath    = replace_with_IfcStore.replace('.ifc','_blenderbim.ods')
+            spreadsheet_filepath    = str(IfcStore.path).replace('.ifc','.ods')
             writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
             construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
             worksheet               = writer.sheets[prop.prop_workbook]
