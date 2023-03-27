@@ -97,7 +97,8 @@ class ConstructDataFrame:
 
             if my_ifcproperty.startswith('my_quantity'):
                 quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue 
-        
+
+   
         for i, product in enumerate(products):
             wm.progress_update(i)
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
@@ -153,7 +154,7 @@ class ConstructDataFrame:
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=property_set,
                                                                                         ifc_property_name=property_name)[0]))
-       
+      
         df = pd.DataFrame(ifc_dictionary)
         self.df = df
 
