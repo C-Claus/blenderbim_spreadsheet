@@ -28,7 +28,6 @@ class GENERAL_IFC_PT_PANEL(GENERAL_panel, Panel):
         box = layout.box()
         row = box.row()
         row.prop(ifc_properties, "my_ifcbuildingstorey")
-        #row = box.row()
         box.prop(ifc_properties, "my_ifcproduct")
         row = box.row()
         row.prop(ifc_properties, "my_ifcproductname")
