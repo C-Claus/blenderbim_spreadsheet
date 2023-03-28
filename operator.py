@@ -16,10 +16,8 @@ import xml.parsers.expat
 import ifcopenshell
 import blenderbim.tool as tool
 from blenderbim.bim.ifc import IfcStore
-replace_with_IfcStore = "C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC Schependomlaan.ifc"
-#replace_with_IfcStore ="C:\\Algemeen\\07_ifcopenshell\\00_ifc\\02_ifc_library\\IFC4 demo.ifc"
 
-#1. allow for multiple classification
+#1. allow for multiple classifications
 
 class Element(list):
     def __init__(self, name, attrs):
@@ -150,7 +148,7 @@ class ConstructDataFrame:
                 for item in custom_property_unique_list:
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
-                    
+
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
                                                                                         ifc_product=product,
                                                                                         ifc_propertyset_name=property_set,
