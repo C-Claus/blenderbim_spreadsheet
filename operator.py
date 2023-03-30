@@ -522,8 +522,6 @@ def register():
     bpy.utils.register_class(ClearSelection)
     bpy.utils.register_class(ClearProperties)
 
-    
-
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
     bpy.utils.unregister_class(FilterIFCElements)
