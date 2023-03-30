@@ -448,10 +448,11 @@ class SaveAndLoadSelection(bpy.types.Operator):
             prop_value_custom = custom_items[prop_name_custom]
             configuration_dictionary['my_ifccustomproperty' + prop_value_custom.name] = prop_value_custom.name
 
-        with open(replace_with_IfcStore.replace('.ifc','_selectionset.json'), "w") as selection_file:
+        selection_file_path = str(IfcStore.path).replace('.ifc','_selectionset.json')
+        with open (selection_file_path, "w") as selection_file:
             json.dump(configuration_dictionary, selection_file, indent=4)
 
-        ifc_properties.my_selectionload = str(replace_with_IfcStore.replace('.ifc','_selectionset.json'))
+        ifc_properties.my_selectionload = str(IfcStore.path).replace('.ifc','_selectionset.json')
         print ('Selection has been saved at: ', ifc_properties.my_selectionload)
 
         return {"FINISHED"} 
