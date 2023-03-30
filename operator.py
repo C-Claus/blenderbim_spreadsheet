@@ -520,7 +520,7 @@ def register():
     bpy.utils.register_class(SaveAndLoadSelection)
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
-    bpy.utils.register_class(ClearProperties)
+    
 
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
@@ -530,4 +530,3 @@ def unregister():
     bpy.utils.unregister_class(SaveAndLoadSelection)
     bpy.utils.unregister_class(ConfirmSelection)
     bpy.utils.unregister_class(ClearSelection)
-    bpy.utils.unregister_class(ClearProperties)
