@@ -509,8 +509,7 @@ class ClearSelection(bpy.types.Operator):
 
         custom_collection.items.clear()
        
-        return {"FINISHED"} 
-
+        return {"FINISHED"}
         
 def register():
     bpy.utils.register_class(ExportToSpreadSheet)
@@ -520,7 +519,6 @@ def register():
     bpy.utils.register_class(SaveAndLoadSelection)
     bpy.utils.register_class(ConfirmSelection)
     bpy.utils.register_class(ClearSelection)
-    
 
 def unregister():
     bpy.utils.unregister_class(ExportToSpreadSheet)
