@@ -1,13 +1,13 @@
 # BlenderBIM Spreadsheet
 
-BlenderBIM Spreadsheet was developed and tested with Blender 3.4 on Windows 11 with the lastest stable BlenderBIM release.
+BlenderBIM Spreadsheet was developed and tested with Blender 3.5 on Windows 11 with the lastest stable BlenderBIM release.
 With the intention that it will be rolled into BlenderBIM.
 ## Installation
 
 Prequisites
 
-Blender 3.4\
-BlenderBIM add-on\
+Blender 3.5\
+BlenderBIM add-on latest stable release\
 Libre Office Calc
 
 ## Setup
