@@ -17,8 +17,6 @@ import ifcopenshell
 import blenderbim.tool as tool
 from blenderbim.bim.ifc import IfcStore
 
-#1. allow for multiple classifications
-
 class Element(list):
     def __init__(self, name, attrs):
         self.name = name
