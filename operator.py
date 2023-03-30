@@ -6,7 +6,7 @@ import json
 import subprocess, os, platform
 import time
 
-
+site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
 import pandas as pd
 from openpyxl import load_workbook
 
