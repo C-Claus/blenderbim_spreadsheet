@@ -2,38 +2,6 @@
 
 BlenderBIM Spreadsheet was developed and tested with Blender 3.5 on Windows 11 with the lastest stable BlenderBIM release.
 With the intention that it will be rolled into BlenderBIM.
-## Installation
-
-Prequisites
-
-Blender 3.5\
-BlenderBIM add-on latest stable release\
-Libre Office Calc
-
-## Setup
-
-### Setup of Libre Office Calc
-It's highly recommended to use Libre Office Calc when using .ods files.
-Download a macro here which creates a table style and autofilter on startup
-Or create your own macro
-## Creating your own custom Macro which creates an autofilter and table style
-
-1. Press Record Macro
-2. Select cell A1 and Press Ctrl+Shift+Down Arrow then Right Arrow
-3. Go to > Format -> Autoformat Styles > Box List Blue > OK
-4. Press Home
-5. Press Ctrl + Shift + L
-6. Stop Recording Macro and Save it
-7. Go to Advanced to Uncheck > Java Runtime
-8. Make the Macro a hotkey
-
-## About filtering in Libre Office Calc
-
-1. Advanced filters
-2. Saving filter
-3. Resetting filters
-
-
 
 ## Functionality and new features
 
@@ -44,3 +12,24 @@ Or create your own macro
 - Support for multiple classification references
 - Support for multiple material definitions
 - Support for IFC4
+## Installation
+
+Prequisites
+
+[Blender 3.5](https://www.blender.org/download/)\
+[BlenderBIM add-on latest stable release](https://blenderbim.org/download.html)\
+[Libre Office Calc](https://www.libreoffice.org/download/download-libreoffice/)
+
+### Setup of Libre Office Calc
+It's highly recommended to use Libre Office Calc when using .ods files.
+
+## Quickstart on creating your own custom Macro which creates an autofilter and table style
+
+1. Press Record Macro
+2. Select cell A1 and Press Ctrl+Shift+Down Arrow then Right Arrow
+3. Go to > Format -> Autoformat Styles > Box List Blue > OK
+4. Press Home
+5. Press Ctrl + Shift + L
+6. Stop Recording Macro and Save it
+7. Go to Advanced to Uncheck > Java Runtime
+8. Make the Macro a hotkey
