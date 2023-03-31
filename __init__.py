@@ -33,7 +33,7 @@ bl_info = {
         }
 
 
-site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
+#site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
 
 def register():
     from . import prop
