@@ -4,22 +4,38 @@ name: Create Blender addon .zip file
 on:
   push:
    branches:
-    - release
+    - master
   pull_request:
    branches:
-    - release
+    - master
+
+#jobs:
+#  zip-files:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: vimtor/action-zip@v1
+#        with:
+#          files: 
+#            ${{ github.workspace }}
+#          dest: blenderbim_spreadsheet.zip
+#      - uses: actions/upload-artifact@v1
+#        with:
+#          name: blenderbim-spreadsheet
+#          path: blenderbim_spreadsheet.zip
 
 jobs:
-  zip-files:
+  zip:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: vimtor/action-zip@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create ZIP file
+        run: |
+          zip -r blenderbim_spreadsheet.zip libs __init__.py operator.py prop.py ui.py
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          files: 
-            ${{ github.workspace }}
-          dest: blenderbim_spreadsheet.zip
-      - uses: actions/upload-artifact@v1
-        with:
-          name: blenderbim-spreadsheet
+          name: blenderbim_spreadsheet.zip
           path: blenderbim_spreadsheet.zip
+          
