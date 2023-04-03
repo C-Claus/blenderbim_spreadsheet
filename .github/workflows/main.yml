@@ -1,3 +1,4 @@
+name: Create Blender addon .zip file
 on:
   push:
    branches:
