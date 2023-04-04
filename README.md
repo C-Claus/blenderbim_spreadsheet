@@ -12,13 +12,17 @@ Prequisites
 ## Functionality and new features
 
 - Support for .xlsx and .ods files
-- You can now export all BaseQuantities such as Area, NetArea, NetSideArea etc.
+- You can now export all BaseQuantities such as *Area, NetArea, NetSideArea* etc.
 - You can now store  user interface settings, useful for many custom properties which can be shared through json files.
-- Frienldy user interface to export one of the most commonly used properties such as IsExternal, LoadBearing, FireRating and AcousticRating.
+- Frienldy user interface to export one of the most commonly used properties such as *IsExternal, LoadBearing, FireRating* and *AcousticRating*.
 - Support for multiple classification references
-- Support for multiple material definitions
-- Support for IFC4
+- Support for multiple material definitions including *IfcMaterial, IfcMaterialList, IfcMaterialConstituentSet, IfcMaterialLayerSetUsage* and *IfcMaterialProfileSet*.
+- Support for IFC2x3 and IFC4
+
 ## Installation
+
+BlenderBIM Spreadsheet is found under the BlenderBIM Spreadsheet tab
+![image](https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png)
 
 
 
