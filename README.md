@@ -33,6 +33,11 @@ In this image an example is shown with a filtering of the IfcWindow, which shows
 
 <img src="https://user-images.githubusercontent.com/14906760/229783041-59dfa666-82ae-4b44-ad37-0477da0c4638.png"  width="50%" height="20%">
 
+It's possible to store all your custom defined properties in a .json file. It will save your checkbox user interface settings as well.
+To export the properties you want define the PropertySet name and Property name divided by a . as shown in the image
+
+<img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="50%" height="20%">
+
 
 
 ### Setup of Libre Office Calc
