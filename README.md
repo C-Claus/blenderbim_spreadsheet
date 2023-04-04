@@ -38,10 +38,10 @@ To export the properties you want define the PropertySet name and Property name 
 
 <img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="50%" height="20%">
 
-
+When you click *Save Selection Set* a .json file will be written to the same location where your ifc is.
 
 ### Setup of Libre Office Calc
-It's highly recommended to use Libre Office Calc when using .ods files.
+It's highly recommended to use Libre Office Calc when using .ods files. Experience learns MS excel does not always produce valid xml files which are used to parse the *GlobalId* to filter in a 3D View in Blender.
 
 ## Quickstart on creating your own custom Macro which creates an autofilter and table style
 
