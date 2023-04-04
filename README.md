@@ -27,7 +27,13 @@ BlenderBIM Spreadsheet is found under the BlenderBIM Spreadsheet tab
 
 ### Usage
 
-The BlenderBIM spreadsheet add-on expects an IFC file to be loaded and saved with BlenderBIM before an export to a spreadsheet is possbile:
+The BlenderBIM spreadsheet add-on expects an IFC file to be loaded and saved with BlenderBIM before an export to a spreadsheet is possbile.
+When a table filtering is made in the spreadsheet file, it should be saved first before a 3D view filtering in Blender is possible.
+In this image an example is shown with a filtering of the IfcWindow, which shows the multiple materials assigned.
+
+<img src="https://user-images.githubusercontent.com/14906760/229783041-59dfa666-82ae-4b44-ad37-0477da0c4638.png"  width="50%" height="20%">
+
+
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
