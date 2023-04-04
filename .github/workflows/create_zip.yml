@@ -21,6 +21,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: blenderbim_spreadsheet.zip
-          path: blenderbim_spreadsheet.zip
+          name: blenderbim_spreadsheet
+          path: blenderbim_spreadsheet
           
