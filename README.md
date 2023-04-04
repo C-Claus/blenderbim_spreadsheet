@@ -1,7 +1,7 @@
 # BlenderBIM Spreadsheet
 
-The [BlenderBIM Spreadsheet add-on](https://github.com/C-Claus/blenderbim_spreadsheet/releases/download/v1.0/blenderbim_spreadsheet.zip) was developed and tested with Blender 3.5 on Windows 11 with the BlenderBIMv0.0.230304 release and LibreOffice Calc 7.5
-With the intention that it will be rolled into BlenderBIM.
+The [BlenderBIM Spreadsheet add-on](https://github.com/C-Claus/blenderbim_spreadsheet/releases/download/v1.0/blenderbim_spreadsheet.zip) was developed and tested with Blender 3.5 with the BlenderBIMv0.0.230304 release and LibreOffice Calc 7.5 on Windows 11.
+The intention of this spreadsheet add-on is that it will be rolled into BlenderBIM one day.
 
 Prequisites
 
