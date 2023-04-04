@@ -42,8 +42,11 @@ When you click *Save Selection Set* a .json file will be written to the same loc
 
 Before creating a new spreadsheet export it's important to close the already running instance of your spreadsheet software.
 
+![image](https://user-images.githubusercontent.com/14906760/229786541-a6e92852-46cb-43b8-964b-87661fd26e5f.png)
 
-<img src="[https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png](https://user-images.githubusercontent.com/14906760/229786215-5cecb01f-3a56-4751-a6c6-3ba5c07151e5.png)"  width="50%" height="20%">
+<img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="50%" height="20%">
+
+
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files. Experience learns MS excel does not always produce valid xml files which are used to parse the *GlobalId* to filter in a 3D View in Blender.
