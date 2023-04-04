@@ -38,11 +38,7 @@ To export the properties you want define the PropertySet name and Property name 
 
 <img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="50%" height="20%">
 
-When you click *Save Selection Set* a .json file will be written to the same location where your ifc is.
-
-Before creating a new spreadsheet export it's important to close the already running instance of your spreadsheet software.
-
-In this example the *LoadBearing True* property is filtered in the spreadsheet software en visualized in the Blender 3D View.
+When you click *Save Selection Set* a .json file will be written to the same location where your ifc is.Before creating a new spreadsheet export it's important to close the already running instance of your spreadsheet software.In this example the *LoadBearing True* property is filtered in the spreadsheet software en visualized in the Blender 3D View.
 
 <img src="https://user-images.githubusercontent.com/14906760/229786541-a6e92852-46cb-43b8-964b-87661fd26e5f.png"  width="50%" height="20%">
 
