@@ -22,9 +22,12 @@ Prequisites
 ## Installation
 
 BlenderBIM Spreadsheet is found under the BlenderBIM Spreadsheet tab
-![image](https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png)
 
-<img src="https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png"  width="60%" height="30%">
+<img src="https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png"  width="50%" height="20%">
+
+### Usage
+
+The BlenderBIM spreadsheet add-on expects an IFC file to be loaded and saved with BlenderBIM before an export to a spreadsheet is possbile:
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
