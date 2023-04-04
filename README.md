@@ -24,7 +24,7 @@ Prequisites
 BlenderBIM Spreadsheet is found under the BlenderBIM Spreadsheet tab
 ![image](https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png)
 
-
+<img src="https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png"  width="60%" height="30%">
 
 ### Setup of Libre Office Calc
 It's highly recommended to use Libre Office Calc when using .ods files.
