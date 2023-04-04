@@ -17,10 +17,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Create ZIP file
         run: |
-          zip -r blenderbim_spreadsheet.zip libs __init__.py operator.py prop.py ui.py
+          zip -r blenderbim_spreadsheet.zip libs __init__.py operator.py prop.py ui.py -x "*.zip"
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: blenderbim_spreadsheet.zip
-          path: blenderbim_spreadsheet
+          path: blenderbim_spreadsheet.zip
           
