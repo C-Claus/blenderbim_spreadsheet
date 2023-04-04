@@ -23,7 +23,7 @@ Prequisites
 
 BlenderBIM Spreadsheet is found under the BlenderBIM Spreadsheet tab
 
-<img src="https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png"  width="50%" height="20%">
+<img src="https://user-images.githubusercontent.com/14906760/229779615-69e27c38-6eee-4c05-8eea-5144d3deb2f0.png"  width="60%" height="30%">
 
 ### Usage
 
@@ -31,16 +31,16 @@ The BlenderBIM spreadsheet add-on expects an IFC file to be loaded and saved wit
 When a table filtering is made in the spreadsheet file, it should be saved first before a 3D view filtering in Blender is possible.
 In this image an example is shown with a filtering of the IfcWindow, which shows the multiple materials assigned.
 
-<img src="https://user-images.githubusercontent.com/14906760/229783041-59dfa666-82ae-4b44-ad37-0477da0c4638.png"  width="50%" height="20%">
+<img src="https://user-images.githubusercontent.com/14906760/229783041-59dfa666-82ae-4b44-ad37-0477da0c4638.png"  width="60%" height="30%">
 
 It's possible to store all your custom defined properties in a .json file. It will save your checkbox user interface settings as well.
 To export the properties you want define the PropertySet name and Property name divided by a . as shown in the image
 
-<img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="50%" height="20%">
+<img src="https://user-images.githubusercontent.com/14906760/229784362-04d4a822-6c6b-4fd6-b3e3-73699b0f70cd.png"  width="60%" height="30%">
 
 When you click *Save Selection Set* a .json file will be written to the same location where your ifc is.Before creating a new spreadsheet export it's important to close the already running instance of your spreadsheet software.In this example the *LoadBearing True* property is filtered in the spreadsheet software en visualized in the Blender 3D View.
 
-<img src="https://user-images.githubusercontent.com/14906760/229786541-a6e92852-46cb-43b8-964b-87661fd26e5f.png"  width="50%" height="20%">
+<img src="https://user-images.githubusercontent.com/14906760/229786541-a6e92852-46cb-43b8-964b-87661fd26e5f.png"  width="60%" height="30%">
 
 
 
