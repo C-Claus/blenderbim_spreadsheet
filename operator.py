@@ -142,21 +142,21 @@ class ConstructDataFrame:
             for k,v in quantity_property_dict.items():
                 if v:
                     property = str(k)
-                    #print ('property', property)
-                    #print ('prop', prop.prop_basequantities)
 
                     qto_basequantities = 'Qto_' + (str(product.is_a()).replace('Ifc','')) + prop.prop_basequantities
-                    
 
-                    
 
-                    #if ifc2x3:
-                    #    basequantites
-                    #if ifc4:
-                    #    qto_quanties
+                    if ifc_file.schema == 'IFC2X3':
+                        if property:
+                            ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                ifc_property_name=property)[0])
 
-                    if property:
-                        ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+
+                    if ifc_file.schema == 'IFC4':
+                        if property:
+                            ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
                                                                                                 ifc_product=product,
                                                                                                 ifc_propertyset_name=qto_basequantities,
                                                                                                 ifc_property_name=property)[0])
