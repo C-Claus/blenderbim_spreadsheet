@@ -1,3 +1,15 @@
+ 
+"""
+think of dimensions interface
+
+beam 
+covering
+slab
+
+quantify and save 
+prompt user save
+"""
+
 import os
 import bpy
 from . import prop

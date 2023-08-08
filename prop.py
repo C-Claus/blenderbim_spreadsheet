@@ -19,6 +19,8 @@ prop_basequantities     = 'BaseQuantities'
 prop_length             = 'Length'
 prop_width              = 'Width'
 prop_height             = 'Height'
+prop_grossfootprintarea = 'GrossFootprintArea'
+prop_netfootprintarea   = 'NetFootprintArea'
 prop_area               = 'Area'
 prop_netarea            = 'NetArea'
 prop_netsidearea        = 'NetSideArea'
@@ -49,17 +51,19 @@ class IFCProperties(bpy.types.PropertyGroup):
     my_property_FireRating:     bpy.props.BoolProperty(name=prop_firerating,        default=False)
     my_property_AcousticRating: bpy.props.BoolProperty(name=prop_acousticrating,    default=False)
 
-    my_quantity_Length:         bpy.props.BoolProperty(name=prop_length,            default=False)
-    my_quantity_Width:          bpy.props.BoolProperty(name=prop_width,             default=False)
-    my_quantity_Height:         bpy.props.BoolProperty(name=prop_height,            default=False)
-    my_quantity_Area:           bpy.props.BoolProperty(name=prop_area,              default=False)
-    my_quantity_NetArea:        bpy.props.BoolProperty(name=prop_netarea,           default=False)
-    my_quantity_NetSideArea:    bpy.props.BoolProperty(name=prop_netsidearea,       default=False)
-    my_quantity_GrossArea:      bpy.props.BoolProperty(name=prop_grossarea,         default=False)
-    my_quantity_GrossSideArea:  bpy.props.BoolProperty(name=prop_grosssidearea,     default=False)
-    my_quantity_Volume:         bpy.props.BoolProperty(name=prop_volume,            default=False)
-    my_quantity_NetVolume:      bpy.props.BoolProperty(name=prop_netvolume,         default=False)
-    my_quantity_GrossVolume:    bpy.props.BoolProperty(name=prop_grossvolume,       default=False)
+    my_quantity_Length:             bpy.props.BoolProperty(name=prop_length,            default=False)
+    my_quantity_Width:              bpy.props.BoolProperty(name=prop_width,             default=False)
+    my_quantity_Height:             bpy.props.BoolProperty(name=prop_height,            default=False)
+    my_quantity_GrossFootprintArea: bpy.props.BoolProperty(name=prop_grossfootprintarea, default=False)
+    my_quantity_NetFootprintArea:   bpy.props.BoolProperty(name=prop_netfootprintarea,  default=False)
+    my_quantity_Area:               bpy.props.BoolProperty(name=prop_area,              default=False)
+    my_quantity_NetArea:            bpy.props.BoolProperty(name=prop_netarea,           default=False)
+    my_quantity_NetSideArea:        bpy.props.BoolProperty(name=prop_netsidearea,       default=False)
+    my_quantity_GrossArea:          bpy.props.BoolProperty(name=prop_grossarea,         default=False)
+    my_quantity_GrossSideArea:      bpy.props.BoolProperty(name=prop_grosssidearea,     default=False)
+    my_quantity_Volume:             bpy.props.BoolProperty(name=prop_volume,            default=False)
+    my_quantity_NetVolume:          bpy.props.BoolProperty(name=prop_netvolume,         default=False)
+    my_quantity_GrossVolume:        bpy.props.BoolProperty(name=prop_grossvolume,       default=False)
   
     my_spreadsheetfile:         bpy.props.StringProperty(   name="Spreadsheet",
                                                             description="your .ods or .xlsx file",
