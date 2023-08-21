@@ -83,6 +83,7 @@ class ConstructDataFrame:
 
         ifc_properties.my_spreadsheet_file  = IfcStore.path.replace('.ifc','_blenderbim') 
         ifc_file = ifcopenshell.open(IfcStore.path)
+        print ('SCHEMA', ifc_file.schema)
         
         products = ifc_file.by_type('IfcProduct')
 
@@ -133,6 +134,7 @@ class ConstructDataFrame:
 
             if ifc_properties.my_ifcclassification:
                 ifc_dictionary[prop.prop_classification].append(self.get_ifc_classification(context,
+                                                                                            schema=ifc_file.schema,
                                                                                             ifc_product=product)[0])
 
             if ifc_properties.my_ifcmaterial:
@@ -224,7 +226,7 @@ class ConstructDataFrame:
         return tuple(ifc_type_list)
      
 
-    def get_ifc_classification(self, context, ifc_product):
+    def get_ifc_classification(self, context, schema, ifc_product):
     
         classification_list = []
 
@@ -232,14 +234,25 @@ class ConstructDataFrame:
         references = ifcopenshell.util.classification.get_references(ifc_product)
         
         if ifc_product:
-            for reference in references:
-                system = ifcopenshell.util.classification.get_classification(reference)
-                classification_list.append(str(system.Name) + '\n' + str(reference[1]) +  '\n' + str(reference[2]))
-                     
+            for i in references:
+                if schema == 'IFC2X3':
+                    classification_list.append(i.ReferencedSource.Name)
+                    classification_list.append(i.ItemReference)
+                    classification_list.append(i.Name)
+                    classification_list.append('')
+
+                if schema == 'IFC4':
+                    classification_list.append(i.ReferencedSource.Name)
+                    classification_list.append(i.Identification)
+                    classification_list.append(i.Name)
+                    classification_list.append('')
+  
         if not classification_list:
-            classification_list.append(None)  
+            classification_list.append('None')  
             
-        return tuple(classification_list)
+        joined_classification_list = '\n'.join(classification_list)
+            
+        return [joined_classification_list]
 
     def get_ifc_materials(self, context, ifc_product):
     
