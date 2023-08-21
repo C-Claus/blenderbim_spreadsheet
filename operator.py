@@ -237,8 +237,9 @@ class ConstructDataFrame:
             for i in references:
                 if schema == 'IFC2X3':
                     classification_list.append(i.ReferencedSource.Name)
-                    classification_list(i.ItemReference)
-                    classification_list(i.Name)
+                    classification_list.append(i.ItemReference)
+                    classification_list.append(i.Name)
+                    classification_list.append('')
 
                 if schema == 'IFC4':
                     classification_list.append(i.ReferencedSource.Name)
