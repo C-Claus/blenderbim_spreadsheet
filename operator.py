@@ -1,3 +1,15 @@
+ 
+"""
+think of dimensions interface
+
+beam 
+covering
+slab
+
+quantify and save 
+prompt user save
+"""
+
 import os
 import bpy
 from . import prop
@@ -129,6 +141,7 @@ class ConstructDataFrame:
                 
      
             ifc_pset_common = 'Pset_' +  (str(product.is_a()).replace('Ifc','')) + 'Common'
+            
 
             for k,v in common_property_dict.items():
                 if v:
@@ -141,15 +154,34 @@ class ConstructDataFrame:
             for k,v in quantity_property_dict.items():
                 if v:
                     property = str(k)
-                    ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
-                                                                                            ifc_product=product,
-                                                                                            ifc_propertyset_name=prop.prop_basequantities,
-                                                                                            ifc_property_name=property)[0])
+
+                    qto_basequantities = 'Qto_' + (str(product.is_a()).replace('Ifc','')) + prop.prop_basequantities
+
+
+                    if ifc_file.schema == 'IFC2X3':
+                        if property:
+                            ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=prop.prop_basequantities,
+                                                                                                ifc_property_name=property)[0])
+
+
+                    if ifc_file.schema == 'IFC4':
+                        if property:
+                            ifc_dictionary[property].append(self.get_ifc_properties_and_quantities( context,
+                                                                                                ifc_product=product,
+                                                                                                ifc_propertyset_name=qto_basequantities,
+                                                                                                ifc_property_name=property)[0])
+
                         
             if len(custom_collection.items) > 0:
                 for item in custom_property_unique_list:
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
+
+                   
+
+                    #pset_qto_name = 'Qto_' + (str(product.is_a()).replace('Ifc','')) + 'BaseQuantities'
 
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
                                                                                         ifc_product=product,
@@ -249,6 +281,9 @@ class ConstructDataFrame:
 
         if ifc_product:
             pset_name = 'Pset_' +  (str(ifc_product.is_a()).replace('Ifc','')) + 'Common'
+            #pset_qto_name = 'Qto_' + (str(ifc_product.is_a()).replace('Ifc','')) + 'BaseQuantities'
+
+            ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name, ifc_property_name)))
             ifc_property_list.append(str(ifcopenshell.util.element.get_pset(ifc_product, ifc_propertyset_name, ifc_property_name)))
                     
         if not ifc_property_list:
