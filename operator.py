@@ -1,15 +1,3 @@
- 
-"""
-think of dimensions interface
-
-beam 
-covering
-slab
-
-quantify and save 
-prompt user save
-"""
-
 import os
 import bpy
 from . import prop
@@ -83,7 +71,6 @@ class ConstructDataFrame:
 
         ifc_properties.my_spreadsheet_file  = IfcStore.path.replace('.ifc','_blenderbim') 
         ifc_file = ifcopenshell.open(IfcStore.path)
-        print ('SCHEMA', ifc_file.schema)
         
         products = ifc_file.by_type('IfcProduct')
 
