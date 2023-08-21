@@ -181,8 +181,6 @@ class ConstructDataFrame:
                     property_set = str(item).split('.')[0]
                     property_name = str(item).split('.')[1]
 
-                   
-
                     #pset_qto_name = 'Qto_' + (str(product.is_a()).replace('Ifc','')) + 'BaseQuantities'
 
                     ifc_dictionary[item].append(str(self.get_ifc_properties_and_quantities(context,
