@@ -24,7 +24,7 @@ bl_info = {
         "description": "Filter IFC elements from a spreadsheet",
         "author": "Coen Claus",
         "version": (2, 0),
-        "blender": (3, 6, 1),
+        "blender": (3, 6, 2),
         "location": "BlenderBIM | Spreadsheet tab",
         "wiki_url": "https://github.com/C-Claus",
         "tracker_url": "https://community.osarch.org/",
