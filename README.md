@@ -15,7 +15,7 @@ Prequisites
 - You can now export all BaseQuantities such as *Area, NetArea, NetSideArea* etc.
 - You can now store  user interface settings, useful for many custom properties which can be shared through json files.
 - Frienldy user interface to export one of the most commonly used properties such as *IsExternal, LoadBearing, FireRating* and *AcousticRating*.
-- Support for multiple classification references
+- Support for multiple classification references including ```IFC2X3``` and ```IFC4```
 - Support for multiple material definitions including *IfcMaterial, IfcMaterialList, IfcMaterialConstituentSet, IfcMaterialLayerSetUsage* and *IfcMaterialProfileSet*.
 - Support for IFC2x3 and IFC4
 
