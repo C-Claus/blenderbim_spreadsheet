@@ -163,8 +163,8 @@ class ConstructDataFrame:
                                                                                         ifc_propertyset_name=property_set,
                                                                                         ifc_property_name=property_name)[0]))
       
-        df = pd.DataFrame(ifc_dictionary)
-        self.df = df
+        data_frame = pd.DataFrame(ifc_dictionary)
+        self.data_frame = data_frame
 
         print (time.perf_counter() - start_time, "seconds for the dataframe to be created")
         wm.progress_end()
@@ -301,13 +301,13 @@ class ExportToSpreadSheet(bpy.types.Operator):
             spreadsheet_filepath    = str(IfcStore.path).replace('.ifc','.xlsx')
 
             writer = pd.ExcelWriter(spreadsheet_filepath, engine='xlsxwriter')
-            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
+            construct_data_frame.data_frame.to_excel(writer, sheet_name=prop.prop_workbook, startrow=1, header=False, index=False)
             worksheet = writer.sheets[prop.prop_workbook]
 
-            (max_row, max_col) = construct_data_frame.df.shape
+            (max_row, max_col) = construct_data_frame.data_frame.shape
         
             column_settings = []
-            for header in construct_data_frame.df.columns:
+            for header in construct_data_frame.data_frame.columns:
                 column_settings.append({'header': header})
       
             worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
@@ -327,7 +327,7 @@ class ExportToSpreadSheet(bpy.types.Operator):
 
             spreadsheet_filepath    = str(IfcStore.path).replace('.ifc','.ods')
             writer                  = pd.ExcelWriter(spreadsheet_filepath, engine='odf')
-            construct_data_frame.df.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
+            construct_data_frame.data_frame.to_excel(writer, sheet_name=prop.prop_workbook, startrow=0, header=True, index=False)
             worksheet               = writer.sheets[prop.prop_workbook]
             writer.close()
 
