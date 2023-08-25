@@ -1,32 +1,32 @@
+#system imports
 import os
+import subprocess
+import platform
+import time
+from collections import defaultdict
+import json
+
+#blender imports
 import bpy
 from . import prop
 import site
 
-site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
-
-from collections import defaultdict
-import json
-import subprocess, os, platform
-import time
-
-
+#custom module imports
 import pandas as pd
 from openpyxl import load_workbook
-
 import zipfile
 import xml.parsers.expat
 
+#ifcopenshell imports
 import ifcopenshell
 import blenderbim.tool as tool
 from blenderbim.bim.ifc import IfcStore
 
+site.addsitedir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libs", "site", "packages"))
 class Element(list):
     def __init__(self, name, attrs):
         self.name = name
         self.attrs = attrs
-
-
 class TreeBuilder:
     def __init__(self):
         self.root = Element("root", None)
@@ -44,7 +44,6 @@ class TreeBuilder:
     def char_data(self, data):
         self.path[-1].append(data)
 
-
 def get_hidden_rows(node):
     row = 0
     for e in node:
@@ -58,8 +57,6 @@ def get_hidden_rows(node):
         if "table:visibility" in attrs.keys():  
             yield from range(row, row + rows)
         row += rows
-
-
 class ConstructDataFrame:
     def __init__(self, context):
 
@@ -100,7 +97,6 @@ class ConstructDataFrame:
             if my_ifcproperty.startswith('my_quantity'):
                 quantity_property_dict[my_ifcproperty.replace('my_quantity_','')] = my_ifcpropertyvalue 
 
-   
         for i, product in enumerate(products):
             wm.progress_update(i)
             ifc_dictionary[prop.prop_globalid].append(str(product.GlobalId))
