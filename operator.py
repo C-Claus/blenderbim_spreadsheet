@@ -6,16 +6,16 @@ import time
 from collections import defaultdict
 import json
 
-#blender imports
-import bpy
-from . import prop
-import site
-
 #custom module imports
 import pandas as pd
 from openpyxl import load_workbook
 import zipfile
 import xml.parsers.expat
+
+#blender imports
+import bpy
+from . import prop
+import site
 
 #ifcopenshell imports
 import ifcopenshell
