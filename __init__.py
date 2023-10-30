@@ -48,7 +48,7 @@ def unregister():
     from . import ui
     from . import operator
     prop.unregister()
-    operator.register()
+    operator.unregister()
     ui.unregister()
 
 if __name__ == '__main__':
